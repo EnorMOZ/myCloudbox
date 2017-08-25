@@ -9,7 +9,7 @@
 
 - name: Check rtorrent.rc exists
   stat:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
   register: rtorrent_rc
 
 - name: Create and start container
@@ -29,7 +29,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/rutorrent:/config"
+      - "{{mnt.docker_data}}/rutorrent:/config"
       - "{{rutorrent.downloads}}:/downloads/rutorrent"
     networks:
       - name: cloudbox
@@ -41,13 +41,13 @@
 
 - name: Wait for rtorrent.rc to be created
   wait_for:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     state: present
   when: rtorrent_rc.stat.exists == False
 
 - name: Wait for nginx.conf to be created
   wait_for:
-    path: "/opt/rutorrent/nginx/nginx.conf"
+    path: "{{mnt.docker_data}}/rutorrent/nginx/nginx.conf"
     state: present
   when: rtorrent_rc.stat.exists == False
 
@@ -64,7 +64,7 @@
 
 - name: Change downloads directory
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^directory\s?='
     line: 'directory = /downloads/rutorrent'
     state: present
@@ -72,7 +72,7 @@
 
 - name: Disable DHT
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^dht\s?='
     line: 'dht = disable'
     state: present
@@ -80,7 +80,7 @@
 
 - name: Disable PEX
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^peer_exchange\s?='
     line: 'peer_exchange = no'
     state: present
@@ -88,7 +88,7 @@
 
 - name: Reduce min_peers
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^min_peers\s?='
     line: 'min_peers = 1'
     state: present
@@ -96,7 +96,7 @@
 
 - name: Increase max_uploads
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^max_uploads\s?='
     line: 'max_uploads = 1024'
     state: present
@@ -104,7 +104,7 @@
 
 - name: Disable check_hash
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^check_hash\s?='
     line: 'check_hash = no'
     state: present
@@ -112,7 +112,7 @@
 
 - name: Set upload_rate to unlimited
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^upload_rate\s?='
     line: 'upload_rate = 0'
     state: present
@@ -120,7 +120,7 @@
 
 - name: Set download_rate to unlimited
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^download_rate\s?='
     line: 'download_rate = 0'
     state: present
@@ -128,7 +128,7 @@
 
 - name: Set encryption parameters
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^encryption\s?='
     line: 'encryption = allow_incoming,enable_retry,prefer_plaintext'
     state: present
@@ -137,7 +137,7 @@
 - name: Copy across custom nginx.conf with htpasswd support
   copy:
     src: nginx.conf
-    dest: /opt/rutorrent/nginx/nginx.conf
+    dest: {{mnt.docker_data}}/rutorrent/nginx/nginx.conf
     owner: "{{user}}"
     group: "{{user}}"
     mode: 0775
@@ -146,7 +146,7 @@
 
 - name: Create htpasswd
   htpasswd:
-    path: /opt/rutorrent/nginx/.htpasswd
+    path: {{mnt.docker_data}}/rutorrent/nginx/.htpasswd
     name: "{{user}}"
     password: "{{rutorrent.passwd}}"
     owner: "{{user}}"

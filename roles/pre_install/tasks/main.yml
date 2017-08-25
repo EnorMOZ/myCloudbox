@@ -39,11 +39,11 @@
 
 # - name: "Check plexdrive token.json exists"
 #   stat:
-#     path: /opt/plexdrive/token.json
+#     path: {{mnt.docker_data}}/plexdrive/token.json
 #   register: plexdrive_token
 
 # - name: "Fail when no client_id / client_secret provided in settings.yml"
-#   fail: msg="You have no existing token.json in your /opt/plexdrive. You must set a client_id and client_secret in settings.yml for plexdrive"
+#   fail: msg="You have no existing token.json in your {{mnt.docker_data}}/plexdrive. You must set a client_id and client_secret in settings.yml for plexdrive"
 #   when: plexdrive_token.stat.exists == False and (plexdrive.client_id|default("") == "" or plexdrive.client_secret|default("") == "")
 
 # - name: "Install pip"
@@ -94,14 +94,14 @@
 #   fail: msg="There was a problem building your config.json && token.json for plexdrive."
 #   when: plexdrive_token.stat.exists == False and plexdrive_built_token.stat.exists == False
 
-# - name: "Ensure plexdrive folder exists in /opt"
-#   file: "path=/opt/plexdrive state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
+# - name: "Ensure plexdrive folder exists in {{mnt.docker_data}}"
+#   file: "path={{mnt.docker_data}}/plexdrive state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
 #   when: plexdrive_token.stat.exists == False and plexdrive_built_token.stat.exists
 
 # - name: Import generated token.json
 #   copy:
 #     src: "{{playbook_dir}}/token.json"
-#     dest: /opt/plexdrive/token.json
+#     dest: {{mnt.docker_data}}/plexdrive/token.json
 #     owner: "{{user}}"
 #     group: "{{user}}"
 #     mode: 0775
@@ -110,7 +110,7 @@
 # - name: Import generated config.json
 #   copy:
 #     src: "{{playbook_dir}}/config.json"
-#     dest: /opt/plexdrive/config.json
+#     dest: {{mnt.docker_data}}/plexdrive/config.json
 #     owner: "{{user}}"
 #     group: "{{user}}"
 #     mode: 0775

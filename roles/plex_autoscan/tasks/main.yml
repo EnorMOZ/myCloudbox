@@ -11,18 +11,18 @@
 - name: Clone plex_autoscan
   git:
     repo: https://github.com/l3uddz/plex_autoscan/
-    dest: /opt/plex_autoscan
+    dest: {{mnt.docker_data}}/plex_autoscan
     version: master
     force: yes
     
 - name: Install pip requirements
   pip:
-    requirements: /opt/plex_autoscan/requirements.txt
+    requirements: {{mnt.docker_data}}/plex_autoscan/requirements.txt
     executable: pip
 
 - name: Check config exists
   stat:
-    path: "/opt/plex_autoscan/config/config.json"
+    path: "{{mnt.docker_data}}/plex_autoscan/config/config.json"
   register: plex_autoscan_config
 
 - name: "Generate 32 character SERVER_PASS"
@@ -33,17 +33,17 @@
 - name: Import default config
   template:
     src: config.json.js2
-    dest: /opt/plex_autoscan/config/config.json
+    dest: {{mnt.docker_data}}/plex_autoscan/config/config.json
     force: yes
   when: plex_autoscan_config.stat.exists == False
 
 - name: Set scan.py as executable
   file:
-    path: /opt/plex_autoscan/scan.py
+    path: {{mnt.docker_data}}/plex_autoscan/scan.py
     mode: a+x
 
 - name: Set directory permissions
-  file: "path=/opt/plex_autoscan state=directory owner={{user}} group={{user}} recurse=yes"
+  file: "path={{mnt.docker_data}}/plex_autoscan state=directory owner={{user}} group={{user}} recurse=yes"
 
 - name: Import plex_autoscan service
   template:

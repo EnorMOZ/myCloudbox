@@ -23,11 +23,11 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/sonarr:/config"
-      - "/mnt/unionfs/Media/TV:/tv"
+      - "{{mnt.docker_data}}/sonarr:/config"
+      - "{{mnt.unionfs}}/TV:/tv"
       - "{{nzbget.downloads}}:/downloads/nzbget"
       - "{{rutorrent.downloads}}:/downloads/rutorrent"
-      - "/opt/scripts:/scripts"
+      - "{{mnt.docker_data}}/scripts:/scripts"
     networks:
       - name: cloudbox
         ipv4_address: 172.18.0.13

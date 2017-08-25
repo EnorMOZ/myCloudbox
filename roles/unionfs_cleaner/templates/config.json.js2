@@ -1,11 +1,11 @@
 {
-    "cloud_folder": "/mnt/plexdrive",
+    "cloud_folder": "{{mnt.plexdrive}}",
     "dry_run": false,
     "du_excludes": ["*.partial~"],
-    "local_folder": "/mnt/local/Media",
+    "local_folder": "{{mnt.local}}",
     "local_folder_check_interval": {{unionfs_cleaner.size_check_mins}},
     "local_folder_size": {{unionfs_cleaner.max_local_gigabytes}},
-    "local_remote": "{{unionfs_cleaner.rclone_remote}}/Media",
+    "local_remote": "{{unionfs_cleaner.rclone_remote}}",
     "lsof_excludes": [
         ".partial~"
     ],
@@ -20,18 +20,18 @@
         ".unionfs-fuse/**"
     ],
     "rclone_remove_empty_on_upload": {
-        "/mnt/local/Media/Movies": 1,
-        "/mnt/local/Media/TV": 1
+        "{{mnt.local}}/Movies": 1,
+        "{{mnt.local}}/TV": 1
     },
     "rclone_transfers": 8,
     "remote_folder": "{{unionfs_cleaner.rclone_remote}}",
     "rsync_backup_interval": 1,
     "rsync_backups": {
-        "/opt": [
+        "{{mnt.docker_data}}": [
         ]
     },
     "rsync_remote": "/home/{{user}}/backup",
-    "unionfs_folder": "/mnt/local/.unionfs-fuse",
+    "unionfs_folder": "{{mnt.fuse_dir}}",
     "use_backup_manager": false,
     "use_config_manager": true,
     "use_git_autoupdater": true,

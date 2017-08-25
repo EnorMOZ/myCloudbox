@@ -8,20 +8,20 @@
 - name: Ensure rclone folders exists
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
   with_items:
-    - /opt/rclone
+    - {{mnt.docker_data}}/rclone
     - "/home/{{user}}/.config/rclone"
 
-- name: Copy binary to /opt/rclone
+- name: Copy binary to {{mnt.docker_data}}/rclone
   copy:
     src: "/tmp/rclone-v{{ rclone.version }}-linux-amd64/rclone"
-    dest: /opt/rclone/rclone
+    dest: {{mnt.docker_data}}/rclone/rclone
     mode: 0777
     owner: "{{user}}"
     group: "{{user}}"
 
 - name: Symlink binary to /usr/sbin
   file:
-    src: /opt/rclone/rclone
+    src: {{mnt.docker_data}}/rclone/rclone
     dest: /usr/sbin/rclone
     state: link
     force: yes
@@ -48,7 +48,7 @@
 
 - name: Symlink config
   file:
-    src: /opt/rclone/rclone.conf
+    src: {{mnt.docker_data}}/rclone/rclone.conf
     dest: "/home/{{user}}/.config/rclone/rclone.conf"
     owner: "{{user}}"
     group: "{{user}}"
@@ -63,7 +63,7 @@
 - name: Restore rclone.conf as part of restore process
   copy:
     src: "{{playbook_dir}}/rclone.conf"
-    dest: /opt/rclone/rclone.conf
+    dest: {{mnt.docker_data}}/rclone/rclone.conf
     mode: 0775
     owner: "{{user}}"
     group: "{{user}}"

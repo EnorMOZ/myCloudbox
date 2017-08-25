@@ -19,7 +19,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/organizr:/config"
+      - "{{mnt.docker_data}}/organizr:/config"
     networks:
       - name: cloudbox
         ipv4_address: 172.18.0.8

@@ -6,7 +6,13 @@
     register: backup_location
 
   - name: "Create backup location {{backup.tgz_dest}}"
-    file: path={{backup.tgz_dest}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true
+    file: 
+      path: "{{backup.tgz_dest}}"
+      state: directory
+      mode: 0775
+      owner: {{user}}
+      group: {{user}}
+      recurse: true
     when: backup_location.stat.exists == False
 
   - name: "Check if backup.lock is present"
@@ -47,10 +53,10 @@
       state: absent
     when: backup_previous_tgz.stat.exists
 
-  - name: "Copy settings.xml to /opt for inclusion in backup"
+  - name: "Copy settings.xml to {{mnt.docker_data}} for inclusion in backup"
     copy:
       src: "{{playbook_dir}}/settings.yml"
-      dest: "/opt/settings.yml"
+      dest: "{{mnt.docker_data}}/settings.yml"
       force: yes
       group: "{{user}}"
       owner: "{{user}}"
@@ -62,8 +68,8 @@
       state: stopped
     when: backup.stop_plex
 
-  - name: "Archiving /opt to {{backup.tgz_dest}}/cloudbox.tar"
-    shell: "tar -cf '{{backup.tgz_dest}}/cloudbox.tar' -C /opt ."
+  - name: "Archiving {{mnt.docker_data}} to {{backup.tgz_dest}}/cloudbox.tar"
+    shell: "tar -cf '{{backup.tgz_dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
 
   - name: "Start Plex"
     docker_container:

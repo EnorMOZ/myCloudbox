@@ -5,11 +5,17 @@
     state: absent
 
 - name: Create nzbget download directory
-  file: "path={{nzbget.downloads}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
+  file: 
+    path: {{nzbget.downloads}}
+    state: directory
+    mode: 0775
+    owner: {{user}}
+    group: {{user}}
+    recurse: true"
 
 - name: Check nzbget.conf exists
   stat:
-    path: "/opt/nzbget/nzbget.conf"
+    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
   register: nzbget_conf
 
 - name: Create and start container
@@ -27,9 +33,9 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/nzbget:/config"
+      - "{{mnt.docker_data}}/nzbget:/config"
       - "{{nzbget.downloads}}:/downloads/nzbget"
-      - "/opt/scripts/nzb:/scripts"
+      - "{{mnt.docker_data}}/scripts/nzb:/scripts"
     restart_policy: always
     networks:
       - name: cloudbox
@@ -40,7 +46,7 @@
 
 - name: Wait for nzbget.conf to be created
   wait_for:
-    path: "/opt/nzbget/nzbget.conf"
+    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
     state: present
   when: nzbget_conf.stat.exists == False
 
@@ -57,7 +63,7 @@
 
 - name: Change downloads directory
   lineinfile:
-    path: "/opt/nzbget/nzbget.conf"
+    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
     regexp: '^MainDir\s?='
     line: 'MainDir=/downloads/nzbget'
     state: present
@@ -65,7 +71,7 @@
 
 - name: Change scripts directory
   lineinfile:
-    path: "/opt/nzbget/nzbget.conf"
+    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
     regexp: '^ScriptDir\s?='
     line: 'ScriptDir=/scripts'
     state: present
@@ -73,7 +79,7 @@
 
 - name: Rename Movies category
   lineinfile:
-    path: "/opt/nzbget/nzbget.conf"
+    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
     regexp: '^Category1.Name\s?='
     line: 'Category1.Name=radarr'
     state: present
@@ -81,7 +87,7 @@
 
 - name: Rename TV category
   lineinfile:
-    path: "/opt/nzbget/nzbget.conf"
+    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
     regexp: '^Category2.Name\s?='
     line: 'Category2.Name=sonarr'
     state: present
@@ -89,7 +95,7 @@
 
 - name: Remove default Username
   lineinfile:
-    path: "/opt/nzbget/nzbget.conf"
+    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
     regexp: '^ControlUsername\s?='
     line: 'ControlUsername='
     state: present
@@ -97,7 +103,7 @@
 
 - name: Remove default Password
   lineinfile:
-    path: "/opt/nzbget/nzbget.conf"
+    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
     regexp: '^ControlPassword=\s?='
     line: 'ControlPassword='
     state: present

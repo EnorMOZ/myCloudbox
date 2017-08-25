@@ -6,7 +6,7 @@
 
 - name: Wait for Plex Logs folder to be created by Plex
   wait_for:
-    path: "/opt/plex/Library/Application Support/Plex Media Server/Logs"
+    path: "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs"
     state: present
 
 - name: Create and start container
@@ -24,8 +24,8 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/plexpy:/config"
-      - "/opt/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro"
+      - "{{mnt.docker_data}}/plexpy:/config"
+      - "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro"
     restart_policy: always
     networks:
       - name: cloudbox

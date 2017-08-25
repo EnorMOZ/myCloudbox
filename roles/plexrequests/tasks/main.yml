@@ -19,7 +19,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/plexrequests:/config"
+      - "{{mnt.docker_data}}/plexrequests:/config"
     networks:
       - name: cloudbox
         ipv4_address: 172.18.0.17

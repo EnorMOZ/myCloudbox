@@ -24,7 +24,7 @@
 
 - name: Check rclone installed
   stat:
-    path: "/opt/rclone/rclone"
+    path: "{{mnt.docker_data}}/rclone/rclone"
   register: rclone_bin
 
 - name: Install rclone
@@ -65,16 +65,16 @@
   wait_for:
     timeout: 10
 
-- name: "Unarchive cloudbox.tar to /opt"
-  shell: "tar -xf '{{backup.tgz_dest}}/cloudbox.tar' -C /opt ."
+- name: "Unarchive cloudbox.tar to {{mnt.docker_data}}"
+  shell: "tar -xf '{{backup.tgz_dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
 
-- name: Set /opt permissions
+- name: Set {{mnt.docker_data}} permissions
   file: 
-    path: /opt
+    path: {{mnt.docker_data}}
     owner: "{{user}}"
     group: "{{user}}"
     mode: 0775
     recurse: yes
 
 - debug:
-    msg: Finished unarchiving cloudbox.tar to /opt, you should now be ready to perform an installation!
+    msg: Finished unarchiving cloudbox.tar to {{mnt.docker_data}}, you should now be ready to perform an installation!

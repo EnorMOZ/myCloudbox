@@ -22,7 +22,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/nzbhydra:/config"
+      - "{{mnt.docker_data}}/nzbhydra:/config"
     restart_policy: always
     networks:
       - name: cloudbox

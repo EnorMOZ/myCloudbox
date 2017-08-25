@@ -8,8 +8,8 @@ After=network-online.target unionfs.service
 User={{user}}
 Group={{user}}
 Type=simple
-WorkingDirectory=/opt/unionfs_cleaner/
-ExecStart=/opt/unionfs_cleaner/cleaner.py
+WorkingDirectory={{mnt.docker_data}}/unionfs_cleaner/
+ExecStart={{mnt.docker_data}}/unionfs_cleaner/cleaner.py
 Restart=always
 RestartSec=10
 

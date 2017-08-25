@@ -5,7 +5,9 @@
     register: unionfs_service
 
   - name: Stop existing unionfs service
-    systemd: state=stopped name=unionfs
+    systemd: 
+      state: stopped 
+      name: unionfs
     when: unionfs_service.stat.exists
     
   - name: Install fuse
@@ -14,7 +16,10 @@
       state: installed
 
   - name: Import fuse.conf
-    copy: src=fuse.conf dest=/etc/fuse.conf force=yes
+    copy: 
+      src: fuse.conf
+      dest: /etc/fuse.conf
+      force: yes
 
   - name: Install unionfs
     apt: 
@@ -27,13 +32,22 @@
       dest: /etc/systemd/system/unionfs.service 
       force: yes
 
-  - name: Create /mnt/unionfs and subdirs
-    file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
+  - name: Create {{mnt.unionfs}} and subdirs
+    file: 
+      path: {{item}}
+      state: directory
+      mode: 0775
+      owner: {{user}}
+      group: {{user}}
+      recurse: true
     with_items:
-      - /mnt/unionfs
-      - /mnt/unionfs/Media
-      - /mnt/unionfs/Media/Movies
-      - /mnt/unionfs/Media/TV
+      - {{mnt.unionfs}}
+      - {{mnt.unionfs}}/Movies
+      - {{mnt.unionfs}}/TV
 
   - name: Start unionfs service
-    systemd: state=started name=unionfs daemon_reload=yes enabled=yes
+    systemd: 
+      state: started
+      name: unionfs
+      daemon_reload: yes
+      enabled: yes

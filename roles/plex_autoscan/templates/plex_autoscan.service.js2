@@ -8,8 +8,8 @@ After=network-online.target
 User={{user}}
 Group={{user}}
 Type=simple
-WorkingDirectory=/opt/plex_autoscan/
-ExecStart=/opt/plex_autoscan/scan.py server
+WorkingDirectory={{mnt.docker_data}}/plex_autoscan/
+ExecStart={{mnt.docker_data}}/plex_autoscan/scan.py server
 Restart=always
 RestartSec=10
 

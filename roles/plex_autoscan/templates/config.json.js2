@@ -1,9 +1,9 @@
 {
     "DOCKER_NAME": "plex",
-    "PLEX_DATABASE_PATH": "/opt/plex/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db",
+    "PLEX_DATABASE_PATH": "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db",
     "PLEX_EMPTY_TRASH": true,
     "PLEX_EMPTY_TRASH_CONTROL_FILES": [
-        "/mnt/unionfs/mounted.bin"
+        "{{mnt.unionfs}}/mounted.bin"
     ],
     "PLEX_EMPTY_TRASH_MAX_FILES": 100,
     "PLEX_EMPTY_TRASH_ZERO_DELETED": false,
@@ -24,7 +24,7 @@
     "PLEX_WAIT_FOR_EXTERNAL_SCANNERS": true,
     "SERVER_ALLOW_MANUAL_SCAN": false,
     "SERVER_FILE_EXIST_PATH_MAPPINGS": {
-        "/mnt/unionfs/Media": [
+        "{{mnt.unionfs}}": [
             "/data"
         ]
     },

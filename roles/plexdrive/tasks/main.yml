@@ -11,7 +11,7 @@
   - name: Install plexdrive
     get_url:
       url:  https://github.com/dweidenfeld/plexdrive/releases/download/5.0.0/plexdrive-linux-amd64
-      dest: /opt/plexdrive/plexdrive
+      dest: {{mnt.docker_data}}/plexdrive/plexdrive
       mode: 0755
       owner: "{{user}}"
       group: "{{user}}"
@@ -28,7 +28,7 @@
 
   - name: Check config exists
     stat:
-      path: "/opt/plexdrive/config.json"
+      path: "{{mnt.docker_data}}/plexdrive/config.json"
     register: plexdrive_config
 
   - name: Start plexdrive service

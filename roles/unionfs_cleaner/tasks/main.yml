@@ -11,34 +11,34 @@
 - name: Clone unionfs_cleaner
   git:
     repo: https://github.com/l3uddz/unionfs_cleaner/
-    dest: /opt/unionfs_cleaner
+    dest: {{mnt.docker_data}}/unionfs_cleaner
     version: dev
     force: yes
     
 - name: Install pip requirements
   pip:
-    requirements: /opt/unionfs_cleaner/requirements.txt
+    requirements: {{mnt.docker_data}}/unionfs_cleaner/requirements.txt
     executable: pip3
 
 - name: Check config exists
   stat:
-    path: "/opt/unionfs_cleaner/config.json"
+    path: "{{mnt.docker_data}}/unionfs_cleaner/config.json"
   register: unionfs_cleaner_config
 
 - name: Import default config
   template:
     src: config.json.js2
-    dest: /opt/unionfs_cleaner/config.json
+    dest: {{mnt.docker_data}}/unionfs_cleaner/config.json
     force: yes
   when: unionfs_cleaner_config.stat.exists == False
 
 - name: Set cleaner.py as executable
   file:
-    path: /opt/unionfs_cleaner/cleaner.py
+    path: {{mnt.docker_data}}/unionfs_cleaner/cleaner.py
     mode: a+x
 
 - name: Set directory permissions
-  file: "path=/opt/unionfs_cleaner state=directory owner={{user}} group={{user}} recurse=yes"
+  file: "path={{mnt.docker_data}}/unionfs_cleaner state=directory owner={{user}} group={{user}} recurse=yes"
 
 - name: Import unionfs_cleaner service
   template:
