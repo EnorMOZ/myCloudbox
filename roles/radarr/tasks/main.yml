@@ -4,7 +4,7 @@
     name: radarr
     state: absent
 
-- name: Setup two lists to be merged
+- name: Setup default radarr docker volume to be merged
   set_fact:
     radarr_volumes:
       - "/etc/localtime:/etc/localtime:ro"

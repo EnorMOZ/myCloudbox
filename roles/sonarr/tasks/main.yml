@@ -3,7 +3,8 @@
   docker_container:
     name: sonarr
     state: absent
-- name: Setup two lists to be merged
+
+- name: Setup default sonarr docker volume to be merged
   set_fact:
     sonarr_volumes:
       - "/etc/localtime:/etc/localtime:ro"
