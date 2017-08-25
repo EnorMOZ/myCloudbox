@@ -18,8 +18,9 @@
       - "443:443"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/nginx-proxy:/etc/nginx/certs:ro"
+      - "{{mnt.docker_data}}/nginx-proxy:/etc/nginx/certs:ro"
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "{{mnt.docker_data}}/nginx-proxy/htpasswd:/etc/nginx/htpasswd"
       - "/etc/nginx/vhost.d"
       - "/usr/share/nginx/html"
     labels:
@@ -38,7 +39,7 @@
     image: "jrcs/letsencrypt-nginx-proxy-companion"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/nginx-proxy:/etc/nginx/certs:rw"
+      - "{{mnt.docker_data}}/nginx-proxy:/etc/nginx/certs:rw"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     volumes_from:
       - "nginx-proxy"
@@ -51,3 +52,6 @@
           - letsencrypt
     restart_policy: always
     state: started
+
+- include: htauth.yml
+  

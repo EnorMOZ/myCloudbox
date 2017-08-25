@@ -1,0 +1,12 @@
+---
+  
+- name: Create htpasswd
+  htpasswd:
+    path: {{mnt.docker_data}}/nginx-proxy/htpasswd/{{ item }}
+    name: "{{user}}"
+    password: "{{passwd}}"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0664
+  with_dict: 
+    - {{ http_auth.{{domain}} }}
