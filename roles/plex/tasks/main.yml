@@ -22,6 +22,13 @@
 - debug: msg="Using plex claim token {{plex_claim.user_input}}"
   when: plex_prefs.stat.exists == False
 
+- name: Setup two lists to be merged
+  set_fact:
+    plex_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/plex:/config"
+      - "{{plex.transcodes}}:/transcode"
+
 - name: Create and start container
   docker_container:
     name: plex
@@ -48,11 +55,7 @@
       VIRTUAL_PORT: 32400
       LETSENCRYPT_HOST: "plex.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/plex:/config"
-      - "{{plex.transcodes}}:/transcode"
-      - "{{mnt.unionfs}}:/data"
+    volumes: "{{docker_volumes.plex}} + {{plex_volumes}}"
     restart_policy: always
     devices: "{{ '/dev/dri:/dev/dri' if plex.enable_dri == 'True' | default(false) else omit }}"
     networks:

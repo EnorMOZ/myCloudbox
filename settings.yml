@@ -50,3 +50,5 @@
       - "{{mnt.unionfs}}/Movies:/movies"
     sonarr:
       - "{{mnt.unionfs}}/TV:/tv"
+    plex:
+      - "{{mnt.unionfs}}:/data/.media"
