@@ -4,6 +4,15 @@
     name: radarr
     state: absent
 
+- name: Setup two lists to be merged
+  set_fact:
+    radarr_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/radarr:/config"
+      - "{{nzbget.downloads}}:/downloads/nzbget"
+      - "{{rutorrent.downloads}}:/downloads/rutorrent"
+      - "{{mnt.docker_data}}/scripts:/scripts"
+
 - name: Create and start container
   docker_container:
     name: radarr
@@ -21,13 +30,7 @@
       VIRTUAL_PORT: 8080
       LETSENCRYPT_HOST: "radarr.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/radarr:/config"
-      - "{{mnt.unionfs}}/Movies:/movies"
-      - "{{nzbget.downloads}}:/downloads/nzbget"
-      - "{{rutorrent.downloads}}:/downloads/rutorrent"
-      - "{{mnt.docker_data}}/scripts:/scripts"
+    volumes: "{{docker_volumes.radarr}} + {{radarr_volumes}}"    
     networks:
       - name: cloudbox
         ipv4_address: 172.18.0.14

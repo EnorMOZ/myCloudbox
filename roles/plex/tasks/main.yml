@@ -54,8 +54,7 @@
       - "{{plex.transcodes}}:/transcode"
       - "{{mnt.unionfs}}:/data"
     restart_policy: always
-    devices:
-      - "/dev/dri:/dev/dri"
+    devices: "{{ '/dev/dri:/dev/dri' if plex.enable_dri == 'True' | default(false) else omit }}"
     networks:
       - name: cloudbox
         ipv4_address: 172.18.0.15

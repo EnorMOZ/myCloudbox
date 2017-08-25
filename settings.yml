@@ -17,6 +17,7 @@
   plex:
     tag: public
     transcodes: "/home/{{user}}/transcodes"
+    enable_dri: "True"
   plex_autoscan:
     ip: "0.0.0.0"
   rclone:
@@ -44,3 +45,8 @@
     - radarr
     - sonarr
     - nzbget
+  docker_volumes:
+    radarr:
+      - "{{mnt.unionfs}}/Movies:/movies"
+    sonarr:
+      - "{{mnt.unionfs}}/TV:/tv"
