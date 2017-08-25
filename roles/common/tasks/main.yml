@@ -44,29 +44,29 @@
     with_items:
       - {{mnt.local}}
       - {{mnt.fuse_dir}}
-      - {{mnt.local}}/TV
-      - {{mnt.local}}/Movies
-      - {{mnt.docker_data}}
-      - {{mnt.docker_data}}/plexdrive
-      - {{mnt.docker_data}}/sonarr
-      - {{mnt.docker_data}}/radarr
-      - {{mnt.docker_data}}/nzbget
-      - {{mnt.docker_data}}/nzbget/scripts
-      - {{mnt.docker_data}}/rutorrent
-      - {{mnt.docker_data}}/jackett
-      - {{mnt.docker_data}}/nzbhydra
-      - {{mnt.docker_data}}/plex
-      - {{mnt.docker_data}}/plexpy
-      - {{mnt.docker_data}}/plex_autoscan
-      - {{mnt.docker_data}}/unionfs_cleaner
-      - {{mnt.docker_data}}/rclone
-      - {{mnt.docker_data}}/nginx-proxy
-      - {{mnt.docker_data}}/plexrequests
-      - {{mnt.docker_data}}/organizr
-      - {{mnt.docker_data}}/portainer
-      - {{mnt.docker_data}}/scripts
-      - {{mnt.docker_data}}/scripts/torrent
-      - {{mnt.docker_data}}/scripts/nzb
+      - "{{mnt.local}}/TV"
+      - "{{mnt.local}}/Movies"
+      - "{{mnt.docker_data}}
+      - "{{mnt.docker_data}}/plexdrive"
+      - "{{mnt.docker_data}}/sonarr"
+      - "{{mnt.docker_data}}/radarr"
+      - "{{mnt.docker_data}}/nzbget"
+      - "{{mnt.docker_data}}/nzbget/scripts"
+      - "{{mnt.docker_data}}/rutorrent"
+      - "{{mnt.docker_data}}/jackett"
+      - "{{mnt.docker_data}}/nzbhydra"
+      - "{{mnt.docker_data}}/plex"
+      - "{{mnt.docker_data}}/plexpy"
+      - "{{mnt.docker_data}}/plex_autoscan"
+      - "{{mnt.docker_data}}/unionfs_cleaner"
+      - "{{mnt.docker_data}}/rclone"
+      - "{{mnt.docker_data}}/nginx-proxy"
+      - "{{mnt.docker_data}}/plexrequests"
+      - "{{mnt.docker_data}}/organizr"
+      - "{{mnt.docker_data}}/portainer"
+      - "{{mnt.docker_data}}/scripts"
+      - "{{mnt.docker_data}}/scripts/torrent"
+      - "{{mnt.docker_data}}/scripts/nzb"
       - "/home/{{user}}/.config/rclone"
       - "{{plex.transcodes}}"
       
