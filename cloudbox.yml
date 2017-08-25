@@ -7,27 +7,27 @@
     - { role: pre_install, tags: ['full', 'feeder', 'plex'] }
     - { role: system, tags: ['full', 'feeder', 'plex'] }
     - { role: motd, tags: ['full', 'feeder', 'plex'] }
-    - { role: common, tags: ['full', 'feeder', 'plex'] }
-    - { role: unionfs, tags: ['full', 'feeder', 'plex'] }
-    - { role: docker, tags: ['full', 'feeder', 'plex'] }
-    - { role: nginx-proxy, tags: ['full', 'feeder', 'plex'] }
-    - { role: watchtower, tags: ['full', 'feeder', 'plex'] }
-    - { role: portainer, tags: ['full', 'feeder', 'plex'] }
-    - { role: plexdrive, tags: ['full', 'feeder', 'plex'] }
-    - { role: rclone, tags: ['full', 'feeder', 'plex'] }
-    - { role: organizr, tags: ['full', 'feeder', 'plex'] }
-    - { role: scripts, tags: ['full', 'feeder', 'plex'] }
-    - { role: unionfs_cleaner, tags: ['full', 'feeder']}
-    - { role: nzbget, tags: ['full', 'feeder'] }
-    - { role: rutorrent, tags: ['full', 'feeder'] }
-    - { role: jackett, tags: ['full', 'feeder'] }
-    - { role: nzbhydra, tags: ['full', 'feeder'] }
-    - { role: sonarr, tags: ['full', 'feeder'] }
-    - { role: radarr, tags: ['full', 'feeder'] }
+    - { role: common, tags: ['full', 'feeder', 'plex', 'common'] }
+    - { role: unionfs, tags: ['full', 'feeder', 'plex', 'unionfs'] }
+    - { role: docker, tags: ['full', 'feeder', 'plex', 'docker'] }
+    - { role: nginx-proxy, tags: ['full', 'feeder', 'plex', 'nginx-proxy'] }
+    - { role: watchtower, tags: ['full', 'feeder', 'plex', 'watchtower'] }
+    - { role: portainer, tags: ['full', 'feeder', 'plex', 'portainer'] }
+    - { role: plexdrive, tags: ['full', 'feeder', 'plex', 'plexdrive'] }
+    - { role: rclone, tags: ['full', 'feeder', 'plex', 'rclone'] }
+    - { role: organizr, tags: ['full', 'feeder', 'plex', 'organizr'] }
+    - { role: scripts, tags: ['full', 'feeder', 'plex', 'scripts'] }
+    - { role: unionfs_cleaner, tags: ['full', 'feeder', 'unionfs_cleaner']}
+    - { role: nzbget, tags: ['full', 'feeder', 'nzbget'] }
+    - { role: rutorrent, tags: ['full', 'feeder', 'rutorrent'] }
+    - { role: jackett, tags: ['full', 'feeder', 'jackett'] }
+    - { role: nzbhydra, tags: ['full', 'feeder', 'nzbhydra'] }
+    - { role: sonarr, tags: ['full', 'feeder', 'sonarr'] }
+    - { role: radarr, tags: ['full', 'feeder', 'radarr'] }
     - { role: plex, tags: ['full', 'plex'] }
-    - { role: plexpy, tags: ['full', 'plex'] }
-    - { role: plexrequests, tags: ['full', 'plex'] }
-    - { role: plex_autoscan, tags: ['full', 'plex'] }
+    - { role: plexpy, tags: ['full', 'plex', 'plexpy'] }
+    - { role: plexrequests, tags: ['full', 'plex', 'plexrequests'] }
+    - { role: plex_autoscan, tags: ['full', 'plex', 'plex_autoscan'] }
     - { role: backup, tags: ['backup'] }
     - { role: restore, tags: ['restore'] }
     
