@@ -6,11 +6,11 @@
 
 - name: Create nzbget download directory
   file: 
-    path: {{nzbget.downloads}}
+    path: "{{nzbget.downloads}}"
     state: directory
     mode: 0775
-    owner: {{user}}
-    group: {{user}}
+    owner: "{{user}}"
+    group: "{{user}}"
     recurse: true"
 
 - name: Check nzbget.conf exists

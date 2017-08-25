@@ -11,13 +11,13 @@
 - name: Clone plex_autoscan
   git:
     repo: https://github.com/l3uddz/plex_autoscan/
-    dest: {{mnt.docker_data}}/plex_autoscan
+    dest: "{{mnt.docker_data}}/plex_autoscan"
     version: master
     force: yes
     
 - name: Install pip requirements
   pip:
-    requirements: {{mnt.docker_data}}/plex_autoscan/requirements.txt
+    requirements: "{{mnt.docker_data}}/plex_autoscan/requirements.txt"
     executable: pip
 
 - name: Check config exists
@@ -33,13 +33,13 @@
 - name: Import default config
   template:
     src: config.json.js2
-    dest: {{mnt.docker_data}}/plex_autoscan/config/config.json
+    dest: "{{mnt.docker_data}}/plex_autoscan/config/config.json"
     force: yes
   when: plex_autoscan_config.stat.exists == False
 
 - name: Set scan.py as executable
   file:
-    path: {{mnt.docker_data}}/plex_autoscan/scan.py
+    path: "{{mnt.docker_data}}/plex_autoscan/scan.py"
     mode: a+x
 
 - name: Set directory permissions

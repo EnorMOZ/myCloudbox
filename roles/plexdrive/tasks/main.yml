@@ -11,7 +11,7 @@
   - name: Install plexdrive
     get_url:
       url:  https://github.com/dweidenfeld/plexdrive/releases/download/5.0.0/plexdrive-linux-amd64
-      dest: {{mnt.docker_data}}/plexdrive/plexdrive
+      dest: "{{mnt.docker_data}}/plexdrive/plexdrive"
       mode: 0755
       owner: "{{user}}"
       group: "{{user}}"

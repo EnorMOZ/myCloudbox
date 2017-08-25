@@ -42,11 +42,11 @@
   - name: Create common directories
     file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
     with_items:
-      - {{mnt.local}}
-      - {{mnt.fuse_dir}}
+      - "{{mnt.local}}"
+      - "{{mnt.fuse_dir}}"
       - "{{mnt.local}}/TV"
       - "{{mnt.local}}/Movies"
-      - "{{mnt.docker_data}}
+      - "{{mnt.docker_data}}"
       - "{{mnt.docker_data}}/plexdrive"
       - "{{mnt.docker_data}}/sonarr"
       - "{{mnt.docker_data}}/radarr"
@@ -72,12 +72,12 @@
       
   - name: Check plexdrive mount folder exist
     stat:
-      path: {{mnt.plexdrive}}
+      path: "{{mnt.plexdrive}}"
     register: plexdrive_mnt
 
   - name: Create {{mnt.plexdrive}}
     file:
-      path: {{mnt.plexdrive}}
+      path: "{{mnt.plexdrive}}"
       state: directory
       mode: 0755
       owner: "{{user}}"

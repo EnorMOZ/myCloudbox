@@ -34,16 +34,16 @@
 
   - name: Create {{mnt.unionfs}} and subdirs
     file: 
-      path: {{item}}
+      path: "{{item}}"
       state: directory
       mode: 0775
-      owner: {{user}}
-      group: {{user}}
+      owner: "{{user}}"
+      group: "{{user}}"
       recurse: true
     with_items:
-      - {{mnt.unionfs}}
-      - {{mnt.unionfs}}/Movies
-      - {{mnt.unionfs}}/TV
+      - "{{mnt.unionfs}}"
+      - "{{mnt.unionfs}}/Movies"
+      - "{{mnt.unionfs}}/TV"
 
   - name: Start unionfs service
     systemd: 

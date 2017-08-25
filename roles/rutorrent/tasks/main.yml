@@ -137,7 +137,7 @@
 - name: Copy across custom nginx.conf with htpasswd support
   copy:
     src: nginx.conf
-    dest: {{mnt.docker_data}}/rutorrent/nginx/nginx.conf
+    dest: "{{mnt.docker_data}}/rutorrent/nginx/nginx.conf"
     owner: "{{user}}"
     group: "{{user}}"
     mode: 0775
@@ -146,7 +146,7 @@
 
 - name: Create htpasswd
   htpasswd:
-    path: {{mnt.docker_data}}/rutorrent/nginx/.htpasswd
+    path: "{{mnt.docker_data}}/rutorrent/nginx/.htpasswd"
     name: "{{user}}"
     password: "{{rutorrent.passwd}}"
     owner: "{{user}}"

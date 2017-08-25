@@ -70,7 +70,7 @@
 
 - name: Set {{mnt.docker_data}} permissions
   file: 
-    path: {{mnt.docker_data}}
+    path: "{{mnt.docker_data}}"
     owner: "{{user}}"
     group: "{{user}}"
     mode: 0775

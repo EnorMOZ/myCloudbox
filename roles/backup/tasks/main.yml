@@ -10,8 +10,8 @@
       path: "{{backup.tgz_dest}}"
       state: directory
       mode: 0775
-      owner: {{user}}
-      group: {{user}}
+      owner: "{{user}}"
+      group: "{{user}}"
       recurse: true
     when: backup_location.stat.exists == False
 
