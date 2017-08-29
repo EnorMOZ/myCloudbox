@@ -1,0 +1,21 @@
+- name: Install nethog dependancies
+  apt: pkg="{{item}}" state=present
+  become: true
+  with_items:
+      - build-essential 
+      - libncurses5-dev 
+      - libpcap-dev
+
+- name: Pull nethogs repo from github
+  git: clone=yes repo=https://github.com/raboof/nethogs dest=/tmp/nethogs/ 
+  register: diff
+
+- name: Build and install nethogs
+  shell: "cd /tmp/nethogs && \ 
+          make && \
+          make install && \
+          hash -r && \
+          setcap 'cap_net_admin,cap_net_raw+pe' /usr/local/sbin/nethogs"
+  when: diff.changed
+  
+  
