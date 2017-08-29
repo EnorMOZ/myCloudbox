@@ -9,8 +9,6 @@
     radarr_volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "{{mnt.docker_data}}/radarr:/config"
-      - "{{nzbget.downloads}}:/downloads/nzbget"
-      - "{{rutorrent.downloads}}:/downloads/rutorrent"
       - "{{mnt.docker_data}}/scripts:/scripts"
 
 - name: Create and start container

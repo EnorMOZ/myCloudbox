@@ -48,7 +48,18 @@
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}/Movies:/movies"
+      - "{{nzbget.downloads}}:/downloads/nzbget"
+      - "{{rutorrent.downloads}}:/downloads/rutorrent"
     sonarr:
       - "{{mnt.unionfs}}/TV:/tv"
+      - "{{nzbget.downloads}}:/downloads/nzbget"
+      - "{{rutorrent.downloads}}:/downloads/rutorrent"
     plex:
       - "{{mnt.unionfs}}:/data/.media"
+  watchtower_list:
+    - organizr
+    - plexpy
+    - plexrequests
+    - radarr
+    - sonarr
+    - nzbget
