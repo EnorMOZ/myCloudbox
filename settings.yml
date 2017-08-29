@@ -35,16 +35,19 @@
     stop_plex: false
     cron_time: weekly
     cron_state: absent
+  enable_http_auth: True  
   http_auth:
-    - hydra
-    - jackett
-    - organizr
-    - plexpy
-    - plexrequests
-    - portainer
-    - radarr
-    - sonarr
-    - nzbget
+    enable: True
+    sites:
+      - hydra
+      - jackett
+      - organizr
+      - plexpy
+      - plexrequests
+      - portainer
+      - radarr
+      - sonarr
+      - nzbget
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}/Movies:/movies"

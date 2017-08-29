@@ -9,4 +9,4 @@
     group: "{{user}}"
     mode: 0664
   with_items: 
-    - "{{ http_auth }}"
+    - "{{ http_auth.sites }}"
