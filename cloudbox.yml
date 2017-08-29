@@ -30,6 +30,7 @@
     - { role: plex_autoscan, tags: ['full', 'plex', 'plex_autoscan'] }
     - { role: backup, tags: ['backup'] }
     - { role: restore, tags: ['restore'] }
-    - { role: nethogs, tags: ['full', 'feeder', 'plex', 'common'] }
+    - { role: nethogs, tags: ['full', 'feeder', 'plex', 'common', 'nethogs'] }
+    - { role: subliminal, tags: ['full', 'plex', 'common', 'subliminal'] }
 
     
