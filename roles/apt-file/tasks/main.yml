@@ -1,0 +1,20 @@
+---
+- name: install
+  apt:
+    name: "apt-file"
+    state: "present"
+    update_cache: true
+  register: result
+
+- name: run apt-file update (once)
+  shell: test -x /usr/bin/apt-file && /usr/bin/apt-file update
+  when: result | changed
+
+- name: add (daily) cron task
+  cron:
+    name: "apt-file update"
+    job: "test -x /usr/bin/apt-file && /usr/bin/apt-file update"
+    special_time: daily
+    cron_file: apt-file
+    user: root  
+  
