@@ -12,7 +12,7 @@
   git:
     repo: https://github.com/l3uddz/unionfs_cleaner/
     dest: "{{mnt.docker_data}}/unionfs_cleaner"
-    version: dev
+    version: master
     force: yes
     
 - name: Install pip requirements
