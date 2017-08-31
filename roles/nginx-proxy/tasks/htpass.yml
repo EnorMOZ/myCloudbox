@@ -1,0 +1,15 @@
+---
+- name: Find all vhosts dirs
+  shell: 'ls -d /opt/nginx-proxy |grep -v pem|grep -v plex.{{domain}} |grep -v htpasswd'
+  register: dir_out
+
+- name: Create htpasswd
+  htpasswd:
+    path: /opt/nginx-proxy/htpasswd/{{item}}
+    name: "{{user}}"
+    password: "{{passwd}}"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0664
+  with_items: 
+    - "{{dir_out.stdout_lines}}"
