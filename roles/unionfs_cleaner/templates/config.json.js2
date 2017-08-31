@@ -12,7 +12,7 @@
     "pushover_app_token": "",
     "pushover_user_token": "",
     "rclone_bwlimit": "",
-    "rclone_checkers": 16,
+    "rclone_checkers": {{ rclone.checkers }},
     "rclone_excludes": [
         "**partial~",
         "**_HIDDEN",
@@ -20,10 +20,11 @@
         ".unionfs-fuse/**"
     ],
     "rclone_remove_empty_on_upload": {
-        "{{mnt.local}}/Movies": 1,
-        "{{mnt.local}}/TV": 1
+{% for i in rclone.rm_empty_dirs %}
+        "{{ mnt.local }}/{{ i }}": 1{{ ( loop.last ) | ternary('', ',') }}
+{% endfor %}
     },
-    "rclone_transfers": 8,
+    "rclone_transfers": {{ rclone.transfers }},
     "remote_folder": "{{unionfs_cleaner.rclone_remote}}",
     "rsync_backup_interval": 1,
     "rsync_backups": {
