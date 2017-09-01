@@ -5,7 +5,7 @@
     	"*.partial~"
     ],
     "local_folder": "{{mnt.local}}",
-    "local_folder_size": "{{ unionfs_cleaner.max_local_gigabytes }}",
+    "local_folder_size": {{ unionfs_cleaner.max_local_gigabytes }},
     "local_folder_check_interval": {{ unionfs_cleaner.size_check_mins }},
     "local_remote": "{{ unionfs_cleaner.rclone_remote }}",
     "lsof_excludes": [
