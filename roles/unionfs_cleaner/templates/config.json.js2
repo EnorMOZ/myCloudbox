@@ -1,22 +1,24 @@
 {
     "cloud_folder": "{{mnt.plexdrive}}",
     "dry_run": false,
-    "du_excludes": ["*.partial~"],
+    "du_excludes": [
+    	"*.partial~"
+    ],
     "local_folder": "{{mnt.local}}",
-    "local_folder_check_interval": {{unionfs_cleaner.size_check_mins}},
-    "local_folder_size": {{unionfs_cleaner.max_local_gigabytes}},
-    "local_remote": "{{unionfs_cleaner.rclone_remote}}",
+    "local_folder_size": "{{ unionfs_cleaner.max_local_gigabytes }}",
+    "local_folder_check_interval": "{{ unionfs_cleaner.size_check_mins }}",
+    "local_remote": "{{ unionfs_cleaner.rclone_remote }}",
     "lsof_excludes": [
         ".partial~"
     ],
-    "pushover_app_token": "{{pushover.app_token| default (omit)}}",
-    "pushover_user_token": "{{pushover.user_token| default (omit)}}",
-    "rclone_bwlimit": "{{rclone.bwlimit | default(omit)}}",
+    "pushover_app_token": "{{pushover.app_token| default ("")}}",
+    "pushover_user_token": "{{pushover.user_token| default ("")}}",
+    "rclone_bwlimit": "{{rclone.bwlimit | default("")}}",
     "rclone_checkers": {{ rclone.checkers }},
     "rclone_excludes": [
 {% for i in rclone.excludes %}
-        "{{ mnt.local }}/{{ i }}"{{ ( loop.last ) | ternary('', ',') }}
-{% endfor %}        
+        "{{ i }}"{{ ( loop.last ) | ternary('', ',') }}
+{% endfor -%}        
     ],
     "rclone_remove_empty_on_upload": {
 {% for i in rclone.rm_empty_dirs %}

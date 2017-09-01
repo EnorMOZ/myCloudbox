@@ -22,7 +22,7 @@
     ip: "0.0.0.0"
   rclone:
     version: 1.36
-#    bwlimit: 
+    bwlimit: 
     checkers: 8
     transfers: 16
     rm_empty_dirs:
@@ -31,14 +31,17 @@
       - TV
       - Kids TV
     excludes:
-      - ""**partial~""
-      - ""**_HIDDEN"
-      - ".unionfs/**""
-      - ".unionfs-fuse/**"  
+      - "**partial~"
+      - "**_HIDDEN"
+      - ".unionfs/**"
+      - ".unionfs-fuse/**"
   unionfs_cleaner:
-    max_local_gigabytes: 500
-    size_check_mins: 5
+    max_local_gigabytes: 400
     rclone_remote: "agdrive:/Media"
+    size_check_mins: 5
+    config_manager: true
+    git_autoupdater: true
+    upload_manager: true
   backup:
     tgz_dest: "/home/{{user}}/Backups"
     rsync_dest: rsync://somehost.com/Backups
@@ -80,11 +83,6 @@
     - radarr
     - sonarr
     - nzbget
-  unionfs_cleaner:
-    config_manager: true
-    git_autoupdater: true
-    upload_manager: true
   pushover:
     - app_token: 
     - user_token:
-
