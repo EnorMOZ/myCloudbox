@@ -4,13 +4,13 @@
   domain: testcloudbox.ml
   email: your@email.com
   mnt: 
-    local: "/mnt/local/Media"
-    unionfs: "/mnt/unionfs/Media"
+    local: "/mnt/local"
+    unionfs: "/mnt/unionfs"
     docker_data: "/opt"
     fuse_dir: "/mnt/local/.unionfs-fuse"
     plexdrive: "/mnt/plexdrive"
   nzbget:
-    downloads: "/home/{{user}}/downloads/nzbget"
+    downloads: "{{mnt.unionfs}}/downloads/nzbget"
   rutorrent:
     passwd: password321
     downloads: "/home/{{user}}/downloads/rutorrent"
@@ -25,6 +25,8 @@
     bwlimit: 
     checkers: 8
     transfers: 16
+    local_dir: "{{mnt.local}}/Media"
+    remote_dir: "agdrive:/Media"
     rm_empty_dirs:
       - Movies
       - Kids Movies
@@ -37,7 +39,6 @@
       - ".unionfs-fuse/**"
   unionfs_cleaner:
     max_local_gigabytes: 400
-    rclone_remote: "agdrive:/Media"
     size_check_mins: 5
     config_manager: true
     git_autoupdater: true
@@ -65,17 +66,16 @@
       - nzbget
   docker_volumes:
     radarr:
-      - "{{mnt.unionfs}}/Movies:/movies"
-      - "{{mnt.unionfs}}/Kids Movies:/kids movies"
-      - "{{nzbget.downloads}}:/downloads/nzbget"
-      - "{{rutorrent.downloads}}:/downloads/rutorrent"
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
+      - "{{mnt.local}}:{{mnt.local}}"
+    nzbget:
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
+      - "{{mnt.local}}:{{mnt.local}}"
     sonarr:
-      - "{{mnt.unionfs}}/TV:/tv"
-      - "{{mnt.unionfs}}/Kids TV:/kids tv"
-      - "{{nzbget.downloads}}:/downloads/nzbget"
-      - "{{rutorrent.downloads}}:/downloads/rutorrent"
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
+      - "{{mnt.local}}:{{mnt.local}}"
     plex:
-      - "{{mnt.unionfs}}:/data/.media"
+      - "{{rclone.local_dir}}:/data/.media"
   watchtower_list:
     - organizr
     - plexpy

@@ -18,6 +18,12 @@
     path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
   register: nzbget_conf
 
+- name: Setup default nzbget docker volume to be merged
+  set_fact:
+    nzbget_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/nzbget:/config"
+
 - name: Create and start container
   docker_container:
     name: nzbget
@@ -31,11 +37,7 @@
       VIRTUAL_PORT: 6789
       LETSENCRYPT_HOST: "nzbget.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/nzbget:/config"
-      - "{{nzbget.downloads}}:/downloads/nzbget"
-      - "{{mnt.docker_data}}/scripts/nzb:/scripts"
+    volumes: "{{docker_volumes.nzbget}} + {{nzbget_volumes}}"
     restart_policy: always
     networks:
       - name: cloudbox
@@ -65,7 +67,7 @@
   lineinfile:
     path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
     regexp: '^MainDir\s?='
-    line: 'MainDir=/downloads/nzbget'
+    line: 'MainDir={{nzbget.downloads}}'
     state: present
   when: nzbget_conf.stat.exists == False
 

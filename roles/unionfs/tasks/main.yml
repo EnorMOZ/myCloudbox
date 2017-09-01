@@ -32,18 +32,15 @@
       dest: /etc/systemd/system/unionfs.service 
       force: yes
 
-  - name: Create {{mnt.unionfs}} and subdirs
+  - name: Create {{mnt.unionfs}}
     file: 
       path: "{{item}}"
       state: directory
       mode: 0775
       owner: "{{user}}"
       group: "{{user}}"
-      recurse: true
     with_items:
       - "{{mnt.unionfs}}"
-      - "{{mnt.unionfs}}/Movies"
-      - "{{mnt.unionfs}}/TV"
 
   - name: Start unionfs service
     systemd: 

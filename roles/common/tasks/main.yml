@@ -43,9 +43,8 @@
     file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
     with_items:
       - "{{mnt.local}}"
+      - "{{mnt.unionfs}}"
       - "{{mnt.fuse_dir}}"
-      - "{{mnt.local}}/TV"
-      - "{{mnt.local}}/Movies"
       - "{{mnt.docker_data}}"
       - "{{mnt.docker_data}}/plexdrive"
       - "{{mnt.docker_data}}/sonarr"
