@@ -22,6 +22,7 @@
     ip: "0.0.0.0"
   rclone:
     version: 1.36
+#    bwlimit: 
     checkers: 8
     transfers: 16
     rm_empty_dirs:
@@ -29,6 +30,11 @@
       - Kids Movies
       - TV
       - Kids TV
+    excludes:
+      - ""**partial~""
+      - ""**_HIDDEN"
+      - ".unionfs/**""
+      - ".unionfs-fuse/**"  
   unionfs_cleaner:
     max_local_gigabytes: 500
     size_check_mins: 5
@@ -42,7 +48,6 @@
     stop_plex: false
     cron_time: weekly
     cron_state: absent
-  enable_http_auth: True  
   http_auth:
     enable: True
     sites:
@@ -75,3 +80,11 @@
     - radarr
     - sonarr
     - nzbget
+  unionfs_cleaner:
+    config_manager: true
+    git_autoupdater: true
+    upload_manager: true
+  pushover:
+    - app_token: 
+    - user_token:
+

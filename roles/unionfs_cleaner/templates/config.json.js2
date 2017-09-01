@@ -9,15 +9,14 @@
     "lsof_excludes": [
         ".partial~"
     ],
-    "pushover_app_token": "",
-    "pushover_user_token": "",
-    "rclone_bwlimit": "",
+    "pushover_app_token": "{{pushover.app_token| default (omit)}}",
+    "pushover_user_token": "{{pushover.user_token| default (omit)}}",
+    "rclone_bwlimit": "{{rclone.bwlimit | default(omit)}}",
     "rclone_checkers": {{ rclone.checkers }},
     "rclone_excludes": [
-        "**partial~",
-        "**_HIDDEN",
-        ".unionfs/**",
-        ".unionfs-fuse/**"
+{% for i in rclone.excludes %}
+        "{{ mnt.local }}/{{ i }}"{{ ( loop.last ) | ternary('', ',') }}
+{% endfor %}        
     ],
     "rclone_remove_empty_on_upload": {
 {% for i in rclone.rm_empty_dirs %}
@@ -26,15 +25,8 @@
     },
     "rclone_transfers": {{ rclone.transfers }},
     "remote_folder": "{{unionfs_cleaner.rclone_remote}}",
-    "rsync_backup_interval": 1,
-    "rsync_backups": {
-        "{{mnt.docker_data}}": [
-        ]
-    },
-    "rsync_remote": "/home/{{user}}/backup",
     "unionfs_folder": "{{mnt.fuse_dir}}",
-    "use_backup_manager": false,
-    "use_config_manager": true,
-    "use_git_autoupdater": true,
-    "use_upload_manager": true
+    "use_config_manager": "{{unionfs_cleaner.config_manager}},
+    "use_git_autoupdater": "{{unionfs_cleaner.git_autoupdater}}",
+    "use_upload_manager": "{{unionfs_cleaner.upload_manager}}"
 }

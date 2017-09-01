@@ -10,9 +10,9 @@
 
 - name: Clone unionfs_cleaner
   git:
-    repo: https://github.com/l3uddz/unionfs_cleaner/
+    repo: https://github.com/leechtime/unionfs_cleaner/
     dest: "{{mnt.docker_data}}/unionfs_cleaner"
-    version: master
+    version: dev
     force: yes
     
 - name: Install pip requirements
