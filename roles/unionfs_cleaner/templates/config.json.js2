@@ -28,7 +28,7 @@
     "rclone_transfers": {{ rclone.transfers }},
     "remote_folder": "{{unionfs_cleaner.rclone_remote}}",
     "unionfs_folder": "{{mnt.fuse_dir}}",
-    "use_config_manager": "{{unionfs_cleaner.config_manager}},
+    "use_config_manager": "{{unionfs_cleaner.config_manager}}",
     "use_git_autoupdater": "{{unionfs_cleaner.git_autoupdater}}",
     "use_upload_manager": "{{unionfs_cleaner.upload_manager}}"
 }
