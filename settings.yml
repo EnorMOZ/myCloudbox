@@ -76,7 +76,7 @@
       - "{{mnt.local}}:{{mnt.local}}"
     plex:
       - "{{rclone.local_dir}}:/data/.media"
-  watchtower_list:
+  watchtower_monitor:
     - organizr
     - plexpy
     - plexrequests
