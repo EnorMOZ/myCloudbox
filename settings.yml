@@ -28,10 +28,10 @@
     local_dir: "{{mnt.local}}/Media"
     remote_dir: "agdrive:/Media"
     rm_empty_dirs:
-      - Movies
-      - Kids Movies
-      - TV
-      - Kids TV
+      - "{{mnt.local}}/Movies"
+      - "{{mnt.local}}/Kids Movies"
+      - "{{mnt.local}}/TV"
+      - "{{mnt.local}}/Kids TV"
     excludes:
       - "**partial~"
       - "**_HIDDEN"
@@ -75,7 +75,7 @@
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
       - "{{mnt.local}}:{{mnt.local}}"
     plex:
-      - "{{rclone.local_dir}}:/data/.media"
+      - "{{mnt.unionfs}}/Media:/data/.media"
   watchtower_list:
     - organizr
     - plexpy

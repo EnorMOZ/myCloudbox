@@ -22,7 +22,7 @@
     ],
     "rclone_remove_empty_on_upload": {
 {% for i in rclone.rm_empty_dirs %}
-        "{{ rclone.local_dir }}/{{ i }}": 1{{ ( loop.last ) | ternary('', ',') }}
+        "{{ i }}": 1{{ ( loop.last ) | ternary('', ',') }}
 {% endfor %}
     },
     "rclone_transfers": {{ rclone.transfers }},
