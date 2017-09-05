@@ -76,7 +76,7 @@
       - "{{mnt.local}}:{{mnt.local}}"
     plex:
       - "{{mnt.unionfs}}/Media:/data/.media"
-  watchtower_list:
+  watchtower_monitor:
     - organizr
     - plexpy
     - plexrequests
