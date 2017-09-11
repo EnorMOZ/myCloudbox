@@ -3,13 +3,13 @@
   fail: msg="You must set atleast one backup.use_* option in order to perform a restore"
   when: backup.use_rclone == False and backup.use_rsync == False
 
-- name: "Check {{backup.tgz_dest}} exists"
+- name: "Check {{backup.dest}} exists"
   stat:
-    path: "{{backup.tgz_dest}}"
+    path: "{{backup.dest}}"
   register: backup_location
 
-- name: "Create backup location {{backup.tgz_dest}}"
-  file: path={{backup.tgz_dest}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true
+- name: "Create backup location {{backup.dest}}"
+  file: path={{backup.dest}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true
   when: backup_location.stat.exists == False
 
 - name: Ensure unzip is installed
@@ -37,7 +37,7 @@
   when: backup.use_rclone and rclone_bin.stat.exists == False and rclone_conf.stat.exists == False
 
 - name: "Fetch cloudbox.tar from {{backup.rclone_dest}}"
-  command: "rclone copy '{{backup.rclone_dest}}/cloudbox.tar' '{{backup.tgz_dest}}' --stats=30s -v --transfers=2 --log-file='{{playbook_dir}}/restore_rclone.log'"
+  command: "rclone copy '{{backup.rclone_dest}}/cloudbox.tar' '{{backup.dest}}' --stats=30s -v --transfers=2 --log-file='/home/{{user}}/restore_rclone.log'"
   become: true
   become_user: "{{user}}"
   when: (backup.use_rclone and backup.use_rsync) or (backup.use_rclone and backup.use_rsync == False)
@@ -45,7 +45,7 @@
 - name: "Fetch cloudbox.tar from {{backup.rsync_dest}}"
   synchronize:
     src: "{{backup.rsync_dest}}/cloudbox.tar"
-    dest: "{{backup.tgz_dest}}/"
+    dest: "{{backup.dest}}/"
     rsync_opts:
       - "--log-file='{{playbook_dir}}/restore_rsync.log'"
   become: true
@@ -54,11 +54,11 @@
 
 - name: "Check cloudbox.tar exists"
   stat:
-    path: "{{backup.tgz_dest}}/cloudbox.tar"
+    path: "{{backup.dest}}/cloudbox.tar"
   register: cloudbox_tgz
 
 - name: "Fail cloudbox.tar doesnt exist"
-  fail: msg="There must have been an issue retrieving the cloudbox.tar file... as it does not exist at {{backup.tgz_dest}}/cloudbox.tar"
+  fail: msg="There must have been an issue retrieving the cloudbox.tar file... as it does not exist at {{backup.dest}}/cloudbox.tar"
   when: cloudbox_tgz.stat.exists == False
 
 - name: "Wait for 10 seconds before unarchiving"
@@ -66,7 +66,7 @@
     timeout: 10
 
 - name: "Unarchive cloudbox.tar to {{mnt.docker_data}}"
-  shell: "tar -xf '{{backup.tgz_dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
+  shell: "tar -xf '{{backup.dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
 
 - name: Set {{mnt.docker_data}} permissions
   file: 

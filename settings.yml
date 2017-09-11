@@ -28,10 +28,10 @@
     local_dir: "{{mnt.local}}/Media"
     remote_dir: "agdrive:/Media"
     rm_empty_dirs:
-      - "{{mnt.local}}/Movies"
-      - "{{mnt.local}}/Kids Movies"
-      - "{{mnt.local}}/TV"
-      - "{{mnt.local}}/Kids TV"
+      - "{{mnt.local}}/Media/Movies"
+      - "{{mnt.local}}/Media/Kids Movies"
+      - "{{mnt.local}}/Media/TV"
+      - "{{mnt.local}}/Media/Kids TV"
     excludes:
       - "**partial~"
       - "**_HIDDEN"
@@ -44,14 +44,18 @@
     git_autoupdater: true
     upload_manager: true
   backup:
-    tgz_dest: "/home/{{user}}/Backups"
+    dest: "/home/{{user}}/Backups"
     rsync_dest: rsync://somehost.com/Backups
     rclone_dest: agdrive:/Backups
     use_rsync: false
-    use_rclone: false
+    use_rclone: true
     stop_plex: false
-    cron_time: weekly
-    cron_state: absent
+    cron_time: daily
+    cron_state: present
+    paths:
+      - "{{mnt.docker_data}}"
+      - /var/spool/cron
+    exclude_paths:
   http_auth:
     enable: True
     sites:

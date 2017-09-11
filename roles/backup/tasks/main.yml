@@ -1,13 +1,13 @@
 ---
 - block:
-  - name: "Check {{backup.tgz_dest}} exists"
+  - name: "Check {{backup.dest}} exists"
     stat:
-      path: "{{backup.tgz_dest}}"
+      path: "{{backup.dest}}"
     register: backup_location
 
-  - name: "Create backup location {{backup.tgz_dest}}"
+  - name: "Create backup location {{backup.dest}}"
     file: 
-      path: "{{backup.tgz_dest}}"
+      path: "{{backup.dest}}"
       state: directory
       mode: 0775
       owner: "{{user}}"
@@ -33,15 +33,15 @@
       group: "{{user}}"
     when: backup_lock.stat.exists == False
 
-  - name: "Check {{backup.tgz_dest}}/cloudbox.tar exists"
+  - name: "Check {{backup.dest}}/cloudbox.tar exists"
     stat:
-      path: "{{backup.tgz_dest}}/cloudbox.tar"
+      path: "{{backup.dest}}/cloudbox.tar"
     register: backup_previous_tgz
 
   - name: "Copying cloudbox.tar to cloudbox.tar.backup"
     copy:
-      src: "{{backup.tgz_dest}}/cloudbox.tar"
-      dest: "{{backup.tgz_dest}}/cloudbox.tar.backup"
+      src: "{{backup.dest}}/cloudbox.tar"
+      dest: "{{backup.dest}}/cloudbox.tar.backup"
       force: yes
       group: "{{user}}"
       owner: "{{user}}"
@@ -49,7 +49,7 @@
 
   - name: "Remove previous cloudbox.tar"
     file:
-      path: "{{backup.tgz_dest}}/cloudbox.tar"
+      path: "{{backup.dest}}/cloudbox.tar"
       state: absent
     when: backup_previous_tgz.stat.exists
 
@@ -68,8 +68,8 @@
       state: stopped
     when: backup.stop_plex
 
-  - name: "Archiving {{mnt.docker_data}} to {{backup.tgz_dest}}/cloudbox.tar"
-    shell: "tar -cf '{{backup.tgz_dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
+  - name: "Archiving {{mnt.docker_data}} to {{backup.dest}}/cloudbox.tar"
+    shell: "tar -cf '{{backup.dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
 
   - name: "Start Plex"
     docker_container:
@@ -82,17 +82,17 @@
       timeout: 10
   
   - name: "Upload backups with rclone to {{backup.rclone_dest}}"
-    command: "rclone copy '{{backup.tgz_dest}}' '{{backup.rclone_dest}}' --stats=30s -v --transfers=2 --log-file='{{playbook_dir}}/backup_rclone.log'"
+    command: "rclone copy '{{backup.dest}}' '{{backup.rclone_dest}}' --stats=30s -v --transfers=2 --log-file='/home/{{user}}/backup_rclone.log'"
     become: true
     become_user: "{{user}}"
     when: backup.use_rclone
 
   - name: "Upload backups with rsync to {{backup.rsync_dest}}"
     synchronize:
-      src: "{{backup.tgz_dest}}/"
+      src: "{{backup.dest}}/"
       dest: "{{backup.rsync_dest}}/"
       rsync_opts:
-        - "--log-file='{{playbook_dir}}/backup_rsync.log'"
+        - "--log-file='/home/{{user}}/backup_rsync.log'"
     become: true
     become_user: "{{user}}"
     when: backup.use_rsync
