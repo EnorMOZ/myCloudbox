@@ -80,13 +80,16 @@
       - "{{mnt.local}}:{{mnt.local}}"
     plex:
       - "{{mnt.unionfs}}/Media:/data/.media"
-  watchtower_monitor:
-    - organizr
-    - plexpy
-    - plexrequests
-    - radarr
-    - sonarr
-    - nzbget
+  watchtower:
+    command:
+      - "--cleanup"
+    monitor:
+      - organizr
+      - plexpy
+      - plexrequests
+      - radarr
+      - sonarr
+      - nzbget
   pushover:
     - app_token: 
     - user_token:
