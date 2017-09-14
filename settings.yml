@@ -93,3 +93,4 @@
   pushover:
     - app_token: 
     - user_token:
+  znc_port: 62971

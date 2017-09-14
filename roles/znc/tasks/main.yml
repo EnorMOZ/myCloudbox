@@ -15,7 +15,7 @@
     name: znc
     image: "linuxserver/znc"
     published_ports:
-      - "6501:6501/tcp"
+      - "{{znc_port}}:{{znc_port}}/tcp"
     volumes: "{{docker_volumes.znc|default([])}} + {{znc_volumes}}"
     networks:
       - name: cloudbox
