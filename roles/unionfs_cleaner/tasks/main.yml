@@ -10,7 +10,7 @@
 
 - name: Clone unionfs_cleaner
   git:
-    repo: https://github.com/leechtime/unionfs_cleaner/
+    repo: https://github.com/enormoz/unionfs_cleaner/
     dest: "{{mnt.docker_data}}/unionfs_cleaner"
     version: dev
     force: yes
