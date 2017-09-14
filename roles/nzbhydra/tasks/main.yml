@@ -4,6 +4,12 @@
     name: nzbhydra
     state: absent
 
+- name: Setup default nzbhydra docker volume to be merged
+  set_fact:
+    nzbhydra_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/nzbhydra:/config"
+
 - name: Create and start container
   docker_container:
     name: nzbhydra
@@ -20,9 +26,7 @@
       VIRTUAL_PORT: 8080
       LETSENCRYPT_HOST: "nzbhydra.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/nzbhydra:/config"
+    volumes: "{{nzbhydra_volumes + docker_volumes.nzbhydra|default(omit)}}"
     restart_policy: always
     networks:
       - name: cloudbox

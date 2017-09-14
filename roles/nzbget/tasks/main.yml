@@ -37,7 +37,7 @@
       VIRTUAL_PORT: 6789
       LETSENCRYPT_HOST: "nzbget.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{docker_volumes.nzbget}} + {{nzbget_volumes}}"
+    volumes: "{{nzbget_volumes + docker_volumes.nzbget|default(omit)}}"
     restart_policy: always
     networks:
       - name: cloudbox

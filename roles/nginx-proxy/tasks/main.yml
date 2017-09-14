@@ -9,6 +9,16 @@
     name: letsencrypt
     state: absent
 
+- name: Setup default nginx-proxy docker volume to be merged
+  set_fact:
+    nginx-proxy_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/nginx-proxy:/etc/nginx/certs:ro"
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "{{mnt.docker_data}}/nginx-proxy/htpasswd:/etc/nginx/htpasswd"
+      - "/etc/nginx/vhost.d"
+      - "/usr/share/nginx/html"
+
 - name: Create and start container
   docker_container:
     name: nginx-proxy
@@ -16,13 +26,7 @@
     published_ports:
       - "80:80"
       - "443:443"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/nginx-proxy:/etc/nginx/certs:ro"
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "{{mnt.docker_data}}/nginx-proxy/htpasswd:/etc/nginx/htpasswd"
-      - "/etc/nginx/vhost.d"
-      - "/usr/share/nginx/html"
+    volumes: "{{nginx-proxy_volumes + docker_volumes.nginx-proxy|default(omit)}}"
     labels:
       com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     networks:
@@ -33,14 +37,18 @@
     restart_policy: always
     state: started
 
+- name: Setup default letsencrypt docker volume to be merged
+  set_fact:
+    letsencrypt_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/nginx-proxy:/etc/nginx/certs:rw"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
 - name: Create and start letsencrypt container
   docker_container:
     name: letsencrypt
     image: "jrcs/letsencrypt-nginx-proxy-companion"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/nginx-proxy:/etc/nginx/certs:rw"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    volumes: "{{letsencrypt_volumes + docker_volumes.letsencrypt|default(omit)}}"
     volumes_from:
       - "nginx-proxy"
     env:

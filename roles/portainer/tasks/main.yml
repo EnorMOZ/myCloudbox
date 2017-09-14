@@ -4,16 +4,20 @@
     name: portainer
     state: absent
 
+- name: Setup default portainer docker volume to be merged
+  set_fact:
+    portainer_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/portainer:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
 - name: Create and start container
   docker_container:
     name: portainer
     image: "portainer/portainer"
     published_ports:
       - "127.0.0.1:9000:9000"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/portainer:/data"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+    volumes: "{{portainer_volumes + docker_volumes.portainer|default(omit)}}"
     env:
       VIRTUAL_HOST: "portainer.{{domain}}"
       VIRTUAL_PORT: 9000

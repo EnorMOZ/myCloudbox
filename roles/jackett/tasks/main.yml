@@ -4,6 +4,12 @@
     name: jackett
     state: absent
 
+- name: Setup default jackett docker volume to be merged
+  set_fact:
+    jackett_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/jackett:/config"
+
 - name: Create and start container
   docker_container:
     name: jackett
@@ -20,9 +26,7 @@
       VIRTUAL_PORT: 8080
       LETSENCRYPT_HOST: "jackett.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/jackett:/config"
+    volumes: "{{jackett_volumes + docker_volumes.jackett|default(omit)}}"
     restart_policy: always
     state: started
     networks:

@@ -4,6 +4,12 @@
     name: plexrequests
     state: absent
 
+- name: Setup default plexrequests docker volume to be merged
+  set_fact:
+    plexrequests_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/plexrequests:/config"
+
 - name: Create and start container
   docker_container:
     name: plexrequests
@@ -17,9 +23,7 @@
       VIRTUAL_PORT: 3000
       LETSENCRYPT_HOST: "plexrequests.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/plexrequests:/config"
+    volumes: "{{plexrequests_volumes + docker_volumes.plexrequests|default(omit)}}"
     networks:
       - name: cloudbox
         ipv4_address: 172.18.0.17

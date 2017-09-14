@@ -1,11 +1,11 @@
 ---
 - name: Find all vhosts dirs
-  shell: 'ls -d /opt/nginx-proxy |grep -v pem|grep -v plex.{{domain}} |grep -v htpasswd'
+  shell: 'ls -d {{mnt.docker_data}}/nginx-proxy |grep -v pem|grep -v plex.{{domain}} |grep -v htpasswd'
   register: dir_out
 
 - name: Create htpasswd
   htpasswd:
-    path: /opt/nginx-proxy/htpasswd/{{item}}
+    path: "{{mnt.docker_data}}/nginx-proxy/htpasswd/{{item}}"
     name: "{{user}}"
     password: "{{passwd}}"
     owner: "{{user}}"

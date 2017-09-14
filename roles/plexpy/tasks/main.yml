@@ -9,6 +9,13 @@
     path: "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs"
     state: present
 
+- name: Setup default plexpy docker volume to be merged
+  set_fact:
+    plexpy_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/plexpy:/config"
+      - "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro"
+
 - name: Create and start container
   docker_container:
     name: plexpy
@@ -22,10 +29,7 @@
       VIRTUAL_PORT: 8181
       LETSENCRYPT_HOST: "plexpy.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/plexpy:/config"
-      - "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro"
+    volumes: "{{plexpy_volumes + docker_volumes.plexpy|default(omit)}}"
     restart_policy: always
     networks:
       - name: cloudbox

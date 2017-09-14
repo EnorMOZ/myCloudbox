@@ -28,7 +28,7 @@
       VIRTUAL_PORT: 8080
       LETSENCRYPT_HOST: "sonarr.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{docker_volumes.sonarr}} + {{sonarr_volumes}}"    
+    volumes: "{{sonarr_volumes + docker_volumes.sonarr|default(omit)}}"
     networks:
       - name: cloudbox
         ipv4_address: 172.18.0.13
