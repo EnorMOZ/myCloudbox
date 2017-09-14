@@ -67,6 +67,7 @@
       - "{{mnt.docker_data}}/scripts/torrent"
       - "{{mnt.docker_data}}/scripts/nzb"
       - "/home/{{user}}/.config/rclone"
+      - "{{mnt.docker_data}}/znc"
       - "{{plex.transcodes}}"
       
   - name: Check plexdrive mount folder exist
