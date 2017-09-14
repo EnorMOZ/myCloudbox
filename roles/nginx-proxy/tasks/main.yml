@@ -26,7 +26,7 @@
     published_ports:
       - "80:80"
       - "443:443"
-    volumes: "{{nginx-proxy_volumes + docker_volumes.nginx-proxy|default(omit)}}"
+    volumes: "{{nginx-proxy_volumes + docker_volumes.nginx-proxy|default([])}}"
     labels:
       com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     networks:
@@ -48,7 +48,7 @@
   docker_container:
     name: letsencrypt
     image: "jrcs/letsencrypt-nginx-proxy-companion"
-    volumes: "{{letsencrypt_volumes + docker_volumes.letsencrypt|default(omit)}}"
+    volumes: "{{letsencrypt_volumes + docker_volumes.letsencrypt|default([])}}"
     volumes_from:
       - "nginx-proxy"
     env:

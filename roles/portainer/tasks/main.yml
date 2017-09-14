@@ -17,7 +17,7 @@
     image: "portainer/portainer"
     published_ports:
       - "127.0.0.1:9000:9000"
-    volumes: "{{portainer_volumes + docker_volumes.portainer|default(omit)}}"
+    volumes: "{{portainer_volumes + docker_volumes.portainer|default([])}}"
     env:
       VIRTUAL_HOST: "portainer.{{domain}}"
       VIRTUAL_PORT: 9000

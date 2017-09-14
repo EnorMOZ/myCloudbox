@@ -55,7 +55,7 @@
       VIRTUAL_PORT: 32400
       LETSENCRYPT_HOST: "plex.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{plex_volumes + docker_volumes.plex|default(omit)}}"
+    volumes: "{{plex_volumes + docker_volumes.plex|default([])}}"
     restart_policy: always
     devices: "{{ '/dev/dri:/dev/dri' if plex.enable_dri == 'True' | default(false) else omit }}"
     networks:

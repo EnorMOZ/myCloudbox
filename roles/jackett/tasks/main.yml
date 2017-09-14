@@ -26,7 +26,7 @@
       VIRTUAL_PORT: 8080
       LETSENCRYPT_HOST: "jackett.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{jackett_volumes + docker_volumes.jackett|default(omit)}}"
+    volumes: "{{jackett_volumes + docker_volumes.jackett|default([])}}"
     restart_policy: always
     state: started
     networks:

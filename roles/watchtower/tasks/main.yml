@@ -15,7 +15,7 @@
     name: watchtower
     image: "v2tec/watchtower"
     command: '{{watchtower.command + watchtower.monitor}}'
-    volumes: "{{watchtower_volumes + docker_volumes.watchtower|default(omit)}}"
+    volumes: "{{watchtower_volumes + docker_volumes.watchtower|default([])}}"
     restart_policy: always
     networks:
       - name: cloudbox
