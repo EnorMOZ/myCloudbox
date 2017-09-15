@@ -24,5 +24,15 @@
         X-Plex-Token: "{{plexauth}}"
       return_content: True  
     register: plexsections
-    
+  
   - debug: var=plexsections
+  
+  - name: Parse xml output to get section info
+    xml:
+      xmlstring: "{{ plexsections.content }}"
+      xpath: "/MediaContainer/Directory/Location"
+      content: attribute
+    register: stuff
+      
+  - debug: var=stuff   
+      
