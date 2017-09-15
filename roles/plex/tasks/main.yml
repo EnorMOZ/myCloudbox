@@ -13,13 +13,21 @@
     path: "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Preferences.xml"
   register: plex_prefs
 
-- name: Ask user for his plex server claim id
-  pause: 
-    prompt: "To continue the plex installation, you must visit https://plex.tv/claim and retrieve a claim token, paste it below and press enter"
-  register: plex_claim
+- name: Get plex server claim id
+  uri:
+    url: https://plex.tv/api/claim/token.json
+    user: "{{plex.user}}"
+    password: "{{plex.pass}}"
+    force_basic_auth: yes
+  register: plexclaim  
   when: plex_prefs.stat.exists == False
 
-- debug: msg="Using plex claim token {{plex_claim.user_input}}"
+- name: set new claim token var
+  set_fact: >
+    plex_claim="{{plexclaim.json.token}}"
+  when: plex_prefs.stat.exists == False  
+
+- debug: msg="Using plex claim token {{plex_claim}}"
   when: plex_prefs.stat.exists == False
 
 - name: Setup two lists to be merged
@@ -48,7 +56,7 @@
     env:
       PLEX_UID: "{{uid.stdout}}"
       PLEX_GID: "{{gid.stdout}}"
-      PLEX_CLAIM: "{{plex_claim.user_input| default (omit)}}"
+      PLEX_CLAIM: "{{plex_claim| default (omit)}}"
       CHANGE_CONFIG_DIR_OWNERSHIP: false
       ADVERTISE_IP: "http://plex.{{domain}}/,https://plex.{{domain}}/"
       VIRTUAL_HOST: "plex.{{domain}}"
