@@ -1,0 +1,28 @@
+---    
+  - name: "Get X-Plex-Token"
+    uri:
+      url: https://plex.tv/users/sign_in.json
+      method: POST
+      headers: 
+        X-Plex-Version: "1.0.0"
+        X-Plex-Product: "cloudbox"
+        X-Plex-Client-Identifier: "0.0.1"
+        Content-Type: "application/x-www-form-urlencoded; charset=utf-8"
+      body: "user[password]={{plex.pass}}&user[login]={{plex.user}}"
+      status_code: 201
+    tags: plexauth
+    register: plextoken
+  
+  - name: set proper authToken var
+    set_fact: >
+      plexauth="{{plextoken.json.user.authToken| regex_replace('\"', '')}}"
+  
+  - name: "Get Plex section info"
+    uri:
+      url: https://plex.viciado.tv/library/sections/all
+      headers: 
+        X-Plex-Token: "{{plexauth}}"
+      return_content: True  
+    register: plexsections
+    
+  - debug: var=plexsections
