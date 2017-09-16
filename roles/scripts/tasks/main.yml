@@ -1,6 +1,6 @@
 ---
 - name: Import TorrentCleanup.py
-  copy: "src=TorrentCleanup.py dest="{{mnt.docker_data}}/scripts/torrent/TorrentCleanup.py" force=yes owner={{user}} group={{user}} mode=0775"
+  copy: "src=TorrentCleanup.py dest={{mnt.docker_data}}/scripts/torrent/TorrentCleanup.py force=yes owner={{user}} group={{user}} mode=0775"
 
 - name: Check arrpush.sh exists
   stat:
@@ -22,7 +22,7 @@
   when: arrpush_script.stat.exists == False
 
 - name: Import plex_token.sh
-  copy: "src=plex_token.sh dest="{{mnt.docker_data}}/scripts/plex/plex_token.sh" force=yes owner={{user}} group={{user}} mode=0775"
+  copy: "src=plex_token.sh dest={{mnt.docker_data}}/scripts/plex/plex_token.sh force=yes owner={{user}} group={{user}} mode=0775"
 
 - name: Import revoke_certs.sh
   template:
