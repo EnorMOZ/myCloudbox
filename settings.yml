@@ -22,11 +22,11 @@
     ip: "0.0.0.0"
   rclone:
     version: 1.36
-    bwlimit: 
-    checkers: 8
-    transfers: 16
-    local_dir: "{{mnt.local}}/Media"
-    remote_dir: "agdrive:/Media"
+    bwlimit: "69M"
+    checkers: 10
+    transfers: 20
+    local_dir: "{{mnt.local}}"
+    remote_dir: "agdrive:"
     rm_empty_dirs:
       - "{{mnt.local}}/Media/Movies"
       - "{{mnt.local}}/Media/Kids Movies"
@@ -37,8 +37,10 @@
       - "**_HIDDEN"
       - ".unionfs/**"
       - ".unionfs-fuse/**"
+      - "**downloads**"
   unionfs_cleaner:
-    max_local_gigabytes: 400
+    monitor_dir: "{{mnt.local}}"
+    max_local_gigabytes: 500
     size_check_mins: 5
     config_manager: true
     git_autoupdater: true
