@@ -48,6 +48,9 @@
     config_manager: true
     git_autoupdater: true
     upload_manager: true
+    excludes:
+      - ".partial~"
+      - "/downloads/"
   backup:
     dest: "/home/{{user}}/Backups"
     rsync_dest: rsync://somehost.com/Backups
