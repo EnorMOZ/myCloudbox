@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
  - name: Upgrade kernel
    apt:
      name: linux-generic-hwe-16.04
@@ -7,3 +8,13 @@
  
  - name: Reboot
    shell: reboot 
+=======
+- name: Upgrade kernel
+  apt:
+    name: linux-generic-hwe-16.04
+    update_cache: yes
+    state: latest
+
+- name: Reboot
+  shell: reboot
+>>>>>>> bc073c5468b9960dd4143ac219f983280435037a

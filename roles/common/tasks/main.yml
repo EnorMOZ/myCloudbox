@@ -33,11 +33,13 @@
       - fail2ban
       - ufw
       - speedtest-cli
+      - python-ndg-httpsclient
       
   - name: Install common pip modules
     pip: "name={{item}} state=latest"
     with_items:
       - docker-py
+      - certbot
 
   - name: Create common directories
     file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
@@ -91,4 +93,4 @@
       dest=/etc/updatedb.conf
       owner=root
       group=root
-      mode=0644    
+      mode=0644 

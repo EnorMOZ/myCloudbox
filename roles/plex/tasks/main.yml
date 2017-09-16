@@ -4,7 +4,7 @@
     name: plex
     state: absent
 
-- name: Retreive plex docker iamge
+- name: Retrieve plex docker image
   docker_image:
     name: "plexinc/pms-docker:{{plex.tag}}"
 
@@ -50,7 +50,7 @@
       PLEX_GID: "{{gid.stdout}}"
       PLEX_CLAIM: "{{plex_claim.user_input| default (omit)}}"
       CHANGE_CONFIG_DIR_OWNERSHIP: false
-      ADVERTISE_IP: "http://plex.{{domain}}/,https://plex.{{domain}}/"
+      ADVERTISE_IP: "http://plex.{{domain}}:80/,https://plex.{{domain}}:443/"
       VIRTUAL_HOST: "plex.{{domain}}"
       VIRTUAL_PORT: 32400
       LETSENCRYPT_HOST: "plex.{{domain}}"

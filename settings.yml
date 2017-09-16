@@ -25,6 +25,7 @@
     bwlimit: 
     checkers: 8
     transfers: 16
+    chunk_size: 8M
     local_dir: "{{mnt.local}}/Media"
     remote_dir: "agdrive:/Media"
     rm_empty_dirs:
