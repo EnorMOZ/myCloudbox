@@ -21,7 +21,7 @@
     user: UserA
     pass: pass
   plex_autoscan:
-    ip: "0.0.0.0"
+    ip: "{{ ansible_docker0.ipv4.address }}"
   rclone:
     version: 1.36
     bwlimit: "69M"
