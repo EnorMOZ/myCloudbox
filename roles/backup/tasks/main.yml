@@ -60,8 +60,13 @@
       owner: "{{user}}"
       mode: 0775
 
-  - name: "Stop all containers"
-    shell: "docker stop $(docker ps -aq)"
+  - name: list running containers
+    shell: "docker ps -q"
+    register: docker_list
+
+
+  - name: "Stop all previously running containers"
+    shell: "docker stop $({{docker_list.stdout}})"
     ignore_errors: yes
 
   - name: Check if plexdrive is running
@@ -105,8 +110,8 @@
     wait_for:
       timeout: 5
 
-  - name: "Start all containers"
-    shell: 'docker start  $(comm -13 <(docker ps -a -q --filter="name=watchtower" | sort) <(docker ps -a -q | sort))'
+  - name: "Start all previously running containers"
+    shell: 'docker start  $({{docker_list.stdout}})'
     ignore_errors: yes
 
   - name: "Wait for 10 seconds before uploads"
