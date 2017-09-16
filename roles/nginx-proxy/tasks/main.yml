@@ -1,4 +1,7 @@
 ---
+- name: Import proxy.conf
+  copy: "src=proxy.conf dest=/opt/nginx-proxy/proxy.conf force=yes owner={{user}} group={{user}} mode=0775"
+
 - name: Stop and remove any existing container
   docker_container:
     name: nginx-proxy
@@ -63,4 +66,3 @@
 
 - include: htauth.yml
   when: http_auth.enable == "True"
-  
