@@ -18,6 +18,8 @@
     tag: public
     transcodes: "/dev/shm"
     enable_dri: "True"
+    user: UserA
+    pass: pass
   plex_autoscan:
     ip: "0.0.0.0"
   rclone:
