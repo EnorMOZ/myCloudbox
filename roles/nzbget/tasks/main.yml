@@ -13,6 +13,12 @@
     group: "{{user}}"
     recurse: true
 
+- name: "Set {{nzbget.downloads}} permissions"
+  shell: "chmod -R 775 {{nzbget.downloads}}"
+
+- name: "Set {{nzbget.downloads}} owner"
+  shell: "chown -R {{user}}:{{user}} {{nzbget.downloads}}"
+  
 - name: Check nzbget.conf exists
   stat:
     path: "{{mnt.docker_data}}/nzbget/nzbget.conf"

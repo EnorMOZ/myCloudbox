@@ -6,13 +6,7 @@
     register: backup_location
 
   - name: "Create backup location {{backup.dest}}"
-    file: 
-      path: "{{backup.dest}}"
-      state: directory
-      mode: 0775
-      owner: "{{user}}"
-      group: "{{user}}"
-      recurse: true
+    file: path={{backup.dest}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true
     when: backup_location.stat.exists == False
 
   - name: "Check if backup.lock is present"
@@ -36,6 +30,10 @@
   - name: "Check {{backup.dest}}/cloudbox.tar exists"
     stat:
       path: "{{backup.dest}}/cloudbox.tar"
+      get_attributes: false
+      get_checksum: false
+      get_md5: false
+      get_mime: false
     register: backup_previous_tgz
 
   - name: "Copying cloudbox.tar to cloudbox.tar.backup"
@@ -62,27 +60,61 @@
       owner: "{{user}}"
       mode: 0775
 
-  - name: "Stop Plex"
-    docker_container:
-      name: plex
+  - name: "Stop all containers"
+    shell: "docker stop $(docker ps -aq)"
+    ignore_errors: yes
+
+  - name: Check if plexdrive is running
+    command: systemctl status plexdrive
+    ignore_errors: yes
+    register: plexdrive_status
+
+  - name: Check if unionfs_cleaner is running
+    command: systemctl status unionfs_cleaner
+    ignore_errors: yes
+    register: unionfs_cleaner_status
+
+  - name: Stop unionfs_cleaner service
+    systemd:
+      name: unionfs_cleaner
       state: stopped
-    when: backup.stop_plex
+    when: unionfs_cleaner_status|success
+
+  - name: Stop plexdrive service
+    systemd:
+      name: plexdrive
+      state: stopped
+    when: plexdrive_status|success
 
   - name: "Archiving {{mnt.docker_data}} to {{backup.dest}}/cloudbox.tar"
     shell: "tar -cf '{{backup.dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
 
-  - name: "Start Plex"
-    docker_container:
-      name: plex
+  - name: Start plexdrive service
+    systemd:
+      name: plexdrive
       state: started
-    when: backup.stop_plex
+    when: plexdrive_status|success
+
+  - name: Start unionfs_cleaner service
+    systemd:
+      name: unionfs_cleaner
+      state: started
+    when: unionfs_cleaner_status|success
+
+  - name: "Wait for 5 seconds before starting containers"
+    wait_for:
+      timeout: 5
+
+  - name: "Start all containers"
+    shell: 'docker start  $(comm -13 <(docker ps -a -q --filter="name=watchtower" | sort) <(docker ps -a -q | sort))'
+    ignore_errors: yes
 
   - name: "Wait for 10 seconds before uploads"
     wait_for:
       timeout: 10
   
   - name: "Upload backups with rclone to {{backup.rclone_dest}}"
-    command: "rclone copy '{{backup.dest}}' '{{backup.rclone_dest}}' --stats=30s -v --transfers=2 --log-file='/home/{{user}}/backup_rclone.log'"
+    command: "rclone copy '{{backup.dest}}' '{{backup.rclone_dest}}' --stats=30s -v --transfers=2 --drive-chunk-size=64M --log-file='/home/{{user}}/backup_rclone.log'"
     become: true
     become_user: "{{user}}"
     when: backup.use_rclone

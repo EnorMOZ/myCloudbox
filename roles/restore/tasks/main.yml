@@ -6,6 +6,10 @@
 - name: "Check {{backup.dest}} exists"
   stat:
     path: "{{backup.dest}}"
+    get_attributes: false
+    get_checksum: false
+    get_md5: false
+    get_mime: false
   register: backup_location
 
 - name: "Create backup location {{backup.dest}}"
@@ -55,6 +59,11 @@
 - name: "Check cloudbox.tar exists"
   stat:
     path: "{{backup.dest}}/cloudbox.tar"
+    path: "{{backup.tgz_dest}}/cloudbox.tar"
+    get_attributes: false
+    get_checksum: false
+    get_md5: false
+    get_mime: false
   register: cloudbox_tgz
 
 - name: "Fail cloudbox.tar doesnt exist"
@@ -68,13 +77,11 @@
 - name: "Unarchive cloudbox.tar to {{mnt.docker_data}}"
   shell: "tar -xf '{{backup.dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
 
-- name: Set {{mnt.docker_data}} permissions
-  file: 
-    path: "{{mnt.docker_data}}"
-    owner: "{{user}}"
-    group: "{{user}}"
-    mode: 0775
-    recurse: yes
+- name: Set {{mnt.docker_data} permissions
+  shell: "chmod -R 775 {{mnt.docker_data}}"
+  
+- name: Set {{mnt.docker_data}} owner
+  shell: "chown -R {{user}}:{{user}} {{mnt.docker_data}}"
 
 - debug:
     msg: Finished unarchiving cloudbox.tar to {{mnt.docker_data}}, you should now be ready to perform an installation!

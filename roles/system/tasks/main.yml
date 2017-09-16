@@ -10,11 +10,6 @@
     - byobu
     - cpufrequtils
 
-- name: Upgrade kernel
-  apt:
-    name: linux-generic-hwe-16.04
-    state: latest
-
 - name: Purge old kernels on reboot
   cron:
     name: "Remove old kernels on reboot"

@@ -15,6 +15,7 @@
     "pushover_user_token": "{{pushover.user_token| default ("")}}",
     "rclone_bwlimit": "{{rclone.bwlimit | default("")}}",
     "rclone_checkers": {{ rclone.checkers }},
+    "rclone_chunk_size": "{{ rclone.chunk_size }}",
     "rclone_excludes": [
 {% for i in rclone.excludes %}
         "{{ i }}"{{ ( loop.last ) | ternary('', ',') }}

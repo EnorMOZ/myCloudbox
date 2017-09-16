@@ -4,6 +4,7 @@
     src: https://github.com/ncw/rclone/releases/download/v{{ rclone.version }}/rclone-v{{ rclone.version }}-linux-amd64.zip
     dest: /tmp
     copy: no
+    validate_certs: no
 
 - name: Ensure rclone folders exists
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
@@ -11,7 +12,7 @@
     - "{{mnt.docker_data}}/rclone"
     - "/home/{{user}}/.config/rclone"
 
-- name: Copy binary to {{mnt.docker_data}}/rclone
+- name: Copy binary to /opt/rclone
   copy:
     src: "/tmp/rclone-v{{ rclone.version }}-linux-amd64/rclone"
     dest: "{{mnt.docker_data}}/rclone/rclone"

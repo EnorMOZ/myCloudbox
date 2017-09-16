@@ -18,6 +18,8 @@
     tag: public
     transcodes: "/dev/shm"
     enable_dri: "True"
+    user: UserA
+    pass: pass
   plex_autoscan:
     ip: "0.0.0.0"
   rclone:
@@ -25,6 +27,7 @@
     bwlimit: "69M"
     checkers: 10
     transfers: 20
+    chunk_size: 8M
     local_dir: "{{mnt.local}}"
     remote_dir: "agdrive:"
     rm_empty_dirs:
