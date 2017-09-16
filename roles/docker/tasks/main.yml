@@ -21,10 +21,17 @@
     state: installed
     update_cache: yes
 
+<<<<<<< HEAD
 - name: "Wait for 30 seconds before commencing"
   wait_for:
     timeout: 30
         
+=======
+- name: "Wait for 15 seconds before commencing"
+  wait_for:
+    timeout: 15
+
+>>>>>>> 519e8f8... sleep before creating override
 - name: Check override folder exists
   stat:
     path: /etc/systemd/system/docker.service.d
