@@ -14,7 +14,7 @@
 
 - name: Setup default nginx-proxy docker volume to be merged
   set_fact:
-    nginx-proxy_volumes:
+    nginx_proxy_volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "{{mnt.docker_data}}/nginx-proxy:/etc/nginx/certs:ro"
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
@@ -29,7 +29,7 @@
     published_ports:
       - "80:80"
       - "443:443"
-    volumes: "{{nginx-proxy_volumes + docker_volumes.nginx-proxy|default([])}}"
+    volumes: "{{nginx_proxy_volumes + docker_volumes.nginx_proxy|default([])}}"
     labels:
       com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     networks:
