@@ -59,7 +59,6 @@
 - name: "Check cloudbox.tar exists"
   stat:
     path: "{{backup.dest}}/cloudbox.tar"
-    path: "{{backup.tgz_dest}}/cloudbox.tar"
     get_attributes: false
     get_checksum: false
     get_md5: false
