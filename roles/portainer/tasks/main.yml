@@ -15,6 +15,7 @@
   docker_container:
     name: portainer
     image: "portainer/portainer"
+    pull: yes
     published_ports:
       - "127.0.0.1:9000:9000"
     volumes: "{{portainer_volumes + docker_volumes.portainer|default([])}}"

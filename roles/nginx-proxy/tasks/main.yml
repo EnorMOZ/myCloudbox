@@ -26,6 +26,7 @@
   docker_container:
     name: nginx-proxy
     image: "jwilder/nginx-proxy"
+    pull: yes
     published_ports:
       - "80:80"
       - "443:443"

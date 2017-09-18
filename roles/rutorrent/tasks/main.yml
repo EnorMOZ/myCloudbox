@@ -29,6 +29,7 @@
   docker_container:
     name: rutorrent
     image: l3uddz/docker-rutorrent-cloudbox
+    pull: yes
     published_ports:
       - "127.0.0.1:3111:80"
       - "51413:51413"
@@ -52,6 +53,12 @@
 - name: Wait for rtorrent.rc to be created
   wait_for:
     path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
+    state: present
+  when: rtorrent_rc.stat.exists == False
+
+- name: Wait for php.ini to be created
+  wait_for:
+    path: "/opt/rutorrent/php/php.ini"
     state: present
   when: rtorrent_rc.stat.exists == False
 
@@ -194,6 +201,14 @@
     owner: "{{user}}"
     group: "{{user}}"
     mode: 0775
+  when: rtorrent_rc.stat.exists == False
+
+- name: Set upload_max_filesize to 8M
+  lineinfile:
+    path: "/opt/rutorrent/php/php.ini"
+    regexp: '^upload_max_filesize\s?='
+    line: 'upload_max_filesize = 8M'
+    state: present
   when: rtorrent_rc.stat.exists == False
 
 - name: Start container to apply changes
