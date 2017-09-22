@@ -66,7 +66,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes: "{{plex_volumes + docker_volumes.plex|default([])}}"
     restart_policy: always
-    devices: "{{ '/dev/dri:/dev/dri' if plex.enable_dri == 'True' | default(false) else omit }}"
+    devices: "{{ '/dev/dri:/dev/dri' if plex.hw_transcode == 'True' | default(false) else omit }}"
     networks:
       - name: cloudbox
         ipv4_address: 172.18.0.15
@@ -75,7 +75,6 @@
     etc_hosts: >
      {
       "metrics.plex.tv": "127.0.0.1",
-      "meta.plex.tv" : "127.0.0.1"
      }
     state: started
 
@@ -112,3 +111,24 @@
     group: "{{user}}"
     mode: 0775
   when: webtools_bundle.stat.exists == False
+
+- name: add container to inventory
+  add_host:
+    name: plex
+    ansible_connection: docker
+  changed_when: false
+  when: plex.hw_transcode == "True"
+
+- name: run command in container
+  delegate_to: plex
+  raw: |
+    echo {{plex.hw_transcode_v}}>/version.txt
+    curl -J -L -o /tmp/mediaserver.deb https://downloads.plex.tv/plex-media-server/{{plex.hw_transcode_v}}/plexmediaserver_{{plex.hw_transcode_v}}_amd64.deb
+    dpkg -i /tmp/mediaserver.deb
+  when: plex.hw_transcode == "True" 
+  register: phw
+
+- name: Restart plex docker container
+  shell: "docker restart plex"
+  ignore_errors: yes
+  when: phw.changed
