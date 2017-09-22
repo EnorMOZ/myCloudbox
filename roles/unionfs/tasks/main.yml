@@ -31,6 +31,7 @@
       src: unionfs.service.js2
       dest: /etc/systemd/system/unionfs.service 
       force: yes
+    when: unionfs_service.stat.exists == False
 
   - name: Create {{mnt.unionfs}}
     file: 
