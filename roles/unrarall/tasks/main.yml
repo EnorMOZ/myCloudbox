@@ -1,0 +1,27 @@
+---
+- name: Clone unrarall
+  git:
+    repo: https://github.com/arfoll/unrarall/
+    dest: "/tmp/unrarall"
+    version: master
+    force: yes
+  
+- name: Ensure unrarall folders exists
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
+  with_items:
+    - "{{mnt.docker_data}}/unrarall"
+
+- name: Copy binary to /opt/unrarall
+  copy:
+    src: "/tmp/unrarall/unrarall"
+    dest: "{{mnt.docker_data}}/unrarall/unrarall"
+    mode: 0775
+    owner: "{{user}}"
+    group: "{{user}}"
+
+- name: Symlink binary to /usr/sbin
+  file:
+    src: "{{mnt.docker_data}}/unrarall/unrarall"
+    dest: /usr/sbin/unrarall
+    state: link
+    force: yes
