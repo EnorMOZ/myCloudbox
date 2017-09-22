@@ -75,7 +75,6 @@
     etc_hosts: >
      {
       "metrics.plex.tv": "127.0.0.1",
-      "meta.plex.tv" : "127.0.0.1"
      }
     state: started
 
