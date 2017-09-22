@@ -5,7 +5,7 @@
     dest: "/tmp/unrarall"
     version: master
     force: yes
-  
+
 - name: Ensure unrarall folders exists
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
   with_items:
