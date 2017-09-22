@@ -72,6 +72,11 @@
         ipv4_address: 172.18.0.15
         aliases:
           - plex
+    etc_hosts: >
+     {
+      "metrics.plex.tv": "127.0.0.1",
+      "meta.plex.tv" : "127.0.0.1"
+     }
     state: started
 
 # we need this here because sometimes after a restore, docker will set this transcodes folder to root, dont ask why, but it does...
