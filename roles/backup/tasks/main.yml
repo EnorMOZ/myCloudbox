@@ -104,11 +104,11 @@
     wait_for:
       timeout: 10
 
-  - name: "Set {{backup.tgz_dest}} permissions"
-    shell: "chmod -R 775 {{backup.tgz_dest}}"
+  - name: "Set {{backup.dest}} permissions"
+    shell: "chmod -R 775 {{backup.dest}}"
     
-  - name: "Set {{backup.tgz_dest}} owner"
-    shell: "chown -R {{user}}:{{user}} {{backup.tgz_dest}}"
+  - name: "Set {{backup.dest}} owner"
+    shell: "chown -R {{user}}:{{user}} {{backup.dest}}"
   
   - name: "Upload backups with rclone to {{backup.rclone_dest}}"
     command: "rclone copy '{{backup.dest}}' '{{backup.rclone_dest}}' --stats=30s -v --transfers=2 --drive-chunk-size=64M --log-file='/home/{{user}}/backup_rclone.log'"
