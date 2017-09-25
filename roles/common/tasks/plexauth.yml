@@ -13,6 +13,16 @@
     tags: plexauth
     register: plextoken
   
+  - name: set proper plexpass var
+    set_fact: >
+      plexpass="True"
+    when: "'plexpass' in plextoken.json.user.roles.roles"
+  
+  - name: Fail when plexpass var are set but user is not plex pass member
+    fail:
+      msg: "You have set plexpass only options which require plexpass membership. However you are not a plexpass member. Please change those vars and run it again."
+    when: "('True'|lower in plex.hw_transcode|lower or 'Plexpass'|lower in plex.tag|lower) and plexpass is not defined"
+  
   - name: set proper authToken var
     set_fact: >
       plexauth="{{plextoken.json.user.authToken| regex_replace('\n', '')}}"
