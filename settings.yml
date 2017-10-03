@@ -15,10 +15,9 @@
     passwd: password321
     downloads: "/home/{{user}}/downloads/rutorrent"
   plex:
-    tag: public
+    tag: plexpass
     transcodes: "/dev/shm"
     hw_transcode: "True"
-    hw_transcode_v: "1.8.1.4140-82ea538ca"
     user: UserA
     pass: pass
   plex_autoscan:
