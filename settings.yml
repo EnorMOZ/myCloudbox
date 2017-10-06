@@ -88,6 +88,7 @@
       - "{{mnt.local}}:{{mnt.local}}"
     plex:
       - "{{mnt.unionfs}}/Media:/data/.media"
+      - "/tmp:/tmp"
   watchtower:
     command:
       - "--cleanup"
