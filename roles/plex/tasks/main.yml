@@ -72,18 +72,7 @@
       VIRTUAL_PORT: 32400
       LETSENCRYPT_HOST: "plex.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-<<<<<<< HEAD
     volumes: "{{plex_volumes + docker_volumes.plex|default([])}}"
-=======
-      HTTPS_METHOD: noredirect
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/plex:/config"
-      - "{{plex.transcodes}}:/transcode"
-      - "/mnt/unionfs/Media:/data"
-      - "/tmp:/tmp"
-    devices: "{{ '/dev/dri:/dev/dri' if dev_dri.stat.exists == True | default(false) else omit }}"
->>>>>>> 9a4283ab9e323c253c838faa60f1e86e4bc2fc54
     restart_policy: always
     devices: "{{ '/dev/dri:/dev/dri' if plex.hw_transcode == 'True' | default(false) else omit }}"
     networks:
