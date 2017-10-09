@@ -57,8 +57,8 @@
     rclone_dest: agdrive:/Backups
     use_rsync: false
     use_rclone: true
-    stop_plex: false
-    cron_time: daily
+    cron_hour: 4
+    cron_minute: 2
     cron_state: present
     paths:
       - "{{mnt.docker_data}}"
