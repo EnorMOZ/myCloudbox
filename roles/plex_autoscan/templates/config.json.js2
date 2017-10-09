@@ -10,13 +10,12 @@
     "PLEX_LD_LIBRARY_PATH": "/usr/lib/plexmediaserver",
     "PLEX_LOCAL_URL": "http://plex.{{domain}}",
     "PLEX_SCANNER": "/usr/lib/plexmediaserver/Plex\\ Media\\ Scanner",
-    "PLEX_SECTION_PATH_MAPPINGS": {
-    {% for i in plex_section.matches %}
-            "{{ i.Directory.key }}": [
-                "/{{ i.Directory.title }}/"
-            ]{{ ( loop.last ) | ternary('', ',') }}
-    {% endfor %}
-        },
+    "PLEX_SECTION_PATH_MAPPINGS": { {% for i in plex_section.matches %}  
+        "{{ i.Directory.key }}": [
+            "/{{ i.Directory.title }}/"
+ 	 ]{{ ( loop.last ) | ternary('', ',') }} {% endfor %}
+          
+    },
     "PLEX_SUPPORT_DIR": "/var/lib/plexmediaserver/Library/Application\\ Support",
     "PLEX_TOKEN": "",
     "PLEX_USER": "plex",
