@@ -130,10 +130,11 @@
     shell: "which ansible-playbook"
     register: playbook_binary
 
-  - name: "Schedule cron backup for state: {{backup.cron_state}}, when: {{backup.cron_time}}"
+  - name: "Schedule cron backup"
     cron:
       name: "Backup Cloudbox"
-      special_time: "{{backup.cron_time}}"
+      minute: "{{backup.cron_minute}}"
+      hour: "{{backup.cron_hour}}"
       job: "{{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup"
       state: "{{backup.cron_state}}"
 
