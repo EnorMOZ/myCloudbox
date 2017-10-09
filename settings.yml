@@ -100,3 +100,9 @@
     - app_token: 
     - user_token:
   znc_port: 62971
+  gce:
+    name:
+    zone:
+    credentials_file:
+    service_account_email:
+    project_id:
