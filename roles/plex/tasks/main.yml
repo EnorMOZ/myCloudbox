@@ -119,3 +119,6 @@
     group: "{{user}}"
     mode: 0775
   when: webtools_bundle.stat.exists == False
+
+- include: sections.yml
+  tags: plexsections 
