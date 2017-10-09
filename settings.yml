@@ -1,8 +1,8 @@
 ---
   user: seed
-  passwd: password123
-  domain: testcloudbox.ml
-  email: your@email.com
+  passwd: "{{user_pass}}"
+  domain: "{{user_domain}}"
+  email: "{{user_email}}"
   mnt: 
     local: "/mnt/local"
     unionfs: "/mnt/unionfs"
@@ -12,14 +12,14 @@
   nzbget:
     downloads: "{{mnt.unionfs}}/downloads/nzbget"
   rutorrent:
-    passwd: password321
+    passwd: "{{rutorrent_pass}}"
     downloads: "/home/{{user}}/downloads/rutorrent"
   plex:
     tag: plexpass
     transcodes: "/dev/shm"
     hw_transcode: "True"
-    user: UserA
-    pass: pass
+    user: "{{plex_user}}"
+    pass: "{{plex_pass}}"
   plex_autoscan:
     ip: "{{ ansible_docker0.ipv4.address }}"
   rclone:
