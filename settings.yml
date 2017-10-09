@@ -1,8 +1,8 @@
 ---
   user: seed
-  passwd: password123
-  domain: testcloudbox.ml
-  email: your@email.com
+  passwd: "{{user_pass}}"
+  domain: "{{user_domain}}"
+  email: "{{user_email}}"
   mnt: 
     local: "/mnt/local"
     unionfs: "/mnt/unionfs"
@@ -12,18 +12,18 @@
   nzbget:
     downloads: "{{mnt.unionfs}}/downloads/nzbget"
   rutorrent:
-    passwd: password321
+    passwd: "{{rutorrent_pass}}"
     downloads: "/home/{{user}}/downloads/rutorrent"
   plex:
     tag: plexpass
     transcodes: "/dev/shm"
     hw_transcode: "True"
-    user: UserA
-    pass: pass
+    user: "{{plex_user}}"
+    pass: "{{plex_pass}}"
   plex_autoscan:
     ip: "{{ ansible_docker0.ipv4.address }}"
   rclone:
-    version: 1.36
+    version: 1.38
     bwlimit: "69M"
     checkers: 10
     transfers: 20
@@ -57,8 +57,8 @@
     rclone_dest: agdrive:/Backups
     use_rsync: false
     use_rclone: true
-    stop_plex: false
-    cron_time: daily
+    cron_hour: 4
+    cron_minute: 2
     cron_state: present
     paths:
       - "{{mnt.docker_data}}"
@@ -78,14 +78,11 @@
       - nzbget
   docker_volumes:
     radarr:
-      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
-      - "{{mnt.local}}:{{mnt.local}}"
+      - "{{mnt.unionfs}}"
     nzbget:
-      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
-      - "{{mnt.local}}:{{mnt.local}}"
+      - "{{mnt.unionfs}}"
     sonarr:
-      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
-      - "{{mnt.local}}:{{mnt.local}}"
+      - "{{mnt.unionfs}}"
     plex:
       - "{{mnt.unionfs}}/Media:/data/.media"
       - "/tmp:/tmp"
