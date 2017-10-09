@@ -78,14 +78,11 @@
       - nzbget
   docker_volumes:
     radarr:
-      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
-      - "{{mnt.local}}:{{mnt.local}}"
+      - "{{mnt.unionfs}}"
     nzbget:
-      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
-      - "{{mnt.local}}:{{mnt.local}}"
+      - "{{mnt.unionfs}}"
     sonarr:
-      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
-      - "{{mnt.local}}:{{mnt.local}}"
+      - "{{mnt.unionfs}}"
     plex:
       - "{{mnt.unionfs}}/Media:/data/.media"
       - "/tmp:/tmp"
