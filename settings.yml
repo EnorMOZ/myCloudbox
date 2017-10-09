@@ -23,7 +23,7 @@
   plex_autoscan:
     ip: "{{ ansible_docker0.ipv4.address }}"
   rclone:
-    version: 1.36
+    version: 1.38
     bwlimit: "69M"
     checkers: 10
     transfers: 20
