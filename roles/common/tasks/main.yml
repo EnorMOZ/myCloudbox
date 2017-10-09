@@ -119,4 +119,7 @@
       mode=0644 
       
   - include: plexauth.yml
-    tags: plexauth     
+    tags: plexauth
+     
+  - include: plexsections.yml
+    tags: plexsections        
