@@ -1,18 +1,21 @@
 - name: "Get Plex section info"
   uri:
-    url: https://plex.viciado.tv/library/sections/all
+    url: https://plex.{{domain}}/library/sections/all
     headers:
       X-Plex-Token: "{{plexauth}}"
     return_content: True
   register: plexsections
 
-- debug: var=plexsections
+#- debug: var=plexsections
 
 - name: Parse xml output to get section info
   xml:
     xmlstring: "{{ plexsections.content }}"
-    xpath: "/MediaContainer/Directory/Location"
+    xpath: "/MediaContainer/Directory"
     content: attribute
   register: plex_section
+    
+#- debug: var=plex_section
 
-- debug: var=plex_section    
+#- debug: msg="Item is {{item.Directory.title}}"
+#  with_items: "{{plex_section.matches}}"

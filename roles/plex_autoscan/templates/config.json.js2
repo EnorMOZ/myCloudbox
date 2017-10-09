@@ -11,34 +11,22 @@
     "PLEX_LOCAL_URL": "http://plex.{{domain}}",
     "PLEX_SCANNER": "/usr/lib/plexmediaserver/Plex\\ Media\\ Scanner",
     "PLEX_SECTION_PATH_MAPPINGS": {
-        "1": [
-            "/Movies/"
-        ],
-        "2": [
-            "/TV/"
-        ]
-    },
+    {% for i in plex_section.matches %}
+            "{{ i.Directory.key }}": [
+                "/{{ i.Directory.title }}/"
+            ]{{ ( loop.last ) | ternary('', ',') }}
+    {% endfor %}
+        },
     "PLEX_SUPPORT_DIR": "/var/lib/plexmediaserver/Library/Application\\ Support",
     "PLEX_TOKEN": "",
     "PLEX_USER": "plex",
     "PLEX_WAIT_FOR_EXTERNAL_SCANNERS": true,
     "SERVER_ALLOW_MANUAL_SCAN": false,
-    "SERVER_FILE_EXIST_PATH_MAPPINGS": {
-        "{{mnt.unionfs}}": [
-            "/data"
-        ]
-    },
+    "SERVER_FILE_EXIST_PATH_MAPPINGS": {},
     "SERVER_IP": "{{plex_autoscan.ip}}",
     "SERVER_MAX_FILE_CHECKS": 10,
     "SERVER_PASS": "{{plex_autoscan_pass.stdout}}",
-    "SERVER_PATH_MAPPINGS": {
-        "/data/TV/": [
-            "/tv/"
-        ], 
-        "/data/Movies/": [
-            "/movies/"
-        ]
-    },
+    "SERVER_PATH_MAPPINGS": {},
     "SERVER_PORT": 3468,
     "SERVER_SCAN_DELAY": 5,
     "USE_DOCKER": true,
