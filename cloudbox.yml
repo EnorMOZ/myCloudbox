@@ -2,6 +2,7 @@
 - hosts: localhost
   vars_files:
     - settings.yml
+    - "{{ ansible_env.HOME }}/.settings.yml"
   roles:
     - { role: sanity_check }
     - { role: kernel, tags: ['kernel'] }

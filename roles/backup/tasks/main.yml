@@ -51,14 +51,17 @@
       state: absent
     when: backup_previous_tgz.stat.exists
 
-  - name: "Copy settings.xml to {{mnt.docker_data}} for inclusion in backup"
+  - name: "Copy settings files to {{mnt.docker_data}} for inclusion in backup"
     copy:
-      src: "{{playbook_dir}}/settings.yml"
-      dest: "{{mnt.docker_data}}/settings.yml"
+      src: "{{item}}"
+      dest: "{{mnt.docker_data}}/{{item |basename}}"
       force: yes
       group: "{{user}}"
       owner: "{{user}}"
       mode: 0775
+    with_items:
+      - "{{playbook_dir}}/settings.yml"
+      - "{{ ansible_env.HOME }}/.settings.yml"
 
   - name: list running containers
     shell: "docker ps -q"
