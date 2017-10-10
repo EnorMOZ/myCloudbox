@@ -11,11 +11,10 @@
 - name: Parse xml output to get section info
   xml:
     xmlstring: "{{ plexsections.content }}"
-    xpath: "/MediaContainer/Directory"
+    xpath: "/MediaContainer/Directory/Location"
     content: attribute
   register: plex_section
-    
-#- debug: var=plex_section
 
-#- debug: msg="Item is {{item.Directory.title}}"
-#  with_items: "{{plex_section.matches}}"
+#- debug: var=plex_section
+#- debug: msg="Id is {{item.Location.id}} Path is {{item.Location.path | basename}}"
+  with_items: "{{plex_section.matches}}"
