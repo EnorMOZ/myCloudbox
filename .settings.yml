@@ -1,0 +1,7 @@
+#Place this file in the users home dir as .settings.yml
+plex_user: PLEXUSER
+plex_pass: PASS
+user_pass: password123
+user_domain: mydomain.com
+user_email: my@email.com
+rutorrent_pass: password123
