@@ -8,7 +8,7 @@
     - { role: kernel, tags: ['kernel'] }
     - { role: pre_install, tags: ['full', 'feeder', 'plex'] }
     - { role: system, tags: ['full', 'feeder', 'plex'] }
-    - { role: motd, tags: ['full', 'feeder', 'plex'] }
+    - { role: motd, tags: ['full', 'feeder', 'plex', 'motd'] }
     - { role: common, tags: ['full', 'feeder', 'plex', 'common'] }
     - { role: unionfs, tags: ['full', 'feeder', 'plex', 'unionfs'] }
     - { role: docker, tags: ['full', 'feeder', 'plex', 'docker'] }
