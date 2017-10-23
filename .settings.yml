@@ -5,3 +5,4 @@ user_pass: password123
 user_domain: mydomain.com
 user_email: my@email.com
 rutorrent_pass: password123
+cloudflare_token: MYTOKEN

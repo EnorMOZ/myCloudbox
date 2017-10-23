@@ -1,0 +1,13 @@
+- cloudflare_dns:
+    zone: "{{user_domain}}"
+    record: "{{item}}"
+    type: A
+    value: "{{ansible_default_ipv4.address}}"
+    state: present
+    proxied: yes
+    account_email: "{{user_email}}"
+    account_api_token: "{{cloudflare_token}}"
+    state: present
+  with_items: 
+    - "{{ http_auth.sites }}"
+    - plex

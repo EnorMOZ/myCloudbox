@@ -126,5 +126,8 @@
   - name: Set /opt permissions
     shell: "chmod -R 775 /opt"
 
+  - include: cloudflare.yml
+    tags: cloudflare
+
   - name: Set /opt owner
     shell: "chown -R {{user}}:{{user}} /opt"
