@@ -20,7 +20,7 @@
     env:
       APP: "jackett"
       VERSION: "unstable"
-      BACKUP: "yes"
+      BACKUP: "no"
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
       VIRTUAL_HOST: "jackett.{{domain}}"
