@@ -90,6 +90,7 @@
       - "{{mnt.docker_data}}/scripts/nzb"
       - "{{mnt.docker_data}}/scripts/nginx"
       - "{{mnt.docker_data}}/scripts/plex"
+      - "{{mnt.docker_data}}/systemd"
       - "/home/{{user}}/.config/rclone"
       - "{{mnt.docker_data}}/znc"
       - "{{plex.transcodes}}"
