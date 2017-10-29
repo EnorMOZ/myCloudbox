@@ -64,6 +64,8 @@
       - "{{mnt.docker_data}}"
       - /var/spool/cron
     exclude_paths:
+    pushover_app_token: 
+    pushover_user_key:
   http_auth:
     enable: True
     sites:
@@ -96,7 +98,4 @@
       - radarr
       - sonarr
       - nzbget
-  pushover:
-    - app_token: 
-    - user_token:
   znc_port: 62971
