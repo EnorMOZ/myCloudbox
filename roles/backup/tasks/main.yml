@@ -84,12 +84,17 @@
 
   - name: "Copy /etc/systemd/system to /opt/systemd for inclusion in backup"
     copy:
-      src: "/etc/systemd/system"
-      dest: "/opt/systemd"
+      src: "/etc/systemd/system/{{item}}"
+      dest: "/opt/systemd/{{item}}"
       force: yes
       group: "{{user}}"
       owner: "{{user}}"
       mode: 0775
+    with_items:
+      - plexdrive.service
+      - unionfs_cleaner.service
+      - plex_autoscan.service
+      - unionfs.service
 
   - name: "Pushover Message: Stopped Cloudbox containers."
     pushover:
@@ -114,13 +119,13 @@
     shell: "docker stop {{docker_list.stdout| replace('\n', ' ')}}"
     ignore_errors: yes
 
-  - name: Stop unionfs_cleaner and plexdrive services
+  - name: Stop unionfs_cleaner and plexdrive
     systemd:
       name: "{{item}}"
       state: stopped
     with_items:
-      - unionfs_cleaner
-      - plexdrive
+      - 'unionfs_cleaner'
+      - 'plexdrive'
 
   - name: "Archiving {{mnt.docker_data}} to {{backup.dest}}/cloudbox.tar"
     shell: "tar -cf '{{backup.dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
@@ -155,13 +160,13 @@
         (backup_new is undefined)
       )
 
-  - name: Start plexdrive and unionfs_cleaner services
+  - name: Start plexdrive and unionfs_cleaner
     systemd:
       name: "{{item}}"
       state: started
     with_items:
-      - plexdrive
-      - unionfs_cleaner
+      - 'plexdrive'
+      - 'unionfs_cleaner'
 
   - name: "Wait for 5 seconds before starting containers"
     wait_for:
