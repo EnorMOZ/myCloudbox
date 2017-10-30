@@ -19,11 +19,13 @@
 - name: Create and start container
   docker_container:
     name: plexpy
-    image: linuxserver/plexpy
+    #image: linuxserver/plexpy
+    image: thedennyk/plexpy-v2
     pull: yes
     published_ports:
       - "127.0.0.1:8181:8181"
     env:
+      ADVANCED_GIT_BRANCH: v2
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
       VIRTUAL_HOST: "plexpy.{{domain}}"
