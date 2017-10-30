@@ -12,7 +12,7 @@
   git:
     repo: https://github.com/l3uddz/plex_autoscan/
     dest: "{{mnt.docker_data}}/plex_autoscan"
-    version: master
+    version: "{{plex_autoscan.version}}"
     force: yes
     
 - name: Install pip requirements

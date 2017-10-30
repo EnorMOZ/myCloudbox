@@ -22,6 +22,7 @@
     pass: "{{plex_pass}}"
   plex_autoscan:
     ip: "{{ ansible_docker0.ipv4.address }}"
+    version: dev
   rclone:
     version: 1.38
     bwlimit: "69M"
