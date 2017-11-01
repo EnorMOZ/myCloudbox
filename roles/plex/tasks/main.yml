@@ -118,4 +118,4 @@
     owner: "{{user}}"
     group: "{{user}}"
     mode: 0775
-  when: webtools_bundle.stat.exists == Falseß
+  when: webtools_bundle.stat.exists == False
