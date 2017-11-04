@@ -17,4 +17,4 @@
 
 #- debug: var=plex_section
 #- debug: msg="Id is {{item.Location.id}} Path is {{item.Location.path | basename}}"
-  with_items: "{{plex_section.matches}}"
+#  with_items: "{{plex_section.matches}}"
