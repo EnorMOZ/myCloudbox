@@ -18,9 +18,12 @@
       group: "{{user}}"
     when: backup_lock.stat.exists == False
 
-  - name: "Pushover Message: Started Cloudbox backup."
+  - name: "Get Start Time"
+    set_fact: start_time="{{lookup('pipe','date \"+%s\"')}}"
+
+  - name: "Pushover Message: Started Cloudbox backup task."
     pushover:
-      msg: "Started Cloudbox backup."
+      msg: "Started Cloudbox backup task."
       app_token: "{{backup.pushover_app_token}}"
       user_key: "{{backup.pushover_user_key}}"
     when: not(
@@ -139,7 +142,7 @@
       get_mime: false
     register: backup_new
 
-  - name: "Pushover Message: Backup archive created (size: {{ ( ( backup_new_tgz.stat.size / (1024*1024*1024) ) | int | abs ) }}GB)"
+  - name: "Pushover Message: Backup archive created (file size: {{ ( ( backup_new_tgz.stat.size / (1024*1024*1024) ) | int | abs ) }}GB)."
     pushover:
       msg: "Backup archive created (file size: {{ ( ( backup_new.stat.size / (1024*1024*1024) ) | int | abs ) }}GB)"
       app_token: "{{backup.pushover_app_token}}"
@@ -211,9 +214,9 @@
     become_user: "{{user}}"
     when: backup.use_rclone
 
-  - name: "Pushover Message: Uploaded backup with rclone to {{backup.rclone_dest}}"
+  - name: "Pushover Message: Uploaded backup with rclone to \"{{backup.rclone_dest}}\"."
     pushover:
-      msg: "Uploaded backup archive to {{backup.rclone_dest}}"
+      msg: "Uploaded backup with rclone to \"{{backup.rclone_dest}}\"."
       app_token: "{{backup.pushover_app_token}}"
       user_key: "{{backup.pushover_user_key}}"
     when: not(
@@ -232,7 +235,7 @@
         (backup.use_rclone == false)
       )
 
-  - name: "Upload backup with rsync to {{backup.rsync_dest}}"
+  - name: "Upload backup with rsync to \"{{backup.rsync_dest}}\""
     synchronize:
       src: "{{backup.dest}}/"
       dest: "{{backup.rsync_dest}}/"
@@ -242,9 +245,9 @@
     become_user: "{{user}}"
     when: backup.use_rsync
 
-  - name: "Pushover Message: Uploaded backup with rsync to {{backup.rsync_dest}}"
+  - name: "Pushover Message: Uploaded backup with rsync to \"{{backup.rsync_dest}}\"."
     pushover:
-      msg: "Uploaded backup via rsync."
+      msg: "Uploaded backup with rsync to \"{{backup.rsync_dest}}\"."
       app_token: "{{backup.pushover_app_token}}"
       user_key: "{{backup.pushover_user_key}}"
     when: not(
@@ -275,9 +278,12 @@
       job: "{{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup"
       state: "{{backup.cron_state}}"
 
-  - name: "Pushover Message: Completed Cloudbox backup."
+  - name: "Get End Time"
+    set_fact: end_time="{{lookup('pipe','date \"+%s\"')}}"
+
+  - name: "Pushover Message: Finished Cloudbox backup task in {{  ((((end_time|int) - (start_time|int)) /60)|int|abs) }} minutes."
     pushover:
-      msg: "Completed Cloudbox backup."
+      msg: "Finished Cloudbox backup task in {{  ((((end_time|int) - (start_time|int)) /60)|int|abs) }} minutes."
       app_token: "{{backup.pushover_app_token}}"
       user_key: "{{backup.pushover_user_key}}"
     when: not(
