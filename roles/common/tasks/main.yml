@@ -132,3 +132,17 @@
 
   - name: Set /opt owner
     shell: "chown -R {{user}}:{{user}} /opt"
+    
+  - name: insert custom bashrc stuff
+  blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    block: |
+        HISTTIMEFORMAT="%h/%d - %H:%M:%S "
+        shopt -s histappend
+        PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+        if [ $UID -eq "0" ]; then
+        HISTFILE=/root/.bash_history-$(who am i | awk '{print $1}';exit)
+        else
+        HISTFILE=$HOME/.bash_history
+        fi
+        export EDITOR="/bin/nano"
