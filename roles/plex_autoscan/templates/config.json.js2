@@ -31,7 +31,7 @@
         "/.grab/",
         ".DS_Store",
         "Thumbs.db"
-    ],    
+    ],
     "SERVER_USE_SQLITE": false,
     "SERVER_PORT": 3468,
     "SERVER_SCAN_DELAY": 5,
