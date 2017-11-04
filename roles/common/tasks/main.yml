@@ -118,18 +118,6 @@
       group=root
       mode=0644 
       
-  - include: plexauth.yml
-    tags: plexauth
-     
-  - include: plexsections.yml
-    tags: plexsections 
-           
-  - name: Set /opt permissions
-    shell: "chmod -R 775 /opt"
-
-  - include: cloudflare.yml
-    tags: cloudflare
-
   - name: Set /opt owner
     shell: "chown -R {{user}}:{{user}} /opt"
     
@@ -146,3 +134,15 @@
           HISTFILE=$HOME/.bash_history
           fi
           export EDITOR="/bin/nano"
+
+  - include: plexauth.yml
+    tags: plexauth
+     
+  - include: plexsections.yml
+    tags: plexsections 
+
+  - include: cloudflare.yml
+    tags: cloudflare 
+               
+  - name: Set /opt permissions
+    shell: "chmod -R 775 /opt"         
