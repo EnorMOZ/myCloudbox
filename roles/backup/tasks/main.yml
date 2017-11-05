@@ -266,18 +266,6 @@
         (backup.use_rsync == false)
       )
 
-  - name: "Get ansible-playbook binary path"
-    shell: "which ansible-playbook"
-    register: playbook_binary
-
-  - name: "Schedule cron backup"
-    cron:
-      name: "Backup Cloudbox"
-      minute: "{{backup.cron_minute}}"
-      hour: "{{backup.cron_hour}}"
-      job: "{{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup"
-      state: "{{backup.cron_state}}"
-
   - name: "Get End Time"
     set_fact: end_time="{{lookup('pipe','date \"+%s\"')}}"
 
@@ -304,13 +292,14 @@
     shell: "which ansible-playbook"
     register: playbook_binary
 
-  - name: "Schedule cron backup for state: {{backup.cron_state}}, when: {{backup.cron_time}}"
+  - name: "Schedule cron backup"
     cron:
       name: "Backup Cloudbox"
-      special_time: "{{backup.cron_time}}"
+      minute: "{{backup.cron_minute}}"
+      hour: "{{backup.cron_hour}}"
       job: "{{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup"
       state: "{{backup.cron_state}}"
-
+      
   always:
   - debug: msg="Finished backup"
     when: backup_lock.stat.exists == False
