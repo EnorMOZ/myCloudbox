@@ -18,7 +18,7 @@
       group: "{{user}}"
     when: backup_lock.stat.exists == False
 
-  - name: "Get Start Time"
+  - name: "Save Start Time"
     set_fact: start_time="{{lookup('pipe','date \"+%s\"')}}"
 
   - name: "Pushover Message: Started Cloudbox backup task."
@@ -142,7 +142,7 @@
       get_mime: false
     register: backup_new
 
-  - name: "Pushover Message: Backup archive created (file size: {{ ( ( backup_new_tgz.stat.size / (1024*1024*1024) ) | int | abs ) }}GB)."
+  - name: "Pushover Message: Backup archive created (file size: {{ ( ( backup_new.stat.size / (1024*1024*1024) ) | int | abs ) }}GB)."
     pushover:
       msg: "Backup archive created (file size: {{ ( ( backup_new.stat.size / (1024*1024*1024) ) | int | abs ) }}GB)"
       app_token: "{{backup.pushover_app_token}}"
@@ -299,6 +299,17 @@
         or
         (backup.pushover_user_key | trim == '')
       )
+
+  - name: "Get ansible-playbook binary path"
+    shell: "which ansible-playbook"
+    register: playbook_binary
+
+  - name: "Schedule cron backup for state: {{backup.cron_state}}, when: {{backup.cron_time}}"
+    cron:
+      name: "Backup Cloudbox"
+      special_time: "{{backup.cron_time}}"
+      job: "{{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup"
+      state: "{{backup.cron_state}}"
 
   always:
   - debug: msg="Finished backup"
