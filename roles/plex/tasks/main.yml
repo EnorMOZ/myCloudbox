@@ -75,15 +75,12 @@
     volumes: "{{plex_volumes + docker_volumes.plex|default([])}}"
     restart_policy: always
     devices: "{{ '/dev/dri:/dev/dri' if plex.hw_transcode == 'True' | default(false) else omit }}"
+    etc_hosts: {'metric.plex.tv': '127.0.0.1', 'metrics.plex.tv': '127.0.0.1', 'analytics.plex.tv': '127.0.0.1'}
     networks:
       - name: cloudbox
         ipv4_address: 172.18.0.15
         aliases:
           - plex
-    etc_hosts: >
-     {
-      "metrics.plex.tv": "127.0.0.1"
-     }
     state: started
 
 # we need this here because sometimes after a restore, docker will set this transcodes folder to root, dont ask why, but it does...
@@ -119,3 +116,11 @@
     group: "{{user}}"
     mode: 0775
   when: webtools_bundle.stat.exists == False
+
+- name: Create plex_autoscan Logs folder
+  file: 
+    path: "/opt/plex/Library/Logs/Plex Media Server"
+    state: directory
+    mode: 0775
+    owner: "{{user}}"
+    group: "{{user}}"
