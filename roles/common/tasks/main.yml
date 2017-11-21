@@ -35,6 +35,8 @@
       - ncdu
       - mc
       - speedtest-cli
+      - nodejs-legacy
+      - npm
       
   - name: Install common pip modules
     pip: "name={{item}} state=latest"
@@ -43,6 +45,11 @@
       - certbot
       - lxml
       - pyOpenSSL
+
+  - name: Install common npm modules
+    npm: "name={{item}} global=yes"
+    with_items:
+      - frontail
 
   - name: Install hostess
     get_url:
@@ -90,6 +97,10 @@
       - "{{mnt.docker_data}}/scripts/nzb"
       - "{{mnt.docker_data}}/scripts/nginx"
       - "{{mnt.docker_data}}/scripts/plex"
+      - "{{mnt.docker_data}}/opt/scripts/plex_autoscan"
+      - "{{mnt.docker_data}}/opt/scripts/cloudflare"
+      - "{{mnt.docker_data}}/opt/scripts/docker"
+      - "{{mnt.docker_data}}/opt/scripts/frontail"
       - "{{mnt.docker_data}}/systemd"
       - "/home/{{user}}/.config/rclone"
       - "{{mnt.docker_data}}/znc"
