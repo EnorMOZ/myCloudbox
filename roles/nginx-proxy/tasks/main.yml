@@ -60,6 +60,7 @@
   docker_container:
     name: letsencrypt
     image: "jrcs/letsencrypt-nginx-proxy-companion"
+    pull: yes
     volumes: "{{letsencrypt_volumes + docker_volumes.letsencrypt|default([])}}"
     volumes_from:
       - "nginx-proxy"
