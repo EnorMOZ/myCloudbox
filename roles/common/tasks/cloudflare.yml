@@ -11,3 +11,4 @@
   with_items: 
     - "{{ http_auth.sites }}"
     - plex
+    - rutorrent
