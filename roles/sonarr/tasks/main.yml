@@ -15,7 +15,7 @@
 - name: Create sonarr directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - ""{{mnt.docker_data}}/sonarr"
+    - "{{mnt.docker_data}}/sonarr"
     
 - name: Setup default sonarr docker volume to be merged
   set_fact:
