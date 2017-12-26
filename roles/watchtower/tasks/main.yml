@@ -27,7 +27,6 @@
     restart_policy: always
     networks:
       - name: cloudbox
-        ipv4_address: 172.18.0.5
         aliases:
           - watchtower
     state: started

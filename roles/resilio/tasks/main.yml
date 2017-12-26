@@ -6,41 +6,39 @@
 - name: "Get {{user}} gid"
   shell: "id -g {{user}}"
   register: gid
-
+  
 - name: Stop and remove any existing container
   docker_container:
-    name: organizr
+    name: resilio
     state: absent
 
-- name: Create organizr directories
+- name: Create resilio directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.docker_data}}/organizr"
-    
-- name: Setup default organizr docker volume to be merged
-  set_fact:
-    organizr_volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/organizr:/config"
+    - /opt/resilio
 
 - name: Create and start container
   docker_container:
-    name: organizr
-    image: "lsiocommunity/organizr"
+    name: resilio
+    image: "linuxserver/resilio-sync"
     pull: yes
     published_ports:
-      - "127.0.0.1:7421:80"
+      - "127.0.0.1:8888:8888"
+      - "55555:55555"
     env:
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
-      VIRTUAL_HOST: "organizr.{{domain}}"
-      VIRTUAL_PORT: 80
-      LETSENCRYPT_HOST: "organizr.{{domain}}"
+      VIRTUAL_HOST: "resilio.{{domain}}"
+      VIRTUAL_PORT: 8888
+      LETSENCRYPT_HOST: "resilio.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{organizr_volumes + docker_volumes.organizr|default([])}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/resilio:/config"
+      - "/mnt:/sync"
     networks:
       - name: cloudbox
         aliases:
-          - organizr
+          - resilio
     restart_policy: always
     state: started

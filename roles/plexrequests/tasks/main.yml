@@ -12,6 +12,11 @@
     name: plexrequests
     state: absent
 
+- name: Create plexrequests directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/plexrequests"
+    
 - name: Setup default plexrequests docker volume to be merged
   set_fact:
     plexrequests_volumes:
@@ -35,7 +40,6 @@
     volumes: "{{plexrequests_volumes + docker_volumes.plexrequests|default([])}}"
     networks:
       - name: cloudbox
-        ipv4_address: 172.18.0.17
         aliases:
           - plexrequests
     restart_policy: always

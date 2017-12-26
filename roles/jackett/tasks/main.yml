@@ -12,19 +12,24 @@
     name: jackett
     state: absent
 
+- name: Create jackett directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/jackett"
+    
 - name: Setup default jackett docker volume to be merged
   set_fact:
     jackett_volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "{{mnt.docker_data}}/jackett:/config"
-
+      
 - name: Create and start container
   docker_container:
     name: jackett
     image: hotio/suitarr
     pull: yes
     published_ports:
-      - "127.0.0.1:9117:8080"
+      - "127.0.0.1:9117:9117"
     env:
       APP: "jackett"
       VERSION: "unstable"
@@ -32,7 +37,7 @@
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
       VIRTUAL_HOST: "jackett.{{domain}}"
-      VIRTUAL_PORT: 8080
+      VIRTUAL_PORT: 9117
       LETSENCRYPT_HOST: "jackett.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes: "{{jackett_volumes + docker_volumes.jackett|default([])}}"
@@ -40,6 +45,5 @@
     state: started
     networks:
       - name: cloudbox
-        ipv4_address: 172.18.0.11
         aliases:
           - jackett
