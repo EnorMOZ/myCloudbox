@@ -6,41 +6,37 @@
 - name: "Get {{user}} gid"
   shell: "id -g {{user}}"
   register: gid
-
+  
 - name: Stop and remove any existing container
   docker_container:
-    name: organizr
+    name: ombi
     state: absent
 
-- name: Create organizr directories
+- name: Create ombi directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.docker_data}}/organizr"
-    
-- name: Setup default organizr docker volume to be merged
-  set_fact:
-    organizr_volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/organizr:/config"
+    - /opt/ombi
 
 - name: Create and start container
   docker_container:
-    name: organizr
-    image: "lsiocommunity/organizr"
+    name: ombi
+    image: "lsiodev/ombi-preview"
     pull: yes
     published_ports:
-      - "127.0.0.1:7421:80"
+      - "127.0.0.1:3579:3579"
     env:
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
-      VIRTUAL_HOST: "organizr.{{domain}}"
-      VIRTUAL_PORT: 80
-      LETSENCRYPT_HOST: "organizr.{{domain}}"
+      VIRTUAL_HOST: "ombi.{{domain}}"
+      VIRTUAL_PORT: 3579
+      LETSENCRYPT_HOST: "ombi.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{organizr_volumes + docker_volumes.organizr|default([])}}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/ombi:/config"
     networks:
       - name: cloudbox
         aliases:
-          - organizr
+          - ombi
     restart_policy: always
     state: started

@@ -38,3 +38,6 @@
     - { role: disable_ipv6, tags: ['full', 'common', 'disable_ipv6'] }
     - { role: znc, tags: ['full', 'common', 'znc'] }
     - { role: unrarall, tags: ['full', 'common', 'unrarall'] }
+    - { role: ombi, tags: ['install-ombi', 'update-ombi'] }
+    - { role: resilio, tags: ['install-resilio', 'update-resilio'] }
+    - { role: nextcloud, tags: ['install-nextcloud', 'update-nextcloud'] }
