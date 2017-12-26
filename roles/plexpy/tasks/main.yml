@@ -33,7 +33,7 @@
   docker_container:
     name: plexpy
     #image: linuxserver/plexpy
-    image: thedennyk/plexpy-v2
+    image: shiggins8/tautulli
     pull: yes
     published_ports:
       - "127.0.0.1:8181:8181"
