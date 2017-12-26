@@ -76,8 +76,10 @@
     - "{{mnt.local}}"
     - "{{mnt.unionfs}}"
     - "{{mnt.fuse_dir}}"
-    - "{{mnt.local}}/Media/TV
-    - "{{mnt.local}}/Media/Movies
+    - "{{mnt.local}}/Media/TV"
+    - "{{mnt.local}}/Media/Kids TV"
+    - "{{mnt.local}}/Media/Movies"
+    - "{{mnt.local}}/Media/Kids Movies"
     - "{{mnt.docker_data}}"
     - "{{mnt.docker_data}}/scripts"
     - "{{mnt.docker_data}}/torrent"
