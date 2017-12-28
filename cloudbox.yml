@@ -2,7 +2,7 @@
 - hosts: localhost
   vars_files:
     - settings.yml
-    - "{{ ansible_env.HOME }}/.settings.yml"
+    - "/home/seed/.settings.yml"
   roles:
     - { role: sanity_check }
     - { role: kernel, tags: ['kernel'] }
@@ -41,3 +41,4 @@
     - { role: ombi, tags: ['install-ombi', 'update-ombi'] }
     - { role: resilio, tags: ['install-resilio', 'update-resilio'] }
     - { role: nextcloud, tags: ['install-nextcloud', 'update-nextcloud'] }
+    - { role: thelounge, tags: ['install-thelounge', 'update-thelounge'] }
