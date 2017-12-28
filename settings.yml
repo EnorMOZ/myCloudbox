@@ -15,7 +15,7 @@
     passwd: "{{rutorrent_pass}}"
     downloads: "/home/{{user}}/downloads/rutorrent"
   plex:
-    tag: plexpass
+    tag: beta
     transcodes: "/dev/shm"
     hw_transcode: "True"
     user: "{{plex_user}}"
@@ -79,6 +79,7 @@
       - radarr
       - sonarr
       - nzbget
+      - thelounge
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
