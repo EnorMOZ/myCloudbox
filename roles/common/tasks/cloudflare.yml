@@ -7,7 +7,6 @@
     proxied: yes
     account_email: "{{user_email}}"
     account_api_token: "{{cloudflare_token}}"
-    state: present
   with_items: 
     - "{{ http_auth.sites }}"
     - plex
