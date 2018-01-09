@@ -80,6 +80,7 @@
       - sonarr
       - nzbget
       - thelounge
+      - tvheadend
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
@@ -100,4 +101,5 @@
       - radarr
       - sonarr
       - nzbget
+      - tvheadend
   znc_port: 62971
