@@ -1,0 +1,43 @@
+---
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: tvhproxy
+    state: absent
+
+- name: Create tvhproxy directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/tvhproxy"
+    
+- name: Setup default tvhproxy docker volume to be merged
+  set_fact:
+    tvhproxy_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+
+- name: Create and start container
+  docker_container:
+    name: tvhproxy
+    image: "chvb/docker-tvhproxy"
+    pull: yes
+    env:
+      APP: "tvhproxy"
+      BACKUP: "no"
+      PUID: "{{uid.stdout}}"
+      PGID: "{{gid.stdout}}"
+      TVH_URL: "http://{{user}}:"{{passwd}}"@tvheadend:9981"
+      TVH_TUNER_COUNT: 8
+    volumes: "{{tvhproxy_volumes + docker_volumes.tvhproxy|default([])}}"
+    networks:
+      - name: cloudbox
+        aliases:
+          - tvhproxy
+    restart_policy: always
+    state: started

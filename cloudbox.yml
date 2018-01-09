@@ -43,3 +43,4 @@
     - { role: nextcloud, tags: ['nextcloud'] }
     - { role: thelounge, tags: ['thelounge'] }
     - { role: tvheadend, tags: ['tvheadend'] }
+    - { role: tvhproxy, tags: ['tvproxy'] }
