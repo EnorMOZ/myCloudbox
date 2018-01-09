@@ -32,7 +32,7 @@
       BACKUP: "no"
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
-      TVH_URL: "http://{{user}}:"{{passwd}}"@tvheadend:9981"
+      TVH_URL: "http://{{user}}:{{passwd}}@tvheadend:9981"
       TVH_TUNER_COUNT: 8
     volumes: "{{tvhproxy_volumes + docker_volumes.tvhproxy|default([])}}"
     networks:
