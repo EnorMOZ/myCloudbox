@@ -1,0 +1,51 @@
+---
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: tvheadend
+    state: absent
+
+- name: Create tvheadend directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/tvheadend"
+    
+- name: Setup default tvheadend docker volume to be merged
+  set_fact:
+    tvheadend_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/tvheadend:/config"
+
+- name: Create and start container
+  docker_container:
+    name: tvheadend
+    image: "docker pull linuxserver/tvheadend"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:9981:9981"
+      - "127.0.0.1:9982:9982"
+      - "127.0.0.1:5004:5004"
+    env:
+      APP: "tvheadend"
+      BACKUP: "no"
+      PUID: "{{uid.stdout}}"
+      PGID: "{{gid.stdout}}"
+      VIRTUAL_HOST: "tvheadend.{{domain}}"
+      VIRTUAL_PORT: 9981
+      LETSENCRYPT_HOST: "tvheadend.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+      tvheadend_VERSION: "next"
+    volumes: "{{tvheadend_volumes + docker_volumes.tvheadend|default([])}}"
+    networks:
+      - name: cloudbox
+        aliases:
+          - tvheadend
+    restart_policy: always
+    state: started
