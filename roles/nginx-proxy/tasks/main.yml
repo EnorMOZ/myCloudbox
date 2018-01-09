@@ -78,4 +78,4 @@
     state: started
 
 - include: htauth.yml
-  when: http_auth.enable == "True"
+  when: http_auth.enable | default(False)
