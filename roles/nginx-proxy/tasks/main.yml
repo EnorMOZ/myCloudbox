@@ -12,6 +12,9 @@
   with_items:
     - /opt/nginx-proxy
 
+- include: htauth.yml
+  when: http_auth.enable | default(False)
+  
 - name: Import proxy.conf
   copy: "src=proxy.conf dest=/opt/nginx-proxy/proxy.conf force=yes owner={{user}} group={{user}} mode=0775"
 
@@ -76,6 +79,3 @@
           - letsencrypt
     restart_policy: always
     state: started
-
-- include: htauth.yml
-  when: http_auth.enable | default(False)
