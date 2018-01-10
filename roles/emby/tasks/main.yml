@@ -20,7 +20,7 @@
 
 - name: Retrieve emby docker image
   docker_image:
-    name: "emby/embyserver_netcore"
+    name: "emby/embyserver_netcore:{{emby.tag}}"
 
 - name: Setup two lists to be merged
   set_fact:
