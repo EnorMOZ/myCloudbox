@@ -1,0 +1,67 @@
+---
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+  
+- name: Create emby directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - /opt/emby
+    - "{{emby.transcodes}}"
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: emby
+    state: absent
+
+- name: Retrieve emby docker image
+  docker_image:
+    name: "emby/embyserver_netcore"
+
+- name: Setup two lists to be merged
+  set_fact:
+    emby_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/emby:/config"
+      - "{{emby.transcodes}}:/transcode"
+
+- name: Create and start container
+  docker_container:
+    name: emby
+    image: "embyinc/pms-docker:{{emby.tag}}"
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8096:8096tcp"
+    env:
+      UID: "{{uid.stdout}}"
+      GID: "{{gid.stdout}}"
+      CHANGE_CONFIG_DIR_OWNERSHIP: false
+      VIRTUAL_HOST: "emby.{{domain}}"
+      VIRTUAL_PORT: 8096
+      LETSENCRYPT_HOST: "emby.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes: "{{emby_volumes + docker_volumes.emby|default([])}}"
+    restart_policy: always
+    devices: "{{ '/dev/dri:/dev/dri' if emby.hw_transcode == 'True' | default(false) else omit }}"
+    networks:
+      - name: cloudbox
+        aliases:
+          - emby
+    state: started
+
+# we need this here because sometimes after a restore, docker will set this transcodes folder to root, dont ask why, but it does...
+- name: "Wait 5 seconds, then ensure {{emby.transcodes}} has the correct permissions"
+  wait_for:
+    timeout: 5
+
+- name: "Ensure transcodes folder has the correct permissions"
+  file:
+    path: "{{emby.transcodes}}"
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0775
+    recurse: true
