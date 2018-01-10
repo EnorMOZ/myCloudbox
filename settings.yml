@@ -85,7 +85,6 @@
       - nzbget
       - thelounge
       - tvheadend
-      - emby
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
