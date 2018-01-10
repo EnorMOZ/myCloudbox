@@ -15,7 +15,7 @@
     passwd: "{{rutorrent_pass}}"
     downloads: "/home/{{user}}/downloads/rutorrent"
   emby:
-    tag: latest
+    tag: beta
     transcodes: "/dev/shm"
     hw_transcode: "True"
   plex:
