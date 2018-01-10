@@ -44,3 +44,4 @@
     - { role: thelounge, tags: ['thelounge'] }
     - { role: tvheadend, tags: ['tvheadend'] }
     - { role: tvhproxy, tags: ['tvproxy'] }
+    - { role: emby, tags: ['emby'] }

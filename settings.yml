@@ -14,6 +14,10 @@
   rutorrent:
     passwd: "{{rutorrent_pass}}"
     downloads: "/home/{{user}}/downloads/rutorrent"
+  emby:
+    tag: lastest
+    transcodes: "/dev/shm"
+    hw_transcode: "True"
   plex:
     tag: beta
     transcodes: "/dev/shm"
@@ -81,6 +85,7 @@
       - nzbget
       - thelounge
       - tvheadend
+      - emby
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
@@ -102,4 +107,5 @@
       - sonarr
       - nzbget
       - tvheadend
+      - emby
   znc_port: 62971
