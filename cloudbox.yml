@@ -42,6 +42,5 @@
     - { role: resilio, tags: ['install-resilio', 'update-resilio'] }
     - { role: nextcloud, tags: ['nextcloud'] }
     - { role: thelounge, tags: ['thelounge'] }
-    - { role: tvheadend, tags: ['tvheadend'] }
-    - { role: tvhproxy, tags: ['tvproxy'] }
-    - { role: emby, tags: ['emby'] }
+    - { role: tvheadend, tags: ['plex','tvheadend'] }
+    - { role: antennas, tags: ['plex','antennas'] }
