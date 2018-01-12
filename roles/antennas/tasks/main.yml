@@ -21,7 +21,7 @@
   set_fact:
     antennas_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/antennas:/opt/antennas"
+      - "{{mnt.docker_data}}/antennas:{{mnt.docker_data}}/antennas"
 
 - name: Create and start container
   docker_container:

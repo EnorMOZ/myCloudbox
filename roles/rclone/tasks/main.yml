@@ -20,7 +20,7 @@
     - "{{mnt.docker_data}}/rclone"
     - "/home/{{user}}/.config/rclone"
 
-- name: Copy binary to /opt/rclone
+- name: Copy binary to {{mnt.docker_data}}/rclone
   copy:
     src: "/tmp/rclone-v{{ rclone.version }}-linux-amd64/rclone"
     dest: "{{mnt.docker_data}}/rclone/rclone"

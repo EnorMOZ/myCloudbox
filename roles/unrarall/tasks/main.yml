@@ -11,7 +11,7 @@
   with_items:
     - "{{mnt.docker_data}}/unrarall"
 
-- name: Copy binary to /opt/unrarall
+- name: Copy binary to {{mnt.docker_data}}/unrarall
   copy:
     src: "/tmp/unrarall/unrarall"
     dest: "{{mnt.docker_data}}/unrarall/unrarall"

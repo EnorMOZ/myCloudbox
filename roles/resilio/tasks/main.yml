@@ -15,7 +15,7 @@
 - name: Create resilio directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/resilio
+    - "{{mnt.docker_data}}/resilio"
 
 - name: Create and start container
   docker_container:
@@ -34,7 +34,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/resilio:/config"
+      - "{{mnt.docker_data}}/resilio:/config"
       - "/mnt:/sync"
     networks:
       - name: cloudbox

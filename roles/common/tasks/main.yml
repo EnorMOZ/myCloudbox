@@ -77,10 +77,6 @@
     - "{{mnt.local}}"
     - "{{mnt.unionfs}}"
     - "{{mnt.fuse_dir}}"
-    - "{{mnt.local}}/Media/TV"
-    - "{{mnt.local}}/Media/Kids TV"
-    - "{{mnt.local}}/Media/Movies"
-    - "{{mnt.local}}/Media/Kids Movies"
     - "{{mnt.docker_data}}"
     - "{{mnt.docker_data}}/scripts"
     - "{{mnt.docker_data}}/torrent"
@@ -100,10 +96,10 @@
     group=root
     mode=0644 
     
-- name: Set /opt permissions
+- name: Set {{mnt.docker_data}} permissions
   shell: "chmod -R 775 {{mnt.docker_data}}"
 
-- name: Set /opt owner
+- name: Set {{mnt.docker_data}} owner
   shell: "chown -R {{user}}:{{user}}{{mnt.docker_data}}"  
   
 - name: insert custom bashrc stuff

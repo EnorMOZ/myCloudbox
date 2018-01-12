@@ -15,7 +15,7 @@
 - name: Create ombi directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/ombi
+    - "{{mnt.docker_data}}/ombi"
 
 - name: Create and start container
   docker_container:
@@ -33,7 +33,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/ombi:/config"
+      - "{{mnt.docker_data}}/ombi:/config"
     networks:
       - name: cloudbox
         aliases:
