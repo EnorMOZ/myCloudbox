@@ -1,0 +1,44 @@
+---
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: antennas
+    state: absent
+
+- name: Create antennas directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/antennas"
+    
+- name: Setup default antennas docker volume to be merged
+  set_fact:
+    antennas_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/antennas:/opt/antennas"
+
+- name: Create and start container
+  docker_container:
+    name: antennas
+    image: "thejf/antennas"
+    pull: yes
+    env:
+      APP: "antennas"
+      BACKUP: "no"
+      PUID: "{{uid.stdout}}"
+      PGID: "{{gid.stdout}}"
+      ANTENNAS_URL: "http://antennas:5004"
+      TVHEADEND_URL: "http://{{tvheadend_user}}:{{tvheadend_pass}}@tvheadend:9981"
+    volumes: "{{antennas_volumes + docker_volumes.antennas|default([])}}"
+    networks:
+      - name: cloudbox
+        aliases:
+          - antennas
+    restart_policy: always
+    state: started
