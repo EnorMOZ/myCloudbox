@@ -80,6 +80,7 @@
       - sonarr
       - nzbget
       - thelounge
+      -lidarr
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
@@ -87,6 +88,8 @@
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
     sonarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
+    lidarr:
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"  
     plex:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
       - "/tmp:/tmp"
@@ -102,4 +105,5 @@
       - nzbget
       - tvheadend
       - antennas
+      - lidarr
   znc_port: 62971

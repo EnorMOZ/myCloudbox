@@ -16,10 +16,10 @@
 - name: Create required directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/nextcloud
-    - /opt/nextcloud/conf
-    - /opt/nextcloud/data
-    - /opt/mariadb
+    - "{{mnt.docker_data}}/nextcloud"
+    - "{{mnt.docker_data}}/nextcloud/conf"
+    - "{{mnt.docker_data}}/nextcloud/data"
+    - "{{mnt.docker_data}}/mariadb"
 
 - name: Create and start mariadb container
   docker_container:
@@ -34,7 +34,7 @@
       MYSQL_ROOT_PASSWORD: "password321"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/mariadb:/config"
+      - "{{mnt.docker_data}}/mariadb:/config"
     networks:
       - name: cloudbox
         aliases:
@@ -59,8 +59,8 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/nextcloud/conf:/config"
-      - "/opt/nextcloud/data:/data"
+      - "{{mnt.docker_data}}/nextcloud/conf:/config"
+      - "{{mnt.docker_data}}/nextcloud/data:/data"
       - "/mnt:/mnt"
     networks:
       - name: cloudbox

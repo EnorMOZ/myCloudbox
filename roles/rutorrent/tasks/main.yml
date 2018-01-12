@@ -10,7 +10,7 @@
 - name: Create rutorrent directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/rutorrent
+    - "{{mnt.docker_data}}/rutorrent"
 
 - name: Stop and remove any existing container
   docker_container:
@@ -70,7 +70,7 @@
 
 - name: Wait for php.ini to be created
   wait_for:
-    path: "/opt/rutorrent/php/php.ini"
+    path: "{{mnt.docker_data}}/rutorrent/php/php.ini"
     state: present
   when: rtorrent_rc.stat.exists == False
 
@@ -189,7 +189,7 @@
 
 - name: Set max_downloads_global to 1024
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^max_downloads_global\s?='
     line: 'max_downloads_global = 1024'
     state: present
@@ -197,7 +197,7 @@
 
 - name: Set max_uploads_global to 1024
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^max_uploads_global\s?='
     line: 'max_uploads_global = 1024'
     state: present
@@ -213,7 +213,7 @@
 
 - name: Set upload_max_filesize to 8M
   lineinfile:
-    path: "/opt/rutorrent/php/php.ini"
+    path: "{{mnt.docker_data}}/rutorrent/php/php.ini"
     regexp: '^upload_max_filesize\s?='
     line: 'upload_max_filesize = 8M'
     state: present

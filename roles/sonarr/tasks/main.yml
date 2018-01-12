@@ -16,6 +16,8 @@
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
     - "{{mnt.docker_data}}/sonarr"
+    - "{{mnt.local}}/Media/TV"
+    - "{{mnt.local}}/Media/Kids TV"
     
 - name: Setup default sonarr docker volume to be merged
   set_fact:

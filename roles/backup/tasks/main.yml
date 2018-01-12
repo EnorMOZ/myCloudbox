@@ -85,10 +85,10 @@
     shell: "docker ps -q"
     register: docker_list
 
-  - name: "Copy /etc/systemd/system to /opt/systemd for inclusion in backup"
+  - name: "Copy /etc/systemd/system to {{mnt.docker_data}}/systemd for inclusion in backup"
     copy:
       src: "/etc/systemd/system/{{item}}"
-      dest: "/opt/systemd/{{item}}"
+      dest: "{{mnt.docker_data}}/systemd/{{item}}"
       force: yes
       group: "{{user}}"
       owner: "{{user}}"

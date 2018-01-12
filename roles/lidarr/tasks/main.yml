@@ -9,45 +9,44 @@
 
 - name: Stop and remove any existing container
   docker_container:
-    name: radarr
+    name: lidarr
     state: absent
     
-- name: Create radarr directories
+- name: Create lidarr directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.docker_data}}/radarr"
-    - "{{mnt.local}}/Media/Kids Movies"
+    - "{{mnt.docker_data}}/lidarr"
     - "{{mnt.local}}/Media/Music"
 
-- name: Setup default radarr docker volume to be merged
+- name: Setup default lidarr docker volume to be merged
   set_fact:
-    radarr_volumes:
+    nzbget_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/radarr:/config"
+      - "{{mnt.docker_data}}/lidarr:/config"
       - "{{mnt.docker_data}}/scripts:/scripts"
-
+      
 - name: Create and start container
   docker_container:
-    name: radarr
+    name: lidarr
     image: hotio/suitarr
     pull: yes
     published_ports:
-      - "127.0.0.1:7878:8080"
+      - "127.0.0.1:8686:8686"
     env:
-      APP: "radarr"
+      APP: "lidarr"
       VERSION: "unstable"
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
       BACKUP: "no"
       MONO_TLS_PROVIDER: legacy
-      VIRTUAL_HOST: "radarr.{{domain}}"
-      VIRTUAL_PORT: 8080
-      LETSENCRYPT_HOST: "radarr.{{domain}}"
+      VIRTUAL_HOST: "lidarr.{{domain}}"
+      VIRTUAL_PORT: 8686
+      LETSENCRYPT_HOST: "lidarr.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{radarr_volumes + docker_volumes.radarr|default([])}}"    
+    volumes: "{{lidarr_volumes + docker_volumes.lidarr|default([])}}"
     networks:
       - name: cloudbox
         aliases:
-          - radarr
+          - lidarr
     restart_policy: always
     state: started

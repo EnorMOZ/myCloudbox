@@ -11,7 +11,7 @@
 - name: Create plex_autoscan directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
   with_items:
-    - /opt/plex_autoscan
+    - "{{mnt.docker_data}}/plex_autoscan"
 
 - name: Clone plex_autoscan
   git:
