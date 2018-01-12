@@ -40,7 +40,8 @@
     - { role: unrarall, tags: ['full', 'common', 'unrarall'] }
     - { role: ombi, tags: ['install-ombi', 'update-ombi'] }
     - { role: resilio, tags: ['install-resilio', 'update-resilio'] }
-    - { role: nextcloud, tags: ['nextcloud'] }
     - { role: thelounge, tags: ['thelounge'] }
     - { role: tvheadend, tags: ['plex','tvheadend'] }
     - { role: antennas, tags: ['plex','antennas'] }
+    - { role: nextcloud, tags: ['install-nextcloud', 'update-nextcloud'] }
+    - { role: lidarr, tags: ['install-lidarr', 'update-lidarr'] }
