@@ -16,17 +16,19 @@
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
     - "{{mnt.docker_data}}/tvheadend"
+    - "{{plex.transcodes}}/recordings"
     
 - name: Setup default tvheadend docker volume to be merged
   set_fact:
     tvheadend_volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "{{mnt.docker_data}}/tvheadend:/config"
+      - "{{plex.transcodes}}/recordings:/recordings"
 
 - name: Create and start container
   docker_container:
     name: tvheadend
-    image: "linuxserver/tvheadend"
+    image: "linuxserver/tvheadend:latest"
     pull: yes
     published_ports:
       - "127.0.0.1:9981:9981"
@@ -41,7 +43,6 @@
       VIRTUAL_PORT: 9981
       LETSENCRYPT_HOST: "tvheadend.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-      tvheadend_VERSION: "next"
     volumes: "{{tvheadend_volumes + docker_volumes.tvheadend|default([])}}"
     networks:
       - name: cloudbox
