@@ -45,3 +45,4 @@
     - { role: antennas, tags: ['plex','antennas'] }
     - { role: nextcloud, tags: ['install-nextcloud', 'update-nextcloud'] }
     - { role: lidarr, tags: ['install-lidarr', 'update-lidarr'] }
+    - { role: emby, tags: ['install-emby', 'update-emby'] }
