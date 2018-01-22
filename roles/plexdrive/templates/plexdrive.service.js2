@@ -8,7 +8,7 @@ After=network-online.target
 User={{user}}
 Group={{user}}
 Type=simple
-ExecStart={{mnt.docker_data}}/plexdrive/plexdrive mount -v 1 --refresh-interval=1m --chunk-check-threads=8 --chunk-load-threads=8 --chunk-load-ahead=4 --max-chunks=250 --fuse-options=allow_other,read_only --config={{mnt.docker_data}}/plexdrive --cache-file={{mnt.docker_data}}/plexdrive/cache.bolt {{mnt.plexdrive}}
+ExecStart={{mnt.docker_data}}/plexdrive/plexdrive mount -v 1 --refresh-interval=1m --chunk-check-threads=8 --chunk-load-threads=8 --chunk-load-ahead=4 --chunk-size=10M --max-chunks=250 --fuse-options=allow_other,read_only --config={{mnt.docker_data}}/plexdrive --cache-file={{mnt.docker_data}}/plexdrive/cache.bolt {{mnt.plexdrive}}
 ExecStop=/bin/fusermount -uz {{mnt.plexdrive}}
 Restart=on-failure
 RestartSec=5
