@@ -183,6 +183,12 @@
     value: fq
     state: present
 
+- name: Set default inotify watches 
+  sysctl:
+    name: fs.inotify.max_user_watches
+    value: 16384
+    state: present
+
 - debug: 
     msg: "System mounts: are {{ ansible_mounts }}"
 
