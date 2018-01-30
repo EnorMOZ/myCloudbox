@@ -80,7 +80,7 @@
       - sonarr
       - nzbget
       - thelounge
-      -lidarr
+      - lidarr
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
