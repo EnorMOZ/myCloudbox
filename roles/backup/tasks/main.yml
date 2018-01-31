@@ -204,12 +204,22 @@
 
   - name: "Set {{backup.dest}} permissions"
     shell: "chmod -R 775 {{backup.dest}}"
-    
+
   - name: "Set {{backup.dest}} owner"
     shell: "chown -R {{user}}:{{user}} {{backup.dest}}"
-  
-  - name: "Upload backups with rclone to {{backup.rclone_dest}}"
-    command: "rclone copy '{{backup.dest}}' '{{backup.rclone_dest}}' --stats=30s -v --transfers=2 --drive-chunk-size=64M --log-file='/home/{{user}}/backup_rclone.log'"
+
+  - name: "Check rclone cloudbox.tar datestamp"
+    shell: "rclone lsl {{backup.rclone_dest}}/cloudbox.tar|cut -d ' ' -f 2,3|cut -d '.' -f 1|sed s/' '/_/g|sed s/':'/./g"
+    register: rclone_timestamp
+    when: backup.use_rclone
+
+  - name: "Move off old cloudbox.tar on \"{{backup.rclone_dest}}\""
+    shell: "rclone moveto '{{backup.rclone_dest}}/cloudbox.tar' '{{backup.rclone_dest}}/cloudbox.{{rclone_timestamp.stdout}}.tar' 2>/dev/null"
+    ignore_errors: yes
+    when: backup.use_rclone
+
+  - name: "Upload backup with rclone to \"{{backup.rclone_dest}}\""
+    command: "rclone copy '{{backup.dest}}/cloudbox.tar' '{{backup.rclone_dest}}' --stats=30s -v --transfers=2 --drive-chunk-size=64M --log-file='/home/{{user}}/backup_rclone.log'"
     become: true
     become_user: "{{user}}"
     when: backup.use_rclone
