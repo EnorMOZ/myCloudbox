@@ -32,7 +32,6 @@
 - name: Create and start container
   docker_container:
     name: plexpy
-    #image: linuxserver/plexpy
     image: shiggins8/tautulli
     pull: yes
     published_ports:
@@ -52,4 +51,3 @@
         aliases:
           - plexpy
     state: started
-
