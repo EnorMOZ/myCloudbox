@@ -1,4 +1,4 @@
-----
+---
 - name: "Get {{user}} uid"
   shell: "id -u {{user}}"
   register: uid
@@ -32,14 +32,14 @@
 - name: Get epg
   get_url:
     dest: "{{mnt.docker_data}}/plex/p2.xml.gz"
-    url: "{{telly_epg_url}}
+    url: "{{telly_epg_url}}"
     owner: seed
     group: seed
     mode: 0440
     force: yes
 
 - name: extract epg
-  shell: "gunzip {{mnt.docker_data}}/plex/p2.xml.gz"
+  shell: "gunzip -f {{mnt.docker_data}}/plex/p2.xml.gz"
 
 - name: Setup default telly docker volume to be merged
   set_fact:
