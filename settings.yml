@@ -103,7 +103,6 @@
       - radarr
       - sonarr
       - nzbget
-      - tvheadend
       - lidarr
       - telly
   znc_port: 62971
