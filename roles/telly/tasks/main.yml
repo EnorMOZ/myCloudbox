@@ -1,0 +1,62 @@
+----
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: telly
+    state: absent
+
+- name: Create telly directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/telly"
+
+- name: get {{telly_m3u_file}}
+  get_url:
+    dest: "{{telly_m3u_file}}"
+    url: "{{telly_m3u_url}}"
+    owner: seed
+    group: seed
+    mode: 0440
+    force: yes
+
+- name: replace EXTINF info
+  shell: "sed -i 's/#EXTINF:-1/#EXTINF:-1,/g' {{ telly_m3u_file }}"
+
+- name: Get epg
+  get_url:
+    dest: "{{mnt.docker_data}}/plex/p2.xml.gz"
+    url: "{{telly_epg_url}}
+    owner: seed
+    group: seed
+    mode: 0440
+    force: yes
+
+- name: extract epg
+  shell: "gunzip {{mnt.docker_data}}/plex/p2.xml.gz"
+
+- name: Setup default telly docker volume to be merged
+  set_fact:
+    telly_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/telly:{{mnt.docker_data}}/telly"
+
+- name: Create and start container
+  docker_container:
+    name: telly
+    image: "hazcod/telly"
+    pull: yes
+    command: '{{telly_command}}'
+    volumes: "{{telly_volumes + docker_volumes.telly|default([])}}"
+    networks:
+      - name: cloudbox
+        aliases:
+          - telly
+    restart_policy: always
+    state: started
