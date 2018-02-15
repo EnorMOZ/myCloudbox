@@ -41,7 +41,6 @@
     - { role: ombi, tags: ['install-ombi', 'update-ombi'] }
     - { role: resilio, tags: ['install-resilio', 'update-resilio'] }
     - { role: thelounge, tags: ['thelounge'] }
-    - { role: tvheadend, tags: ['plex','tvheadend'] }
     - { role: nextcloud, tags: ['install-nextcloud', 'update-nextcloud'] }
     - { role: lidarr, tags: ['install-lidarr', 'update-lidarr'] }
     - { role: emby, tags: ['install-emby', 'update-emby'] }
