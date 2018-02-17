@@ -73,7 +73,7 @@
       - hydra
       - jackett
       - organizr
-      - plexpy
+      - tautulli
       - plexrequests
       - portainer
       - radarr
@@ -98,7 +98,7 @@
       - "--cleanup"
     monitor:
       - organizr
-      - plexpy
+      - tautulli
       - plexrequests
       - radarr
       - sonarr
