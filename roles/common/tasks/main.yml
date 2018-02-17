@@ -100,7 +100,7 @@
   shell: "chmod -R 775 {{mnt.docker_data}}"
 
 - name: Set {{mnt.docker_data}} owner
-  shell: "chown -R {{user}}:{{user}}{{mnt.docker_data}}"  
+  shell: "chown -R {{user}}:{{user}} {{mnt.docker_data}}"  
   
 - name: insert custom bashrc stuff
   blockinfile:
