@@ -37,7 +37,7 @@ subdomains = {
     'nzbget': False,
     'rutorrent': False,
     'plex': True,
-    'plexpy': False,
+    'tautulli': False,
     'plexrequests': False,
     'organizr': False,
     'portainer': False

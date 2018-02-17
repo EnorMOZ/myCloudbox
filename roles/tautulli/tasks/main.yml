@@ -9,7 +9,7 @@
 
 - name: Stop and remove any existing container
   docker_container:
-    name: plexpy
+    name: tautulli
     state: absent
 
 - name: Wait for Plex Logs folder to be created by Plex
@@ -17,21 +17,29 @@
     path: "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs"
     state: present
 
-- name: Create plexpy directories
+- name: Check if plexpy data dir already exists
+  stat: path="{{mnt.docker_data}}/plexpy"
+  register: plexpy_stat
+
+- name: Rename plexpy data dir to tautulli if plexpy data dir already existed
+  command: mv "{{mnt.docker_data}}/plexpy" {{mnt.docker_data}}/tautulli"
+  when: plexpy_stat.stat.exists
+  
+- name: Create tautulli directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.docker_data}}/plexpy"
+    - "{{mnt.docker_data}}/tautulli"
     
-- name: Setup default plexpy docker volume to be merged
+- name: Setup default tautulli docker volume to be merged
   set_fact:
-    plexpy_volumes:
+    tautulli_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/plexpy:/config"
+      - "{{mnt.docker_data}}/tautulli:/config"
       - "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro"
 
 - name: Create and start container
   docker_container:
-    name: plexpy
+    name: tautulli
     image: shiggins8/tautulli
     pull: yes
     published_ports:
@@ -40,14 +48,14 @@
       ADVANCED_GIT_BRANCH: v2
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
-      VIRTUAL_HOST: "plexpy.{{domain}}"
+      VIRTUAL_HOST: "tautulli.{{domain}}"
       VIRTUAL_PORT: 8181
-      LETSENCRYPT_HOST: "plexpy.{{domain}}"
+      LETSENCRYPT_HOST: "tautulli.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{plexpy_volumes + docker_volumes.plexpy|default([])}}"
+    volumes: "{{tautulli_volumes + docker_volumes.tautulli|default([])}}"
     restart_policy: always
     networks:
       - name: cloudbox
         aliases:
-          - plexpy
+          - tautulli
     state: started
