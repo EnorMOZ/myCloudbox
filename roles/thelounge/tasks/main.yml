@@ -1,0 +1,50 @@
+---
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: thelounge
+    state: absent
+
+- name: Create thelounge directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/thelounge"
+    
+- name: Setup default thelounge docker volume to be merged
+  set_fact:
+    thelounge_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/thelounge:/home/lounge/data"
+
+- name: Create and start container
+  docker_container:
+    name: thelounge
+#    image: "thelounge/lounge:latest"
+    image: "thelounge:next"
+   # pull: yes
+    published_ports:
+      - "127.0.0.1:9000:9000"
+    env:
+      APP: "thelounge"
+      BACKUP: "no"
+      PUID: "{{uid.stdout}}"
+      PGID: "{{gid.stdout}}"
+      VIRTUAL_HOST: "thelounge.{{domain}}"
+      VIRTUAL_PORT: 9000
+      LETSENCRYPT_HOST: "thelounge.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+      THELOUNGE_VERSION: "next"
+    volumes: "{{thelounge_volumes + docker_volumes.thelounge|default([])}}"
+    networks:
+      - name: cloudbox
+        aliases:
+          - thelounge
+    restart_policy: always
+    state: started

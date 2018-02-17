@@ -1,9 +1,24 @@
 ---
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+
 - name: Stop and remove any existing container
   docker_container:
     name: sonarr
     state: absent
 
+- name: Create sonarr directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/sonarr"
+    - "{{mnt.local}}/Media/TV"
+    - "{{mnt.local}}/Media/Kids TV"
+    
 - name: Setup default sonarr docker volume to be merged
   set_fact:
     sonarr_volumes:
@@ -18,10 +33,10 @@
     pull: yes
     published_ports:
       - "127.0.0.1:8989:8080"
-    env:      
+    env:
       APP: "sonarr"
       VERSION: "unstable"
-      BACKUP: "yes"
+      BACKUP: "no"
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
       MONO_TLS_PROVIDER: legacy
@@ -32,7 +47,6 @@
     volumes: "{{sonarr_volumes + docker_volumes.sonarr|default([])}}"
     networks:
       - name: cloudbox
-        ipv4_address: 172.18.0.13
         aliases:
           - sonarr
     restart_policy: always

@@ -1,0 +1,17 @@
+# Place this file in the users home dir as .settings.yml
+# Ideally ansible-vault encrypted
+plex_user: PLEXUSER
+plex_pass: PASS
+user_pass: password123
+user_domain: mydomain.com
+user_email: my@email.com
+rutorrent_pass: password123
+cloudflare_token: MYTOKEN
+telly_m3u_url: http://m3u.com
+telly_epg_url: http://epg.com
+gce:
+  name: my-test-instance1
+  zone: us-central1-a
+  credentials_file: "/path/to/your-key.json"
+  service_account_email: "your-sa@your-project-name.iam.gserviceaccount.com"
+  project_id: "your-project-name"

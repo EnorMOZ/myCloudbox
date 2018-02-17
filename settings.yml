@@ -15,13 +15,14 @@
     passwd: "{{rutorrent_pass}}"
     downloads: "/home/{{user}}/downloads/rutorrent"
   plex:
-    tag: plexpass
+    tag: beta
     transcodes: "/dev/shm"
     hw_transcode: "True"
     user: "{{plex_user}}"
     pass: "{{plex_pass}}"
   plex_autoscan:
     ip: "{{ ansible_docker0.ipv4.address }}"
+    version: dev
   rclone:
     version: 1.38
     bwlimit: "69M"
@@ -64,45 +65,47 @@
       - "{{mnt.docker_data}}"
       - /var/spool/cron
     exclude_paths:
+    pushover_app_token: 
+    pushover_user_key:
   http_auth:
     enable: True
     sites:
       - hydra
       - jackett
       - organizr
-      - plexpy
+      - tautulli
       - plexrequests
       - portainer
       - radarr
       - sonarr
       - nzbget
+      - thelounge
+      - lidarr
   docker_volumes:
     radarr:
-      - "{{mnt.unionfs}}"
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
     nzbget:
-      - "{{mnt.unionfs}}"
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
     sonarr:
-      - "{{mnt.unionfs}}"
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
+    lidarr:
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"  
     plex:
-      - "{{mnt.unionfs}}/Media:/data/.media"
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
       - "/tmp:/tmp"
   watchtower:
     command:
       - "--cleanup"
     monitor:
       - organizr
-      - plexpy
+      - tautulli
       - plexrequests
       - radarr
       - sonarr
       - nzbget
-  pushover:
-    - app_token: 
-    - user_token:
+      - lidarr
+      - telly
   znc_port: 62971
-  gce:
-    name:
-    zone:
-    credentials_file:
-    service_account_email:
-    project_id:
+  gce_cron: daily 
+  telly_m3u_file: "{{mnt.docker_data}}/telly/myiptv.m3u"
+  telly_command: "-file {{ telly_m3u_file }} -listen 0.0.0.0:6077"

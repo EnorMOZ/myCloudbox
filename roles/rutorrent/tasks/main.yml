@@ -6,7 +6,12 @@
 - name: "Get {{user}} gid"
   shell: "id -g {{user}}"
   register: gid
-  
+
+- name: Create rutorrent directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/rutorrent"
+
 - name: Stop and remove any existing container
   docker_container:
     name: rutorrent
@@ -36,7 +41,7 @@
 - name: Create and start container
   docker_container:
     name: rutorrent
-    image: l3uddz/docker-rutorrent-cloudbox
+    image: horjulf/rutorrent-autodl
     pull: yes
     published_ports:
       - "127.0.0.1:3111:80"
@@ -52,7 +57,6 @@
     volumes: "{{rutorrent_volumes + docker_volumes.rutorrent|default([])}}"
     networks:
       - name: cloudbox
-        ipv4_address: 172.18.0.10
         aliases:
           - rutorrent
     restart_policy: always
@@ -66,7 +70,7 @@
 
 - name: Wait for php.ini to be created
   wait_for:
-    path: "/opt/rutorrent/php/php.ini"
+    path: "{{mnt.docker_data}}/rutorrent/php/php.ini"
     state: present
   when: rtorrent_rc.stat.exists == False
 
@@ -185,7 +189,7 @@
 
 - name: Set max_downloads_global to 1024
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^max_downloads_global\s?='
     line: 'max_downloads_global = 1024'
     state: present
@@ -193,7 +197,7 @@
 
 - name: Set max_uploads_global to 1024
   lineinfile:
-    path: "/opt/rutorrent/rtorrent/rtorrent.rc"
+    path: "{{mnt.docker_data}}/rutorrent/rtorrent/rtorrent.rc"
     regexp: '^max_uploads_global\s?='
     line: 'max_uploads_global = 1024'
     state: present
@@ -209,7 +213,7 @@
 
 - name: Set upload_max_filesize to 8M
   lineinfile:
-    path: "/opt/rutorrent/php/php.ini"
+    path: "{{mnt.docker_data}}/rutorrent/php/php.ini"
     regexp: '^upload_max_filesize\s?='
     line: 'upload_max_filesize = 8M'
     state: present
@@ -229,11 +233,10 @@
   htpasswd:
     path: "{{mnt.docker_data}}/rutorrent/nginx/.htpasswd"
     name: "{{user}}"
-    password: "{{rutorrent.passwd}}"
+    password: "{{rutorrent_pass}}"
     owner: "{{user}}"
     group: "{{user}}"
     mode: 0775
-  when: rtorrent_rc.stat.exists == False
 
 - name: Start container to apply changes
   docker_container:

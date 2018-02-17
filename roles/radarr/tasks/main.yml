@@ -1,8 +1,23 @@
 ---
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+
 - name: Stop and remove any existing container
   docker_container:
     name: radarr
     state: absent
+    
+- name: Create radarr directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/radarr"
+    - "{{mnt.local}}/Media/Kids Movies"
+    - "{{mnt.local}}/Media/Music"
 
 - name: Setup default radarr docker volume to be merged
   set_fact:
@@ -23,7 +38,7 @@
       VERSION: "unstable"
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
-      BACKUP: "yes"
+      BACKUP: "no"
       MONO_TLS_PROVIDER: legacy
       VIRTUAL_HOST: "radarr.{{domain}}"
       VIRTUAL_PORT: 8080
@@ -32,7 +47,6 @@
     volumes: "{{radarr_volumes + docker_volumes.radarr|default([])}}"    
     networks:
       - name: cloudbox
-        ipv4_address: 172.18.0.14
         aliases:
           - radarr
     restart_policy: always
