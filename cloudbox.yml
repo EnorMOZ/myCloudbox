@@ -2,22 +2,22 @@
 - hosts: localhost
   vars_files:
     - settings.yml
-    - "{{ ansible_env.HOME }}/.settings.yml"
+    - "/home/seed/.settings.yml"
   roles:
     - { role: sanity_check }
     - { role: kernel, tags: ['kernel'] }
     - { role: pre_install, tags: ['full', 'feeder', 'plex'] }
-    - { role: system, tags: ['full', 'feeder', 'plex'] }
-    - { role: motd, tags: ['full', 'feeder', 'plex'] }
+    - { role: system, tags: ['full', 'feeder', 'plex', 'system'] }
+    - { role: motd, tags: ['full', 'feeder', 'plex', 'motd'] }
     - { role: common, tags: ['full', 'feeder', 'plex', 'common'] }
     - { role: unionfs, tags: ['full', 'feeder', 'plex', 'unionfs'] }
     - { role: docker, tags: ['full', 'feeder', 'plex', 'docker'] }
     - { role: nginx-proxy, tags: ['full', 'feeder', 'plex', 'nginx-proxy'] }
     - { role: watchtower, tags: ['full', 'feeder', 'plex', 'watchtower'] }
-    - { role: portainer, tags: ['full', 'feeder', 'plex', 'portainer'] }
+    - { role: portainer, tags: ['full', 'feeder', 'portainer'] }
     - { role: plexdrive, tags: ['full', 'feeder', 'plex', 'plexdrive'] }
     - { role: rclone, tags: ['full', 'feeder', 'plex', 'rclone'] }
-    - { role: organizr, tags: ['full', 'feeder', 'plex', 'organizr'] }
+    - { role: organizr, tags: ['full', 'feeder', 'organizr'] }
     - { role: scripts, tags: ['full', 'feeder', 'plex', 'scripts'] }
     - { role: unionfs_cleaner, tags: ['full', 'feeder', 'unionfs_cleaner']}
     - { role: nzbget, tags: ['full', 'feeder', 'nzbget'] }
@@ -27,7 +27,7 @@
     - { role: sonarr, tags: ['full', 'feeder', 'sonarr'] }
     - { role: radarr, tags: ['full', 'feeder', 'radarr'] }
     - { role: plex, tags: ['full', 'plex', 'plexserver'] }
-    - { role: plexpy, tags: ['full', 'plex', 'plexpy'] }
+    - { role: tautulli, tags: ['full', 'plex', 'tautulli'] }
     - { role: plexrequests, tags: ['full', 'plex', 'plexrequests'] }
     - { role: plex_autoscan, tags: ['full', 'plex', 'plex_autoscan'] }
     - { role: backup, tags: ['backup'] }
@@ -38,3 +38,12 @@
     - { role: disable_ipv6, tags: ['full', 'common', 'disable_ipv6'] }
     - { role: znc, tags: ['full', 'common', 'znc'] }
     - { role: unrarall, tags: ['full', 'common', 'unrarall'] }
+    - { role: ombi, tags: ['ombi'] }
+    - { role: resilio, tags: ['resilio'] }
+    - { role: thelounge, tags: ['thelounge'] }
+    - { role: nextcloud, tags: ['nextcloud'] }
+    - { role: lidarr, tags: ['lidarr'] }
+    - { role: emby, tags: ['emby'] }
+    - { role: nzbhydra2, tags: ['nzbhydra2'] }
+    - { role: telly, tags: ['telly'] }
+

@@ -1,0 +1,66 @@
+---
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+
+- name: Stop and remove any existing plexpy container
+  docker_container:
+    name: plexpy
+    state: absent
+    
+- name: Stop and remove any existing container
+  docker_container:
+    name: tautulli
+    state: absent
+
+- name: Wait for Plex Logs folder to be created by Plex
+  wait_for:
+    path: "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs"
+    state: present
+
+- name: Check if plexpy data dir already exists
+  stat: path="{{mnt.docker_data}}/plexpy"
+  register: plexpy_stat
+
+- name: Rename plexpy data dir to tautulli if plexpy data dir already existed
+  command: mv {{mnt.docker_data}}/plexpy {{mnt.docker_data}}/tautulli
+  when: plexpy_stat.stat.exists
+  
+- name: Create tautulli directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/tautulli"
+    
+- name: Setup default tautulli docker volume to be merged
+  set_fact:
+    tautulli_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{mnt.docker_data}}/tautulli:/config"
+      - "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro"
+
+- name: Create and start container
+  docker_container:
+    name: tautulli
+    image: shiggins8/tautulli
+    pull: yes
+    published_ports:
+      - "127.0.0.1:8181:8181"
+    env:
+      ADVANCED_GIT_BRANCH: v2
+      PUID: "{{uid.stdout}}"
+      PGID: "{{gid.stdout}}"
+      VIRTUAL_HOST: "tautulli.{{domain}}"
+      VIRTUAL_PORT: 8181
+      LETSENCRYPT_HOST: "tautulli.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
+    volumes: "{{tautulli_volumes + docker_volumes.tautulli|default([])}}"
+    restart_policy: always
+    networks:
+      - name: cloudbox
+        aliases:
+          - tautulli
+    state: started

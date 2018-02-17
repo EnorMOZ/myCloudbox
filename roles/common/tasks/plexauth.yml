@@ -26,23 +26,3 @@
   - name: set proper authToken var
     set_fact: >
       plexauth="{{plextoken.json.user.authToken| regex_replace('\n', '')}}"
-  
-#  - name: "Get Plex section info"
-#    uri:
-#      url: https://plex.viciado.tv/library/sections/all
-#      headers: 
-#        X-Plex-Token: "{{plexauth}}"
-#      return_content: True  
-#    register: plexsections
-  
-#  - debug: var=plexsections
-  
-#  - name: Parse xml output to get section info
-#    xml:
-#      xmlstring: "{{ plexsections.content }}"
-#      xpath: "/MediaContainer/Directory/Location"
-#      content: attribute
-#    register: stuff
-      
-#  - debug: var=stuff   
-      

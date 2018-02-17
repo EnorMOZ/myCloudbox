@@ -1,4 +1,12 @@
 ---
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+
 - name: "Unarchive rclone v{{rclone.version}}"
   unarchive:
     src: https://github.com/ncw/rclone/releases/download/v{{ rclone.version }}/rclone-v{{ rclone.version }}-linux-amd64.zip
@@ -12,7 +20,7 @@
     - "{{mnt.docker_data}}/rclone"
     - "/home/{{user}}/.config/rclone"
 
-- name: Copy binary to /opt/rclone
+- name: Copy binary to {{mnt.docker_data}}/rclone
   copy:
     src: "/tmp/rclone-v{{ rclone.version }}-linux-amd64/rclone"
     dest: "{{mnt.docker_data}}/rclone/rclone"
