@@ -9,9 +9,11 @@ rutorrent_pass: password123
 cloudflare_token: MYTOKEN
 telly_m3u_url: http://m3u.com
 telly_epg_url: http://epg.com
-gce:
-  name: my-test-instance1
-  zone: us-central1-a
-  credentials_file: "/path/to/your-key.json"
-  service_account_email: "your-sa@your-project-name.iam.gserviceaccount.com"
-  project_id: "your-project-name"
+gce_name: my-test-instance1
+gce_zone: us-central1-a
+gce_credentials_file: "/path/to/your-key.json"
+gce_service_account_email: "your-sa@your-project-name.iam.gserviceaccount.com"
+gce_project_id: "your-project-name"
+gce_json: |
+  blah
+  blah

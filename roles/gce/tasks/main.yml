@@ -3,20 +3,30 @@
 - name: "Get ansible-playbook binary path"
   shell: "which ansible-playbook"
   register: playbook_binary
-  
-- name: "Schedule cron backup for GCE Syn state: {{backup.cron_state}}, when: {{backup.cron_time}}"
+
+- name: Install common pip modules
+  pip: "name=apache-libcloud state=latest"
+      
+- name: "Schedule cron backup for GCE Sync"
   cron:
     name: "Daily GCE Sync"
     special_time: "{{gce_cron}}"
     job: "{{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags gce"
     state: "{{backup.cron_state}}"
+
+- name: Create private gce json credential from Ansible Vault
+  copy:
+    content: "{{gce_json}}"
+    dest: "{{gce_credentials_file}}"
+    owner: seed
+    group: seed
     
 - name: Start GCE
   gce:
-    instance_names: "{{gce.name}}"
-    zone: "{{gce.zone}}"
+    instance_names: "{{gce_name}}"
+    zone: "{{gce_zone}}"
     state: started
-    credentials_file: "{{ gce.credentials_file }}"
-    service_account_email: "{{gce.service_account_email}}"
-    project_id: "{{gce.project_id}}"
+    credentials_file: "{{ gce_credentials_file }}"
+    service_account_email: "{{gce_service_account_email}}"
+    project_id: "{{gce_project_id}}"
     
