@@ -34,7 +34,14 @@
     ],
     "SERVER_USE_SQLITE": true,
     "SERVER_PORT": 3468,
-    "SERVER_SCAN_DELAY": 180,
+    "SERVER_SCAN_DELAY": 5,
+    "PLEX_SCAN_PRIORITIES": { {% for i in plex_section.matches %}  
+        "{{ i.Location.id }}": [
+            "/{{ i.Location.path | basename }}/"
+ 	 ]{{ ( loop.last ) | ternary('', ',') }} {% endfor %}
+          
+    },
     "USE_DOCKER": true,
-    "USE_SUDO": false
+    "USE_SUDO": false,
+    "RUN_COMMAND_BEFORE_SCAN': ''
 }
