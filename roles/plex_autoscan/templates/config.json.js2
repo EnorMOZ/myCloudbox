@@ -43,5 +43,5 @@
     },
     "USE_DOCKER": true,
     "USE_SUDO": false,
-    "RUN_COMMAND_BEFORE_SCAN': ''
+    "RUN_COMMAND_BEFORE_SCAN": ''
 }
