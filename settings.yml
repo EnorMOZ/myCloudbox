@@ -108,4 +108,4 @@
   znc_port: 62971
   gce_cron: daily 
   telly_m3u_file: "{{mnt.docker_data}}/telly/myiptv.m3u"
-  telly_command: "-streams 6 -file {{ telly_m3u_file }} -listen 0.0.0.0:6077"
+  telly_command: "-playlist {{ telly_m3u_file }} -streams 6 -listen 0.0.0.0:6077"
