@@ -50,7 +50,7 @@
 - name: Create and start container
   docker_container:
     name: telly
-    image: "hazcod/telly"
+    image: "tombowditch/telly"
     pull: yes
     command: '{{telly_command}}'
     volumes: "{{telly_volumes + docker_volumes.telly|default([])}}"
