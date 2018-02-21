@@ -107,4 +107,6 @@
       - telly
   znc_port: 62971
   gce_cron: daily 
-  telly_command: "-playlist {{ telly_m3u_url }} -streams 6 -listen 0.0.0.0:6077"
+  telly:
+    streams: "6"
+    listen: "0.0.0.0:6077"
