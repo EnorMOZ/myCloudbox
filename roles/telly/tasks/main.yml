@@ -31,7 +31,7 @@
     command: '{{telly_command}}'
     volumes: "{{telly_volumes + docker_volumes.telly|default([])}}"
     env:
-      PLAYLIST: {{ telly_m3u_url }}
+      PLAYLIST: "{{ telly_m3u_url }}"
       STREAMS: "{{telly.streams}}"
       LISTEN: "{{telly.listen}}"
       PUID: "{{uid.stdout}}"
