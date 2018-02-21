@@ -17,18 +17,6 @@
   with_items:
     - "{{mnt.docker_data}}/telly"
 
-- name: Get epg
-  get_url:
-    dest: "{{mnt.docker_data}}/plex/p2.xml.gz"
-    url: "{{telly_epg_url}}"
-    owner: seed
-    group: seed
-    mode: 0440
-    force: yes
-
-- name: extract epg
-  shell: "gunzip -f {{mnt.docker_data}}/plex/p2.xml.gz"
-
 - name: Setup default telly docker volume to be merged
   set_fact:
     telly_volumes:
@@ -42,6 +30,12 @@
     pull: yes
     command: '{{telly_command}}'
     volumes: "{{telly_volumes + docker_volumes.telly|default([])}}"
+    env:
+      PLAYLIST: {{ telly_m3u_url }}
+      STREAMS: "{{telly.streams}}"
+      LISTEN: "{{telly.listen}}"
+      PUID: "{{uid.stdout}}"
+      PGID: "{{gid.stdout}}"
     networks:
       - name: cloudbox
         aliases:
