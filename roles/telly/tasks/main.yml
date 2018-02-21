@@ -17,18 +17,6 @@
   with_items:
     - "{{mnt.docker_data}}/telly"
 
-- name: get {{telly_m3u_file}}
-  get_url:
-    dest: "{{telly_m3u_file}}"
-    url: "{{telly_m3u_url}}"
-    owner: seed
-    group: seed
-    mode: 0440
-    force: yes
-
-- name: replace EXTINF info
-  shell: "sed -i 's/#EXTINF:-1/#EXTINF:-1,/g' {{ telly_m3u_file }}"
-
 - name: Get epg
   get_url:
     dest: "{{mnt.docker_data}}/plex/p2.xml.gz"
