@@ -2,6 +2,7 @@
 # Ideally ansible-vault encrypted
 plex_user: PLEXUSER
 plex_pass: PASS
+plex_autoscan_pass: PASS
 user_pass: password123
 user_domain: mydomain.com
 user_email: my@email.com

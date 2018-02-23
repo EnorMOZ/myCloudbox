@@ -25,10 +25,6 @@
     requirements: "{{mnt.docker_data}}/plex_autoscan/requirements.txt"
     executable: pip
 
-- name: "Generate 32 character SERVER_PASS"
-  shell: "pwgen 32 1"
-  register: plex_autoscan_pass
-
 - name: Setup default config
   template:
     src: config.json.js2
