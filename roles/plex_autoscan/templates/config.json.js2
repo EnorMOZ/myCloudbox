@@ -25,7 +25,7 @@
     "SERVER_FILE_EXIST_PATH_MAPPINGS": {},
     "SERVER_IP": "{{plex_autoscan.ip}}",
     "SERVER_MAX_FILE_CHECKS": 10,
-    "SERVER_PASS": "{{plex_autoscan_pass.stdout}}",
+    "SERVER_PASS": "{{plex_autoscan_pass}}",
     "SERVER_PATH_MAPPINGS": {},
     "SERVER_IGNORE_LIST": [
         "/.grab/",
