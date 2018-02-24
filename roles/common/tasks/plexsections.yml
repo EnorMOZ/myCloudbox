@@ -1,6 +1,6 @@
 - name: "Get Plex section info"
   uri:
-    url: https://plex.viciado.tv/library/sections/all
+    url: https://plex.{{domain}}/library/sections/all
     headers:
       X-Plex-Token: "{{plexauth}}"
     return_content: True

@@ -116,12 +116,6 @@
         fi
         export EDITOR="/bin/nano"
 
-- include_tasks: plexauth.yml
-  tags: plexauth
-   
-- include_tasks: plexsections.yml
-  tags: plexsections 
-
 - include_tasks: cloudflare.yml
   tags: cloudflare 
 
