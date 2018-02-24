@@ -116,13 +116,13 @@
         fi
         export EDITOR="/bin/nano"
 
-- include: plexauth.yml
+- include_tasks: plexauth.yml
   tags: plexauth
    
-- include: plexsections.yml
+- include_tasks: plexsections.yml
   tags: plexsections 
 
-- include: cloudflare.yml
+- include_tasks: cloudflare.yml
   tags: cloudflare 
 
 - name: Check plexdrive mount folder exist
