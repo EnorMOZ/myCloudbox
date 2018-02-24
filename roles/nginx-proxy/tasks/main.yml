@@ -12,7 +12,7 @@
   with_items:
     - "{{mnt.docker_data}}/nginx-proxy"
 
-- include: htauth.yml
+- include_tasks: htauth.yml
   when: http_auth.enable | default(False)
   
 - name: Import proxy.conf
