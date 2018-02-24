@@ -83,6 +83,7 @@
 - name: Stop container to customize nzbget.conf
   docker_container:
     name: nzbget
+    image: hotio/suitarr
     state: stopped
   when: nzbget_conf.stat.exists == False
 
@@ -137,5 +138,6 @@
 - name: Start container to apply changes
   docker_container:
     name: nzbget
+    image: hotio/suitarr
     state: started
   when: nzbget_conf.stat.exists == False
