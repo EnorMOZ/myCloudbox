@@ -15,7 +15,7 @@
 - name: Create nzbhydra2 directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/nzbhydra2
+    - "{{mnt.docker_data}}/nzbhydra2"
 
 - name: Create and start container
   docker_container:
@@ -36,7 +36,7 @@
       LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/nzbhydra2:/config"
+      - "{{mnt.docker_data}}/nzbhydra2:/config"
     restart_policy: always
     networks:
       - name: cloudbox
