@@ -15,9 +15,9 @@
     
 - name: Clone unionfs_cleaner
   git:
-    repo: https://github.com/enormoz/unionfs_cleaner/
+    repo: https://github.com/l3uddz/unionfs_cleaner/
     dest: "{{mnt.docker_data}}/unionfs_cleaner"
-    version: master
+    version: "{{unionfs_cleaner.branch}}"
     force: yes
     
 - name: Install pip requirements

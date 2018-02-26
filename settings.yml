@@ -43,6 +43,7 @@
       - ".unionfs-fuse/**"
       - "**downloads**"
   unionfs_cleaner:
+    branch: master
     monitor_dir: "{{mnt.local}}"
     max_local_gigabytes: 500
     size_check_mins: 5
