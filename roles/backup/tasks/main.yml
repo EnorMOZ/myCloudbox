@@ -299,7 +299,7 @@
       )
 
   - name: "Get ansible-playbook binary path"
-    shell: "which ansible-playbook"
+    shell: "/usr/bin/which ansible-playbook"
     register: playbook_binary
 
   - name: "Schedule cron backup"
