@@ -307,7 +307,7 @@
       name: "Backup Cloudbox"
       minute: "{{backup.cron_minute}}"
       hour: "{{backup.cron_hour}}"
-      job: "{{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup"
+      job: "PATH='/usr/bin:/bin:/usr/local/bin' {{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup"
       state: "{{backup.cron_state}}"
       
   always:

@@ -11,7 +11,7 @@
   cron:
     name: "Daily GCE Sync"
     special_time: "{{gce_cron}}"
-    job: "{{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags gce"
+    job: "PATH='/usr/bin:/bin:/usr/local/bin' {{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags gce"
     state: "{{backup.cron_state}}"
 
 - name: Create private gce json credential from Ansible Vault
