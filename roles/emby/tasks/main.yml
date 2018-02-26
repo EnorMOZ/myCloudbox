@@ -14,7 +14,7 @@
 - name: Create emby directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/emby
+    - "{{mnt.docker_data}}/emby"
     - "{{plex.transcodes}}"
 
 - name: Stop and remove any existing container
@@ -46,9 +46,9 @@
       HTTPS_METHOD: noredirect
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/opt/emby:/config"
+      - "{{mnt.docker_data}}/emby:/config"
       - "{{plex.transcodes}}:/transcode"
-      - "/mnt/unionfs/Media:/data"
+      - "{{mnt.unionfs}}/Media:/data"
       - "/mnt:/mnt"
     devices: "{{ '/dev/dri/renderD128:/dev/dri/renderD128' if dev_dri.stat.exists == True | default(false) else omit }}"
     networks:
