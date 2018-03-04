@@ -18,7 +18,7 @@
       group: "{{user}}"
     when: backup_lock.stat.exists == False
 
-  - name: "Save Start Time"
+  - name: "Get Start Time"
     set_fact: start_time="{{lookup('pipe','date \"+%s\"')}}"
 
   - name: "Pushover Message: Started Cloudbox backup task."
@@ -59,8 +59,13 @@
       get_mime: false
     register: backup_previous
 
-  - name: "Moving cloudbox.tar to cloudbox.tar.backup"
-    shell: "mv '{{backup.dest}}/cloudbox.tar' '{{backup.dest}}/cloudbox.tar.backup'"
+  - name: "Copying cloudbox.tar to cloudbox.tar.backup"
+    copy:
+      src: "{{backup.dest}}/cloudbox.tar"
+      dest: "{{backup.dest}}/cloudbox.tar.backup"
+      force: yes
+      group: "{{user}}"
+      owner: "{{user}}"
     when: backup_previous.stat.exists
 
   - name: "Remove previous cloudbox.tar"
@@ -144,7 +149,7 @@
 
   - name: "Pushover Message: Backup archive created (file size: {{ ( ( backup_new.stat.size / (1024*1024*1024) ) | int | abs ) }}GB)."
     pushover:
-      msg: "Backup archive created (file size: {{ ( ( backup_new.stat.size / (1024*1024*1024) ) | int | abs ) }}GB)"
+      msg: "Backup archive created (file size: {{ ( ( backup_new.stat.size / (1024*1024*1024) ) | int | abs ) }}GB)."
       app_token: "{{backup.pushover_app_token}}"
       user_key: "{{backup.pushover_user_key}}"
     when: not(
@@ -275,6 +280,18 @@
         or
         (backup.use_rsync == false)
       )
+
+  - name: "Remove cloudbox.tar from \"{{backup.dest}}\""
+    file:
+      path: "{{backup.dest}}/cloudbox.tar"
+      state: absent
+    when: backup.keep_local_copy == False and backup_new.stat.exists
+
+  - name: "Remove cloudbox.tar.backup from \"{{backup.dest}}\""
+    file:
+      path: "{{backup.dest}}/cloudbox.tar.backup"
+      state: absent
+    when: backup_new.stat.exists
 
   - name: "Get End Time"
     set_fact: end_time="{{lookup('pipe','date \"+%s\"')}}"
