@@ -1,7 +1,7 @@
 ---
 - name: "Check cloudbox.tar exists"
   stat:
-    path: "{{backup.tar_dest}}/cloudbox.tar"
+    path: "{{backup.dest}}/cloudbox.tar"
     get_attributes: false
     get_checksum: false
     get_md5: false
