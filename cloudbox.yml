@@ -35,7 +35,6 @@
     - { role: disable_ipv6, tags: ['full', 'common', 'disable_ipv6'] }
     - { role: znc, tags: ['full', 'common', 'znc'] }
     - { role: unrarall, tags: ['full', 'common', 'unrarall'] }
-    - { role: ombi, tags: ['ombi'] }
     - { role: thelounge, tags: ['thelounge'] }
     - { role: nzbhydra2, tags: ['nzbhydra2'] }
     - { role: telly, tags: ['telly'] }
