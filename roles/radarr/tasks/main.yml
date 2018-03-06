@@ -24,7 +24,6 @@
     radarr_volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "{{mnt.docker_data}}/radarr:/config"
-      - "{{mnt.docker_data}}/scripts:/scripts"
 
 - name: Create and start container
   docker_container:

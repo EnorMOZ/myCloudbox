@@ -24,7 +24,6 @@
     sonarr_volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "{{mnt.docker_data}}/sonarr:/config"
-      - "{{mnt.docker_data}}/scripts:/scripts"
 
 - name: Create and start container
   docker_container:

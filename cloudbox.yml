@@ -17,7 +17,6 @@
     - { role: watchtower, tags: ['full', 'feeder', 'plex', 'watchtower'] }
     - { role: plexdrive, tags: ['full', 'feeder', 'plex', 'plexdrive'] }
     - { role: rclone, tags: ['full', 'feeder', 'plex', 'rclone'] }
-    - { role: scripts, tags: ['full', 'feeder', 'plex', 'scripts'] }
     - { role: unionfs_cleaner, tags: ['full', 'feeder', 'unionfs_cleaner']}
     - { role: nzbget, tags: ['full', 'feeder', 'nzbget'] }
     - { role: jackett, tags: ['full', 'feeder', 'jackett'] }
