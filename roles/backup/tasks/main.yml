@@ -168,6 +168,12 @@
         (backup_new is undefined)
       )
 
+  - name: "Remove cloudbox.tar.backup from \"{{backup.dest}}\""
+    file:
+      path: "{{backup.dest}}/cloudbox.tar.backup"
+      state: absent
+    when: backup_new.stat.exists
+
   - name: Start plexdrive and unionfs_cleaner
     systemd:
       name: "{{item}}"
@@ -213,18 +219,38 @@
   - name: "Set {{backup.dest}} owner"
     shell: "chown -R {{user}}:{{user}} {{backup.dest}}"
 
-  - name: "Check rclone cloudbox.tar datestamp"
+  - name: "Get datestamp for previous \"{{backup.rclone_dest}}/cloudbox.tar\""
     shell: "rclone lsl {{backup.rclone_dest}}/cloudbox.tar|cut -d ' ' -f 2,3|cut -d '.' -f 1|sed s/' '/_/g|sed s/':'/./g"
-    register: rclone_timestamp
+    register: rclone_cloudbox_tar_timestamp
     when: backup.use_rclone
 
-  - name: "Move off old cloudbox.tar on \"{{backup.rclone_dest}}\""
-    shell: "rclone moveto '{{backup.rclone_dest}}/cloudbox.tar' '{{backup.rclone_dest}}/cloudbox.{{rclone_timestamp.stdout}}.tar' 2>/dev/null"
+  - name: "Archive previous \"{{backup.rclone_dest}}/cloudbox.tar\""
+    shell: "rclone moveto '{{backup.rclone_dest}}/cloudbox.tar' '{{backup.rclone_dest}}/cloudbox.{{rclone_cloudbox_tar_timestamp.stdout}}.tar' 2>/dev/null"
+    ignore_errors: yes
+    when: backup.use_rclone
+
+  - name: "Get datestamp for previous \"{{backup.rclone_dest}}/settings.yml\""
+    shell: "rclone lsl {{backup.rclone_dest}}/settings.yml|cut -d ' ' -f 7,8|cut -d '.' -f 1|sed s/' '/_/g|sed s/':'/./g"
+    register: rclone_settings_yml_timestamp
+    when: backup.use_rclone
+
+  - name: "Archive previous \"{{backup.rclone_dest}}/settings.yml\""
+    shell: "rclone moveto '{{backup.rclone_dest}}/settings.yml' '{{backup.rclone_dest}}/settings.{{rclone_settings_yml_timestamp.stdout}}.yml' 2>/dev/null"
+    ignore_errors: yes
+    when: backup.use_rclone
+
+  - name: "Get datestamp for previous \"{{backup.rclone_dest}}/rclone.conf\""
+    shell: "rclone lsl {{backup.rclone_dest}}/rclone.conf|cut -d ' ' -f 7,8|cut -d '.' -f 1|sed s/' '/_/g|sed s/':'/./g"
+    register: rclone_rclone_conf_timestamp
+    when: backup.use_rclone
+
+  - name: "Archive previous \"{{backup.rclone_dest}}/rclone.conf\""
+    shell: "rclone moveto '{{backup.rclone_dest}}/rclone.conf' '{{backup.rclone_dest}}/rclone.{{rclone_rclone_conf_timestamp.stdout}}.conf' 2>/dev/null"
     ignore_errors: yes
     when: backup.use_rclone
 
   - name: "Upload backup with rclone to \"{{backup.rclone_dest}}\""
-    command: "rclone copy '{{backup.dest}}/cloudbox.tar' '{{backup.rclone_dest}}' --stats=30s -v --transfers=2 --drive-chunk-size=64M --log-file='/home/{{user}}/backup_rclone.log'"
+    command: "rclone copy '{{backup.dest}}' '{{backup.rclone_dest}}' --stats=30s -v --transfers=2 --drive-chunk-size=64M --log-file='/home/{{user}}/backup_rclone.log'"
     become: true
     become_user: "{{user}}"
     when: backup.use_rclone
@@ -281,18 +307,6 @@
         (backup.use_rsync == false)
       )
 
-  - name: "Remove cloudbox.tar from \"{{backup.dest}}\""
-    file:
-      path: "{{backup.dest}}/cloudbox.tar"
-      state: absent
-    when: backup.keep_local_copy == False and backup_new.stat.exists
-
-  - name: "Remove cloudbox.tar.backup from \"{{backup.dest}}\""
-    file:
-      path: "{{backup.dest}}/cloudbox.tar.backup"
-      state: absent
-    when: backup_new.stat.exists
-
   - name: "Get End Time"
     set_fact: end_time="{{lookup('pipe','date \"+%s\"')}}"
 
@@ -314,6 +328,12 @@
         or
         (backup.pushover_user_key | trim == '')
       )
+
+  - name: "Remove cloudbox.tar from \"{{backup.tar_dest}}\""
+    file:
+      path: "{{backup.tar_dest}}/cloudbox.tar"
+      state: absent
+    when: backup_new.stat.exists and backup.keep_local_copy == False
 
   - name: "Get ansible-playbook binary path"
     shell: "/usr/bin/which ansible-playbook"
