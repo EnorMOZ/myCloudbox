@@ -37,7 +37,6 @@
     - { role: znc, tags: ['full', 'common', 'znc'] }
     - { role: unrarall, tags: ['full', 'common', 'unrarall'] }
     - { role: ombi, tags: ['ombi'] }
-    - { role: resilio, tags: ['resilio'] }
     - { role: thelounge, tags: ['thelounge'] }
     - { role: nextcloud, tags: ['nextcloud'] }
     - { role: lidarr, tags: ['lidarr'] }
