@@ -36,7 +36,6 @@ subdomains = {
     'nzbget': False,
     'plex': True,
     'tautulli': False,
-    'plexrequests': False,
 }
 
 

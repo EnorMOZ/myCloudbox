@@ -71,7 +71,6 @@
       - hydra
       - jackett
       - tautulli
-      - plexrequests
       - radarr
       - sonarr
       - nzbget
@@ -91,7 +90,6 @@
       - "--cleanup"
     monitor:
       - tautulli
-      - plexrequests
       - radarr
       - sonarr
       - nzbget
