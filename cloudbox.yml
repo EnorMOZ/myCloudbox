@@ -20,7 +20,6 @@
     - { role: scripts, tags: ['full', 'feeder', 'plex', 'scripts'] }
     - { role: unionfs_cleaner, tags: ['full', 'feeder', 'unionfs_cleaner']}
     - { role: nzbget, tags: ['full', 'feeder', 'nzbget'] }
-    - { role: rutorrent, tags: ['full', 'feeder', 'rutorrent'] }
     - { role: jackett, tags: ['full', 'feeder', 'jackett'] }
     - { role: nzbhydra, tags: ['full', 'feeder', 'nzbhydra'] }
     - { role: sonarr, tags: ['full', 'feeder', 'sonarr'] }

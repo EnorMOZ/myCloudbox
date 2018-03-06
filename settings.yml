@@ -11,9 +11,6 @@
     plexdrive: "/mnt/plexdrive"
   nzbget:
     downloads: "{{mnt.unionfs}}/downloads/nzbget"
-  rutorrent:
-    passwd: "{{rutorrent_pass}}"
-    downloads: "/home/{{user}}/downloads/rutorrent"
   plex:
     tag: beta
     transcodes: "/dev/shm"

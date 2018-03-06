@@ -6,7 +6,6 @@ plex_autoscan_pass: PASS
 user_pass: password123
 user_domain: mydomain.com
 user_email: my@email.com
-rutorrent_pass: password123
 cloudflare_token: MYTOKEN
 telly_m3u_url: http://m3u.com
 telly_epg_url: http://epg.com

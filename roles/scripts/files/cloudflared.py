@@ -35,7 +35,6 @@ subdomains = {
     'nzbhydra': False,
     'jackett': False,
     'nzbget': False,
-    'rutorrent': False,
     'plex': True,
     'tautulli': False,
     'plexrequests': False,
