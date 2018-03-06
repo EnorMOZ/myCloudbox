@@ -21,7 +21,6 @@
     - { role: unionfs_cleaner, tags: ['full', 'feeder', 'unionfs_cleaner']}
     - { role: nzbget, tags: ['full', 'feeder', 'nzbget'] }
     - { role: jackett, tags: ['full', 'feeder', 'jackett'] }
-    - { role: nzbhydra, tags: ['full', 'feeder', 'nzbhydra'] }
     - { role: sonarr, tags: ['full', 'feeder', 'sonarr'] }
     - { role: radarr, tags: ['full', 'feeder', 'radarr'] }
     - { role: plex, tags: ['full', 'plex', 'plexserver'] }

@@ -32,7 +32,6 @@ api_link = 'https://api.cloudflare.com/client/v4/'
 subdomains = {
     'sonarr': False,
     'radarr': False,
-    'nzbhydra': False,
     'jackett': False,
     'nzbget': False,
     'plex': True,
