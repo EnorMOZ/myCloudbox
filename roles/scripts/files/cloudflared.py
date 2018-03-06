@@ -39,7 +39,6 @@ subdomains = {
     'plex': True,
     'tautulli': False,
     'plexrequests': False,
-    'organizr': False,
 }
 
 
