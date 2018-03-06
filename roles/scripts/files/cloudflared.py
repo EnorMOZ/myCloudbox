@@ -40,7 +40,6 @@ subdomains = {
     'tautulli': False,
     'plexrequests': False,
     'organizr': False,
-    'portainer': False
 }
 
 
