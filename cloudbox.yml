@@ -39,7 +39,6 @@
     - { role: ombi, tags: ['ombi'] }
     - { role: thelounge, tags: ['thelounge'] }
     - { role: nextcloud, tags: ['nextcloud'] }
-    - { role: lidarr, tags: ['lidarr'] }
     - { role: nzbhydra2, tags: ['nzbhydra2'] }
     - { role: telly, tags: ['telly'] }
     - { role: gce, tags: ['gce'] }

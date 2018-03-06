@@ -76,15 +76,12 @@
       - sonarr
       - nzbget
       - thelounge
-      - lidarr
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
     nzbget:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
     sonarr:
-      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
-    lidarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"  
     plex:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
@@ -98,7 +95,6 @@
       - radarr
       - sonarr
       - nzbget
-      - lidarr
       - telly
   znc_port: 62971
   gce_cron: daily 
