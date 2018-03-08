@@ -28,7 +28,7 @@
 
   - name: Import unionfs.service
     template: 
-      src: unionfs.service.js2
+      src: "{{roles_dir}}/resource/unionfs/templates/unionfs.service
       dest: /etc/systemd/system/unionfs.service 
       force: yes
     when: unionfs_service.stat.exists == False
