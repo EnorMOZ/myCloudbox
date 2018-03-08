@@ -6,9 +6,9 @@
     - "/home/seed/.settings.yml"
     - bootstrap.yml
   roles:
-    - role: "roles/common"
+    - role: "{{roles_dir}}/common"
       tags: common
-    - role: "roles/cloudbox"
+    - role: "{{roles_dir}}/cloudbox"
       tags: cloudbox
 
 
