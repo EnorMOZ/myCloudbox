@@ -5,34 +5,6 @@
     - settings.yml
     - "/home/seed/.settings.yml"
   roles:
-    - { role: system, tags: ['full', 'feeder', 'plex', 'system'] }
-    - { role: motd, tags: ['full', 'feeder', 'plex', 'motd'] }
-    - { role: common, tags: ['full', 'feeder', 'plex', 'common'] }
-    - { role: unionfs, tags: ['full', 'feeder', 'plex', 'unionfs'] }
-    - { role: docker, tags: ['full', 'feeder', 'plex', 'docker'] }
-    - { role: nginx-proxy, tags: ['full', 'feeder', 'plex', 'nginx-proxy'] }
-    - { role: watchtower, tags: ['full', 'feeder', 'plex', 'watchtower'] }
-    - { role: plexdrive, tags: ['full', 'feeder', 'plex', 'plexdrive'] }
-    - { role: rclone, tags: ['full', 'feeder', 'plex', 'rclone'] }
-    - { role: unionfs_cleaner, tags: ['full', 'feeder', 'unionfs_cleaner']}
-    - { role: nzbget, tags: ['full', 'feeder', 'nzbget'] }
-    - { role: jackett, tags: ['full', 'feeder', 'jackett'] }
-    - { role: sonarr, tags: ['full', 'feeder', 'sonarr'] }
-    - { role: radarr, tags: ['full', 'feeder', 'radarr'] }
-    - { role: plex, tags: ['full', 'plex', 'plexserver'] }
-    - { role: tautulli, tags: ['full', 'plex', 'tautulli'] }
-    - { role: plex_autoscan, tags: ['full', 'plex', 'plex_autoscan'] }
-    - { role: backup, tags: ['backup'] }
-    - { role: restore, tags: ['restore'] }
-    - { role: nethogs, tags: ['full', 'feeder', 'plex', 'common', 'nethogs'] }
-    - { role: subliminal, tags: ['full', 'plex', 'common', 'subliminal'] }
-    - { role: apt-file, tags: ['full', 'common', 'apt-file'] }
-    - { role: disable_ipv6, tags: ['full', 'common', 'disable_ipv6'] }
-    - { role: znc, tags: ['full', 'common', 'znc'] }
-    - { role: unrarall, tags: ['full', 'common', 'unrarall'] }
-    - { role: thelounge, tags: ['thelounge'] }
-    - { role: nzbhydra2, tags: ['nzbhydra2'] }
-    - { role: telly, tags: ['telly'] }
-    - { role: gce, tags: ['gce'] }
+    - role: "roles/cloudbox"
 
 

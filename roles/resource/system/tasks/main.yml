@@ -1,14 +1,4 @@
 ---
-- name: Update packages
-  apt:
-    update_cache: yes
-
-- name: Install required packages
-  apt: "name={{item}} state=latest"
-  with_items:
-    - apt-utils
-    - byobu
-    - cpufrequtils
 
 - name: Purge old kernels on reboot
   cron:
@@ -233,7 +223,3 @@
 
 - name: Disable ondemand CPU frequency scaling daemon
   shell: "update-rc.d ondemand disable"
-
-- include_tasks: "roles/resource/disable_ipv6/tasks/main.yml"
-
-- include_tasks: "roles/resource/motd/tasks/main.yml"

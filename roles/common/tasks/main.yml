@@ -30,12 +30,6 @@
 - name: "Get {{user}} gid"
   shell: "id -g {{user}}"
   register: gid
-
-- include_tasks: "roles/resource/system/tasks/main.yml"
-  tags: system
-  
-- include_tasks: "roles/resource/apt-file/tasks/main.yml"
-  tags: apt-file
     
 - name: Install common packages
   apt: "name={{item}} state=installed"
@@ -69,6 +63,9 @@
     - nodejs-legacy
     - npm
     - glances
+    - apt-utils
+    - byobu
+    - cpufrequtils
 
 - name: Install common pip modules
   pip: "name={{item}} state=latest"
@@ -78,11 +75,6 @@
     - ansible-toolbox
     - dnspython
 
-- name: Install common npm modules
-  npm: "name={{item}} global=yes"
-  with_items:
-    - frontail
-
 - name: Create common directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
@@ -90,13 +82,11 @@
     - "{{mnt.unionfs}}"
     - "{{mnt.fuse_dir}}"
     - "{{mnt.docker_data}}"
-    - "{{mnt.docker_data}}/torrent"
     - "{{mnt.docker_data}}/nginx"
     - "{{mnt.docker_data}}/plex"
     - "{{mnt.docker_data}}/plex_autoscan"
     - "{{mnt.docker_data}}/cloudflare"
     - "{{mnt.docker_data}}/docker"
-    - "{{mnt.docker_data}}/frontail"
     
 - name: custom updatedb file 
   template: 
@@ -125,7 +115,18 @@
         HISTFILE=$HOME/.bash_history
         fi
         export EDITOR="/bin/nano"
+        
+- include_tasks: "roles/resource/system/tasks/main.yml"
+  tags: system
 
+- include_tasks: "roles/resource/disable_ipv6/tasks/main.yml"
+  tags: disable_ipv6
+
+- include_tasks: "roles/resource/motd/tasks/main.yml"
+  tags: motd
+    
+- include_tasks: "roles/resource/apt-file/tasks/main.yml"
+  tags: apt-file
 
 - include_tasks: "roles/resource/unrarall/main.yml"
   tags: unrarall
@@ -153,3 +154,6 @@
 
 - include_tasks: "roles/resource/cloudflare/tasks/main.yml"
   tags: cloudflare 
+
+- include_tasks: "roles/resource/docker/tasks/main.yml"
+  tags: docker
