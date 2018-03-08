@@ -32,7 +32,7 @@
 
 - name: Import default config
   template:
-    src: config.json.js2
+    src: "{{roles_dir}}/resource/unionfs_cleaner/templates/config.json"
     dest: "{{mnt.docker_data}}/unionfs_cleaner/config.json"
     force: yes
   when: unionfs_cleaner_config.stat.exists == False
@@ -47,7 +47,7 @@
 
 - name: Import unionfs_cleaner service
   template:
-    src: unionfs_cleaner.service.js2
+    src: "{{roles_dir}}/resource/unionfs_cleaner/templates/unionfs_cleaner.service"
     dest: /etc/systemd/system/unionfs_cleaner.service 
     force: yes
   when: unionfs_cleaner_service.stat.exists == False
