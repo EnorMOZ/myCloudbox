@@ -5,6 +5,9 @@
     - settings.yml
     - "/home/seed/.settings.yml"
   roles:
+    - role: "roles/common"
+      tags: common
     - role: "roles/cloudbox"
+      tags: cloudbox
 
 
