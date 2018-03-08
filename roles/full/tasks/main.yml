@@ -1,6 +1,6 @@
 ---
 
-- debug: msg="Cloudbox tasks"
+- debug: msg="Full setup"
 
 - include_tasks: "{{roles_dir}}/resource/nzbget/tasks/main.yml"
   tags: nzbget
@@ -22,7 +22,3 @@
   tags: nzbhydra2
 - include_tasks: "{{roles_dir}}/resource/telly/tasks/main.yml"
   tags: telly
-- include_tasks: "{{roles_dir}}/resource/nginx-proxy/tasks/main.yml"
-  tags: nginx-proxy   
-- include_tasks: "{{roles_dir}}/resource/watchtower/tasks/main.yml"
-  tags: watchtower  

@@ -8,7 +8,11 @@
   roles:
     - role: "{{roles_dir}}/common"
       tags: common
+    - role: "{{roles_dir}}/plex"
+      tags: plex
+    - role: "{{roles_dir}}/feeder"
+      tags: feeder
     - role: "{{roles_dir}}/full"
-      tags: cloudbox
+      tags: full    
 
 

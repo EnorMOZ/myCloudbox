@@ -1,0 +1,14 @@
+---
+
+- debug: msg="Feeder setup"
+
+- include_tasks: "{{roles_dir}}/resource/nzbget/tasks/main.yml"
+  tags: nzbget
+- include_tasks: "{{roles_dir}}/resource/jackett/tasks/main.yml"
+  tags: jackett
+- include_tasks: "{{roles_dir}}/resource/sonarr/tasks/main.yml"
+  tags: sonarr
+- include_tasks: "{{roles_dir}}/resource/radarr/tasks/main.yml"
+  tags: radarr
+- include_tasks: "{{roles_dir}}/resource/nzbhydra2/tasks/main.yml"
+  tags: nzbhydra2  
