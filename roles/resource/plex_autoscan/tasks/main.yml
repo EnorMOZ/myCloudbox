@@ -25,10 +25,10 @@
     requirements: "{{mnt.docker_data}}/plex_autoscan/requirements.txt"
     executable: pip
 
-- include_tasks: /roles/resources/plexauth/tasks/plexauth.yml
+- include_tasks: "{{roles_dir}}/resources/plexauth/tasks/main.yml"
   tags: plexauth
 
-- include_tasks: /roles/resources/plexsections/tasks/plexsections.yml
+- include_tasks: "{{roles_dir}}/resources/plexsections/tasks/main.yml"
   tags: plexsections
   
 - name: Setup default config
