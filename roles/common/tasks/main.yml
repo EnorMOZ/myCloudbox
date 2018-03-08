@@ -155,9 +155,6 @@
   
 - include_tasks: "{{roles_dir}}/resource/backup/tasks/main.yml"
   tags: backup
-
-- include_tasks: "{{roles_dir}}/resource/subliminal/tasks/main.yml"
-  tags: subliminal 
   
 - include_tasks: "{{roles_dir}}/resource/watchtower/tasks/main.yml"
   tags: watchtower 

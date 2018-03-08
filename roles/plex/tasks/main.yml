@@ -7,4 +7,6 @@
 - include_tasks: "{{roles_dir}}/resource/tautulli/tasks/main.yml"
   tags: tautulli
 - include_tasks: "{{roles_dir}}/resource/telly/tasks/main.yml"
-  tags: telly  
+  tags: telly
+- include_tasks: "{{roles_dir}}/resource/subliminal/tasks/main.yml"
+  tags: subliminal     
