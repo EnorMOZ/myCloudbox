@@ -21,7 +21,11 @@
     mode: 0775
 
 - name: Import dynamic motd files
-  template: "src={{item}} dest=/etc/update-motd.d/{{item}} force=yes mode=0775"
+  template: >
+    src="{{ roles_dir }}/resource/motd/templates/{{item}}"
+    dest="/etc/update-motd.d/{{item}}" 
+    force=yes
+    mode=0775
   with_items:
     - 00-header
     - 10-sysinfo
