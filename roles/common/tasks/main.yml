@@ -1,4 +1,6 @@
 ---
+
+- debug: msg="Common setup"
   
 - name: Ensure using kernel 4.10 or newer
   fail: msg="You must be using kernel 4.10.0-32-generic or newer!"
