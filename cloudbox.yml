@@ -8,7 +8,7 @@
   roles:
     - role: "{{roles_dir}}/common"
       tags: common
-    - role: "{{roles_dir}}/cloudbox"
+    - role: "{{roles_dir}}/full"
       tags: cloudbox
 
 
