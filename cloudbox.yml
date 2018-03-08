@@ -11,8 +11,6 @@
     - role: "{{roles_dir}}/plex"
       tags: plex
     - role: "{{roles_dir}}/feeder"
-      tags: feeder
-    - role: "{{roles_dir}}/full"
-      tags: full    
+      tags: feeder   
 
 

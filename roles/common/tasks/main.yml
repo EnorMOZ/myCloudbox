@@ -161,6 +161,12 @@
   
 - include_tasks: "{{roles_dir}}/resource/watchtower/tasks/main.yml"
   tags: watchtower 
-  
+
+- include_tasks: "{{roles_dir}}/resource/znc/tasks/main.yml"
+  tags: znc
+
+- include_tasks: "{{roles_dir}}/resource/thelounge/tasks/main.yml"
+  tags: thelounge
+      
 - include_tasks: "{{roles_dir}}/resource/nginx-proxy/tasks/main.yml"
   tags: nginx-proxy       
