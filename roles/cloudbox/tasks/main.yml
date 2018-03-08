@@ -3,21 +3,9 @@
 - debug: msg="Cloudbox tasks"
 
 - include_tasks: "roles/resource/common"
-  tags: common
-- include_tasks: "roles/resource/unionfs"
-  tags: unionfs
-- include_tasks: "roles/resource/docker"
-  tags: docker
+  tags: common  
 - include_tasks: "roles/resource/nginx-proxy"
-  tags: nginx-proxy
-- include_tasks: "roles/resource/watchtower"
-  tags: watchtower
-- include_tasks: "roles/resource/plexdrive"
-   tags: plexdrive
-- include_tasks: "roles/resource/rclone"
-  tags: rclone
-- include_tasks: "roles/resource/unionfs_cleaner"
-  tags: unionfs_cleaner
+  tags: nginx-proxy  
 - include_tasks: "roles/resource/nzbget"
   tags: nzbget
 - include_tasks: "roles/resource/jackett"
@@ -30,12 +18,6 @@
   tags: plexserver
 - include_tasks: "roles/resource/tautulli"
   tags: tautulli
-- include_tasks: "roles/resource/plex_autoscan"
-  tags: plex_autoscan
-- include_tasks: "roles/resource/backup"
-  tags: backup
-- include_tasks: "roles/resource/subliminal"
-  tags: subliminal
 - include_tasks: "roles/resource/znc"
   tags: znc
 - include_tasks: "roles/resource/thelounge"
@@ -44,5 +26,5 @@
   tags: nzbhydra2
 - include_tasks: "roles/resource/telly"
   tags: telly
-- include_tasks: "roles/resource/gce"
-  tags: gce
+- include_tasks: "roles/resource/watchtower"
+  tags: watchtower  

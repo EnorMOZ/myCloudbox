@@ -82,11 +82,6 @@
     - "{{mnt.unionfs}}"
     - "{{mnt.fuse_dir}}"
     - "{{mnt.docker_data}}"
-    - "{{mnt.docker_data}}/nginx"
-    - "{{mnt.docker_data}}/plex"
-    - "{{mnt.docker_data}}/plex_autoscan"
-    - "{{mnt.docker_data}}/cloudflare"
-    - "{{mnt.docker_data}}/docker"
     
 - name: custom updatedb file 
   template: 
@@ -157,3 +152,9 @@
 
 - include_tasks: "roles/resource/docker/tasks/main.yml"
   tags: docker
+  
+- include_tasks: "roles/resource/backup/tasks/main.yml"
+  tags: backup
+
+- include_tasks: "roles/resource/subliminal/tasks/main.yml"
+  tags: subliminal   
