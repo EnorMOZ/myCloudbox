@@ -36,7 +36,7 @@
 
 - name: Import plexdrive.service
   template:
-    src: plexdrive.service.js2
+    src: "{{roles_dir}}/resource/plexdrive/templates/plexdrive.service"
     dest: /etc/systemd/system/plexdrive.service
     force: yes
   when: plexdrive_service.stat.exists == False
