@@ -111,50 +111,50 @@
         fi
         export EDITOR="/bin/nano"
         
-- include_tasks: "roles/resource/system/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/system/tasks/main.yml"
   tags: system
 
-- include_tasks: "roles/resource/disable_ipv6/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/disable_ipv6/tasks/main.yml"
   tags: disable_ipv6
 
-- include_tasks: "roles/resource/motd/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/motd/tasks/main.yml"
   tags: motd
     
-- include_tasks: "roles/resource/apt-file/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/apt-file/tasks/main.yml"
   tags: apt-file
 
-- include_tasks: "roles/resource/unrarall/main.yml"
+- include_tasks: "{{roles_dir}}/resource/unrarall/main.yml"
   tags: unrarall
 
-- include_tasks: "roles/resource/nethogs/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/nethogs/tasks/main.yml"
   tags: nethogs
 
-- include_tasks: "roles/resource/gce/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/gce/tasks/main.yml"
   tags: gce
 
-- include_tasks: "roles/resource/rclone/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/rclone/tasks/main.yml"
   tags: rclone
 
-- include_tasks: "roles/resource/plexdrive/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/plexdrive/tasks/main.yml"
   tags: plexdrive 
 
-- include_tasks: "roles/resource/unionfs/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/unionfs/tasks/main.yml"
   tags: unionfs 
     
-- include_tasks: "roles/resource/plex_autoscan/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/plex_autoscan/tasks/main.yml"
   tags: plex_autoscan
 
-- include_tasks: "roles/resource/unionfs_cleaner/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/unionfs_cleaner/tasks/main.yml"
   tags: unionfs_cleaner
 
-- include_tasks: "roles/resource/cloudflare/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/cloudflare/tasks/main.yml"
   tags: cloudflare 
 
-- include_tasks: "roles/resource/docker/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/docker/tasks/main.yml"
   tags: docker
   
-- include_tasks: "roles/resource/backup/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/backup/tasks/main.yml"
   tags: backup
 
-- include_tasks: "roles/resource/subliminal/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/subliminal/tasks/main.yml"
   tags: subliminal   

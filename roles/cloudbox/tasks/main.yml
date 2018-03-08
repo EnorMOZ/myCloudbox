@@ -2,27 +2,27 @@
 
 - debug: msg="Cloudbox tasks"
 
-- include_tasks: "roles/resource/nzbget/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/nzbget/tasks/main.yml"
   tags: nzbget
-- include_tasks: "roles/resource/jackett/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/jackett/tasks/main.yml"
   tags: jackett
-- include_tasks: "roles/resource/sonarr/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/sonarr/tasks/main.yml"
   tags: sonarr
-- include_tasks: "roles/resource/radarr/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/radarr/tasks/main.yml"
   tags: radarr
-- include_tasks: "roles/resource/plex/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/plex/tasks/main.yml"
   tags: plexserver
-- include_tasks: "roles/resource/tautulli/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/tautulli/tasks/main.yml"
   tags: tautulli
-- include_tasks: "roles/resource/znc/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/znc/tasks/main.yml"
   tags: znc
-- include_tasks: "roles/resource/thelounge/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/thelounge/tasks/main.yml"
   tags: thelounge
-- include_tasks: "roles/resource/nzbhydra2/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/nzbhydra2/tasks/main.yml"
   tags: nzbhydra2
-- include_tasks: "roles/resource/telly/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/telly/tasks/main.yml"
   tags: telly
-- include_tasks: "roles/resource/nginx-proxy/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/nginx-proxy/tasks/main.yml"
   tags: nginx-proxy   
-- include_tasks: "roles/resource/watchtower/tasks/main.yml"
+- include_tasks: "{{roles_dir}}/resource/watchtower/tasks/main.yml"
   tags: watchtower  
