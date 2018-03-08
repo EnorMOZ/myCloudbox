@@ -4,6 +4,7 @@
   vars_files:
     - settings.yml
     - "/home/seed/.settings.yml"
+    - bootstrap.yml
   roles:
     - role: "roles/common"
       tags: common

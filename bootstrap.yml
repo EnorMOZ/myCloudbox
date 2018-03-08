@@ -1,0 +1,7 @@
+---
+
+# define the root dir of execution
+root_dir: "{{ playbook_dir | regex_replace('/playbooks.*', '') }}"
+
+playbooks_dir: "{{ root_dir }}/playbooks"
+roles_dir: "{{ root_dir }}/roles"
