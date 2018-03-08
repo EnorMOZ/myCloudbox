@@ -1,0 +1,54 @@
+---
+  
+- name: Check service exists
+  stat:
+    path: "/etc/systemd/system/plexdrive.service"
+  register: plexdrive_service
+
+- name: Stop existing plexdrive service
+  systemd: state=stopped name=plexdrive
+  when: plexdrive_service.stat.exists
+
+- name: Check plexdrive mount folder exist
+  stat:
+    path: "{{mnt.plexdrive}}"
+  register: plexdrive_mnt
+
+- name: Create "{{mnt.plexdrive}}"
+  file:
+    path: "{{mnt.plexdrive}}"
+    state: directory
+    mode: 0755
+    owner: "{{user}}"
+    group: "{{user}}"
+    recurse: true
+  when: plexdrive_mnt.stat.exists == False
+  
+- name: Install plexdrive
+  get_url:
+    url:  https://github.com/dweidenfeld/plexdrive/releases/download/5.0.0/plexdrive-linux-amd64
+    dest: "{{mnt.docker_data}}/plexdrive/plexdrive"
+    mode: 0755
+    owner: "{{user}}"
+    group: "{{user}}"
+    force: yes
+    validate_certs: no
+
+- name: Import plexdrive.service
+  template:
+    src: plexdrive.service.js2
+    dest: /etc/systemd/system/plexdrive.service
+    force: yes
+  when: plexdrive_service.stat.exists == False
+
+- name: Systemd daemon-reload
+  systemd: state=stopped name=plexdrive daemon_reload=yes enabled=no
+
+- name: Check config exists
+  stat:
+    path: "{{mnt.docker_data}}/plexdrive/config.json"
+  register: plexdrive_config
+
+- name: Start plexdrive service
+  systemd: state=started name=plexdrive enabled=yes
+  when: plexdrive_config.stat.exists

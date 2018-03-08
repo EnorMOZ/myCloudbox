@@ -16,10 +16,6 @@
     special_time: reboot
     job: "purge-old-kernels -qy"
 
-- name: Upgrade packages
-  apt:
-    upgrade: dist
-
 - name: Enable tcp_window_scaling
   sysctl:
     name: net.ipv4.tcp_window_scaling
@@ -237,3 +233,7 @@
 
 - name: Disable ondemand CPU frequency scaling daemon
   shell: "update-rc.d ondemand disable"
+
+- include_tasks: "roles/resource/disable_ipv6/tasks/main.yml"
+
+- include_tasks: "roles/resource/motd/tasks/main.yml"

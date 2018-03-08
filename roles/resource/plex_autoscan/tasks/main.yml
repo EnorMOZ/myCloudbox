@@ -25,10 +25,10 @@
     requirements: "{{mnt.docker_data}}/plex_autoscan/requirements.txt"
     executable: pip
 
-- include_tasks: ../cloudbox/roles/common/tasks/plexauth.yml
+- include_tasks: /roles/resources/plexauth/tasks/plexauth.yml
   tags: plexauth
 
-- include_tasks: ../cloudbox/roles/common/tasks/plexsections.yml
+- include_tasks: /roles/resources/plexsections/tasks/plexsections.yml
   tags: plexsections
   
 - name: Setup default config

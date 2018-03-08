@@ -1,4 +1,28 @@
 ---
+  
+- name: Ensure using kernel 4.10 or newer
+  fail: msg="You must be using kernel 4.10.0-32-generic or newer!"
+  when: ansible_kernel | version_compare('4.10', '<')
+
+- name: Create common groups
+  group: "name={{item}} state=present"
+  with_items:
+    - docker
+    - "{{user}}"
+
+- name: "Create user {{user}}"
+  user:
+    name: "{{user}}"
+    group: "{{user}}"
+    groups: "{{user}},docker,sudo"
+    password: "{{ passwd |password_hash('sha512') }}"
+    update_password: on_create
+    append: yes
+    shell: /bin/bash
+
+- name: "Make cloudbox folder readable/writeable by {{user}}"
+  file: "path={{playbook_dir}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
+    
 - name: "Get {{user}} uid"
   shell: "id -u {{user}}"
   register: uid
@@ -7,6 +31,12 @@
   shell: "id -g {{user}}"
   register: gid
 
+- include_tasks: "roles/resource/system/tasks/main.yml"
+  tags: system
+  
+- include_tasks: "roles/resource/apt-file/tasks/main.yml"
+  tags: apt-file
+    
 - name: Install common packages
   apt: "name={{item}} state=installed"
   with_items:
@@ -36,7 +66,6 @@
     - mc
     - speedtest-cli
     - python-ndg-httpsclient
-    - nethogs
     - nodejs-legacy
     - npm
     - glances
@@ -46,31 +75,13 @@
   with_items:
     - docker-py
     - certbot
-    - "ansible-toolbox"
+    - ansible-toolbox
     - dnspython
 
 - name: Install common npm modules
   npm: "name={{item}} global=yes"
   with_items:
     - frontail
-
-- name: Install hostess
-  get_url:
-    url:  https://github.com/cbednarski/hostess/releases/download/v0.2.0/hostess_linux_amd64
-    dest: /usr/local/bin/hostess
-    mode: 0755
-    owner: root
-    group: root
-    force: yes
-    validate_certs: no
-
-- name: Install ngrok
-  unarchive:
-    src: https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-    dest: /usr/local/bin
-    copy: no
-    mode: 0775
-    validate_certs: no
 
 - name: Create common directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
@@ -115,21 +126,30 @@
         fi
         export EDITOR="/bin/nano"
 
-- include_tasks: cloudflare.yml
+
+- include_tasks: "roles/resource/unrarall/main.yml"
+  tags: unrarall
+
+- include_tasks: "roles/resource/nethogs/tasks/main.yml"
+  tags: nethogs
+
+- include_tasks: "roles/resource/gce/tasks/main.yml"
+  tags: gce
+
+- include_tasks: "roles/resource/rclone/tasks/main.yml"
+  tags: rclone
+
+- include_tasks: "roles/resource/plexdrive/tasks/main.yml"
+  tags: plexdrive 
+
+- include_tasks: "roles/resource/unionfs/tasks/main.yml"
+  tags: unionfs 
+    
+- include_tasks: "roles/resource/plex_autoscan/tasks/main.yml"
+  tags: plex_autoscan
+
+- include_tasks: "roles/resource/unionfs_cleaner/tasks/main.yml"
+  tags: unionfs_cleaner
+
+- include_tasks: "roles/resource/cloudflare/tasks/main.yml"
   tags: cloudflare 
-
-- name: Check plexdrive mount folder exist
-  stat:
-    path: "{{mnt.plexdrive}}"
-  register: plexdrive_mnt
-
-- name: Create "{{mnt.plexdrive}}"
-  file:
-    path: "{{mnt.plexdrive}}"
-    state: directory
-    mode: 0755
-    owner: "{{user}}"
-    group: "{{user}}"
-    recurse: true
-  when: plexdrive_mnt.stat.exists == False
-
