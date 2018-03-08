@@ -5,7 +5,7 @@
   register: playbook_binary
 
 - name: Install common pip modules
-  pip: "name=apache-libcloud state=latest"
+  pip: "name=apache-libcloud state=present"
       
 - name: "Schedule cron backup for GCE Sync"
   cron:
