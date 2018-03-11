@@ -45,12 +45,12 @@
 - name: Create and start container
   docker_container:
     name: tautulli
-    image: shiggins8/tautulli
+    image: tautulli/tautulli
     pull: yes
     published_ports:
       - "127.0.0.1:8181:8181"
     env:
-      ADVANCED_GIT_BRANCH: v2
+      ADVANCED_GIT_BRANCH: nightly
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
       VIRTUAL_HOST: "tautulli.{{domain}}"
