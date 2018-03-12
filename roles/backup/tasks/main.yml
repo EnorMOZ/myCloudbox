@@ -234,9 +234,9 @@
     shell: "chown -R {{user}}:{{user}} {{backup.dest}}"
 
   # Reset permissions; reset mod dates to avoid conflicts during rclone backup.
-  - name: "Touch and set permissions to {{backup.tar_dest}}"
+  - name: "Touch and set permissions to {{backup.dest}}"
     file:
-      path: "{{backup.tar_dest}}"
+      path: "{{backup.dest}}"
       state: touch
       owner: "{{user}}"
       group: "{{user}}"
@@ -340,9 +340,9 @@
         (backup.pushover_user_key | trim == '')
       )
 
-  - name: "Remove cloudbox.tar from \"{{backup.tar_dest}}\""
+  - name: "Remove cloudbox.tar from \"{{backup.dest}}\""
     file:
-      path: "{{backup.tar_dest}}/cloudbox.tar"
+      path: "{{backup.dest}}/cloudbox.tar"
       state: absent
     when: backup_new.stat.exists and backup.keep_local_copy == False
 
