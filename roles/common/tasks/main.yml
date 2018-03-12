@@ -46,8 +46,9 @@
   with_items:
     - docker-py
     - certbot
-    - "ansible-toolbox"
+    - ansible-toolbox
     - dnspython
+    - netaddr
 
 - name: Install common npm modules
   npm: "name={{item}} global=yes"
@@ -79,8 +80,6 @@
     - "{{mnt.unionfs}}"
     - "{{mnt.fuse_dir}}"
     - "{{mnt.docker_data}}"
-    - "{{mnt.docker_data}}/torrent"
-    - "{{mnt.docker_data}}/nginx"
     - "{{mnt.docker_data}}/plex"
     - "{{mnt.docker_data}}/plex_autoscan"
     - "{{mnt.docker_data}}/cloudflare"
