@@ -74,7 +74,6 @@
       - radarr
       - sonarr
       - nzbget
-      - thelounge
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
