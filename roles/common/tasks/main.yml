@@ -25,13 +25,7 @@
 - name: "Make cloudbox folder readable/writeable by {{user}}"
   file: "path={{playbook_dir}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
     
-- name: "Get {{user}} uid"
-  shell: "id -u {{user}}"
-  register: uid
-
-- name: "Get {{user}} gid"
-  shell: "id -g {{user}}"
-  register: gid
+- include_tasks: "{{roles_dir}}/resource/get-id/tasks/main.yml"
     
 - name: Install common packages
   apt: "name={{item}} state=installed"

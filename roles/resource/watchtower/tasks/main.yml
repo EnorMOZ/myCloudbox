@@ -1,12 +1,8 @@
 ---
-- name: "Get {{user}} uid"
-  shell: "id -u {{user}}"
-  register: uid
-
-- name: "Get {{user}} gid"
-  shell: "id -g {{user}}"
-  register: gid
-
+  
+- include_tasks: "{{roles_dir}}/resource/get-id/tasks/main.yml"
+  tags: get_id
+  
 - name: Stop and remove any existing container
   docker_container:
     name: watchtower
