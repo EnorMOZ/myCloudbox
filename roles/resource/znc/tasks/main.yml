@@ -19,7 +19,6 @@
     volumes: "{{docker_volumes.znc|default([])}} + {{znc_volumes}}"
     networks:
       - name: cloudbox
-        ipv4_address: 172.18.0.20
         aliases:
           - znc
     env:
