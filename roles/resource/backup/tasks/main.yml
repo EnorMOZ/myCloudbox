@@ -82,12 +82,6 @@
     shell: "mv '{{backup.dest}}/cloudbox.tar' '{{backup.dest}}/cloudbox.tar.backup'"
     when: backup_previous.stat.exists
 
-  - name: "Remove previous cloudbox.tar"
-    file:
-      path: "{{backup.dest}}/cloudbox.tar"
-      state: absent
-    when: backup_previous.stat.exists
-
   - name: "Copy settings files to {{mnt.docker_data}} for inclusion in backup"
     copy:
       src: "{{item}}"
@@ -227,23 +221,21 @@
     wait_for:
       timeout: 10
 
-  - name: "Set {{backup.dest}} permissions"
-    shell: "chmod -R 775 {{backup.dest}}"
-
-  - name: "Set {{backup.dest}} owner"
-    shell: "chown -R {{user}}:{{user}} {{backup.dest}}"
-
-  # Reset permissions; reset mod dates to avoid conflicts during rclone backup.
-  - name: "Touch and set permissions to {{backup.dest}}"
+  # Reset mod dates to avoid conflicts during rclone backup. Ansible module doesn't touch folder contents via wildcard.
+  - name: "Reset permissions and mod dates to files in {{backup.dest}}"
     file:
-      path: "{{backup.dest}}"
+      path: "{{backup.dest}}/{{item}}"
       state: touch
       owner: "{{user}}"
       group: "{{user}}"
       mode: 0755
-      recurse: yes
+      force: yes
+    with_items:
+     - "settings.yml"
+     - "rclone.conf"
+     - "cloudbox.tar"
 
-  # Due to a previously ran touch command, all files have same mod dates, therefore, only one file's mod date is needed.
+  # Due to a touch command in a previous backup, all files on backup.rclone_dest have same mod dates, therefore, only one file's mod date is needed.
   - name: "Get datestamp for previous \"{{backup.rclone_dest}}/cloudbox.tar\""
     shell: "rclone lsl {{ backup.rclone_dest }}/cloudbox.tar | cut -d ' ' -f 2,3 | cut -d '.' -f 1 | sed s/' '/_/g | sed s/':'/./g"
     register: rclone_timestamp
@@ -252,7 +244,7 @@
 
   # If rclone_timestamp is blank (would happen if cloudbox.tar did not exist), default the naming of other files to 'filename.old.ext'.
   - name: "Archive previous files in \"{{backup.rclone_dest}}/\""
-    shell: "rclone lsl '{{ backup.rclone_dest }}/{{ item }}' '{{ backup.rclone_dest }}/{{ (item | splitext)[0] }}.{{ rclone_timestamp.stdout | default('old', true) }}{{ (item | splitext)[1] }}' 2>/dev/null"
+    shell: "rclone moveto '{{ backup.rclone_dest }}/{{ item }}' '{{ backup.rclone_dest }}/{{ item }}_{{ rclone_timestamp.stdout | default('old', true) }}' 2>/dev/null"
     ignore_errors: yes
     when: backup.use_rclone
     with_items:
