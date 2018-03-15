@@ -37,5 +37,6 @@
     - { role: nzbhydra2, tags: ['nzbhydra2'] }
     - { role: telly, tags: ['telly'] }
     - { role: gce, tags: ['gce'] }
+    - { role: traktarr, tags: ['traktarr' }
 
 
