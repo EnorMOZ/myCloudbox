@@ -124,3 +124,14 @@
     mode: 0775
     owner: "{{user}}"
     group: "{{user}}"
+
+- name: add container to inventory
+  add_host:
+    name: plex
+    ansible_connection: docker
+  changed_when: false
+
+- name: run command in container
+  delegate_to: plex
+  raw: apt-get update && apt-get install -y unrar
+  become: False
