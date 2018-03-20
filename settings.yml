@@ -21,7 +21,7 @@
     ip: "{{ ansible_docker0.ipv4.address }}"
     version: dev
   rclone:
-    version: latest
+    version: "latest"
     bwlimit: "69M"
     checkers: 10
     transfers: 20
