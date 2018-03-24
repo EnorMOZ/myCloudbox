@@ -17,7 +17,6 @@
     vpn_volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/lib/modules:/lib/modules:ro"
-      - "{{mnt.docker_data}}/vpn:/config"
 
 - name: Setup vpn.env file
   template:
@@ -35,11 +34,8 @@
       - "4500:4500/udp"
     env_file: "{{mnt.docker_data}}/vpn/vpn.env"
     env:
-      APP: "vpn"
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
-      BACKUP: "no"
-    volumes: "{{vpn_volumes + docker_volumes.vpn|default([])}}"    
     networks:
       - name: cloudbox
         aliases:
