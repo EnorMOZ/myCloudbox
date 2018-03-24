@@ -164,3 +164,6 @@
       
 - include_tasks: "{{roles_dir}}/resource/nginx-proxy/tasks/main.yml"
   tags: nginx-proxy       
+
+- include_tasks: "{{roles_dir}}/resource/vpn/tasks/main.yml"
+  tags: vpn

@@ -17,3 +17,6 @@ gce_project_id: "your-project-name"
 gce_json: |
   blah
   blah
+vpn_secretkey: vpnkey
+vpn_user: vpnuser
+vpn_pass: vpnpass
