@@ -62,7 +62,6 @@
     - apt-utils
     - byobu
     - cpufrequtils
-    - python-netaddr
 
 - name: Install common pip modules
   pip: "name={{item}} state=latest"
@@ -71,6 +70,7 @@
     - certbot
     - ansible-toolbox
     - dnspython
+    - netaddr
 
 - name: Create common directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
