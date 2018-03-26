@@ -8,7 +8,7 @@
 
 - name: run apt-file update (once)
   shell: test -x /usr/bin/apt-file && /usr/bin/apt-file update
-  when: result | changed
+  when: result is changed
 
 - name: add (daily) cron task
   cron:
