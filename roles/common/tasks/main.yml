@@ -50,11 +50,6 @@
     - dnspython
     - netaddr    
 
-- name: Install common npm modules
-  npm: "name={{item}} global=yes"
-  with_items:
-    - frontail
-
 - name: Install hostess
   get_url:
     url:  https://github.com/cbednarski/hostess/releases/download/v0.3.0/hostess_linux_amd64
@@ -86,7 +81,6 @@
     - "{{mnt.docker_data}}/plex_autoscan"
     - "{{mnt.docker_data}}/cloudflare"
     - "{{mnt.docker_data}}/docker"
-    - "{{mnt.docker_data}}/frontail"
     
 - name: custom updatedb file 
   template: 

@@ -5,7 +5,6 @@
     - /opt/scripts
     - /opt/scripts/cloudflare
     - /opt/scripts/docker
-    - /opt/scripts/frontail
     - /opt/scripts/nzb
     - /opt/scripts/nginx
     - /opt/scripts/plex
@@ -107,22 +106,3 @@
     mode: 0775
     force: yes
   when: restart_containers.stat.exists == False
-
-- name: Check if frontail_custom_preset.json exists
-  stat:
-    path: "/opt/scripts/frontail/frontail_custom_preset.json"
-    get_attributes: false
-    get_checksum: false
-    get_md5: false
-    get_mime: false
-  register: frontail_preset
-
-- name: Import frontail_custom_preset.json
-  copy:
-    src: "frontail_custom_preset.json"
-    dest: "/opt/scripts/frontail/frontail_custom_preset.json"
-    owner: "{{user}}"
-    group: "{{user}}"
-    mode: 0775
-    force: yes
-  when: frontail_preset.stat.exists == False
