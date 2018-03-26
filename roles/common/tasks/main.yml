@@ -62,6 +62,7 @@
     - apt-utils
     - byobu
     - cpufrequtils
+    - screen
 
 - name: Install common pip modules
   pip: "name={{item}} state=latest"
