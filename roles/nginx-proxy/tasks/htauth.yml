@@ -1,5 +1,10 @@
 ---
   
+- name: Install common pip modules
+  pip: "name={{item}} state=latest"
+  with_items:
+    - passlib
+
 - name: Create htpasswd
   htpasswd:
     path: "{{mnt.docker_data}}/nginx-proxy/htpasswd/{{ item }}.{{ domain }}"
