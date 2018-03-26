@@ -9,8 +9,6 @@
       (rclone.version | trim == '')
       )
 
-- include_tasks: "{{roles_dir}}/resource/get-id/tasks/main.yml"
-
 - name: "Install rclone version: latest"
   apt:
     deb: https://downloads.rclone.org/rclone-current-linux-amd64.deb
