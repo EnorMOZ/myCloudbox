@@ -16,13 +16,13 @@
     - { role: nginx-proxy, tags: ['full', 'feeder', 'plex', 'nginx-proxy'] }
     - { role: watchtower, tags: ['full', 'feeder', 'plex', 'watchtower'] }
     - { role: plexdrive, tags: ['full', 'feeder', 'plex', 'plexdrive'] }
+    - { role: plex, tags: ['full', 'plex', 'plexserver'] }
     - { role: rclone, tags: ['full', 'feeder', 'plex', 'rclone'] }
     - { role: unionfs_cleaner, tags: ['full', 'feeder', 'unionfs_cleaner']}
     - { role: nzbget, tags: ['full', 'feeder', 'nzbget'] }
     - { role: jackett, tags: ['full', 'feeder', 'jackett'] }
     - { role: sonarr, tags: ['full', 'feeder', 'sonarr'] }
     - { role: radarr, tags: ['full', 'feeder', 'radarr'] }
-    - { role: plex, tags: ['full', 'plex', 'plexserver'] }
     - { role: tautulli, tags: ['full', 'plex', 'tautulli'] }
     - { role: plex_autoscan, tags: ['full', 'plex', 'plex_autoscan'] }
     - { role: backup, tags: ['backup'] }
@@ -33,10 +33,10 @@
     - { role: disable_ipv6, tags: ['full', 'common', 'disable_ipv6'] }
     - { role: znc, tags: ['full', 'common', 'znc'] }
     - { role: unrarall, tags: ['full', 'common', 'unrarall'] }
-    - { role: thelounge, tags: ['thelounge'] }
-    - { role: nzbhydra2, tags: ['nzbhydra2'] }
-    - { role: telly, tags: ['telly'] }
-    - { role: gce, tags: ['gce'] }
-    - { role: traktarr, tags: ['traktarr' }
+    - { role: thelounge, tags: ['full','thelounge'] }
+    - { role: nzbhydra2, tags: ['full','nzbhydra2'] }
+    - { role: telly, tags: ['full','telly'] }
+    - { role: gce, tags: ['full','gce'] }
+    - { role: traktarr, tags: ['full','traktarr'] }
 
 
