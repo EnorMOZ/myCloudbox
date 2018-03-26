@@ -59,8 +59,6 @@
     - "{{mnt.docker_data}}"
     - "{{mnt.docker_data}}/plex"
     - "{{mnt.docker_data}}/plex_autoscan"
-    - "{{mnt.docker_data}}/cloudflare"
-    - "{{mnt.docker_data}}/docker"
     
 - name: custom updatedb file 
   template: 
