@@ -50,17 +50,6 @@
     - dnspython
     - netaddr    
 
-- name: Install hostess
-  get_url:
-    url:  https://github.com/cbednarski/hostess/releases/download/v0.3.0/hostess_linux_amd64
-    dest: /usr/local/bin/hostess
-    mode: 0755
-    owner: root
-    group: root
-    force: yes
-    validate_certs: no
-  tags: update-hostess
-
 - name: Install ngrok
   unarchive:
     src: https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
