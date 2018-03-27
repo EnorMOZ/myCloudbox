@@ -40,6 +40,7 @@
     - nodejs-legacy
     - npm
     - glances
+    - mlocated
 
 - name: Install common pip modules
   pip: "name={{item}} state=latest"
@@ -67,7 +68,12 @@
     owner=root
     group=root
     mode=0644 
-    
+
+- name: Create updatedb file
+  shell: "updatedb"
+  args:
+    creates: /var/lib/mlocate/mlocate.db
+      
 - name: Set {{mnt.docker_data}} permissions
   shell: "chmod -R 775 {{mnt.docker_data}}"
 
