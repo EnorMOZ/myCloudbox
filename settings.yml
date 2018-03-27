@@ -54,6 +54,7 @@
     dest: "/home/{{user}}/Backups"
     rsync_dest: rsync://somehost.com/Backups
     rclone_dest: agdrive:/Backups
+    keep_local_copy: false
     use_rsync: false
     use_rclone: true
     cron_hour: 4
