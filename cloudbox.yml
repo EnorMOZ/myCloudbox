@@ -39,3 +39,5 @@
     - { role: gce, tags: ['full','gce'] }
     - { role: traktarr, tags: ['full','traktarr'] }
     - { role: vpn, tags: ['full','vpn'] }
+    - { role: plex_dupefinder, tags: ['full','plex_dupefinder'] }
+

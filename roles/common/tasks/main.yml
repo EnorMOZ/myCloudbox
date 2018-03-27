@@ -41,6 +41,7 @@
     - npm
     - glances
     - mlocated
+    - screen
 
 - name: Install common pip modules
   pip: "name={{item}} state=latest"
