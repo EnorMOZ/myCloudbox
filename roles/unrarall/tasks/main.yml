@@ -1,4 +1,11 @@
 ---
+  
+- name: install cksfv
+  apt:
+    name: "cksfv"
+    state: "present"
+    update_cache: true  
+  
 - name: Clone unrarall
   git:
     repo: https://github.com/arfoll/unrarall/
@@ -25,3 +32,11 @@
     dest: /usr/sbin/unrarall
     state: link
     force: yes
+
+- name: "Schedule unrarall cron"
+  cron:
+    name: "unrarall completed dir"
+    minute: "*/3"
+    job: "/opt/unrarall/unrarall -v --clean=all /mnt/local/downloads/completed/"
+    state: "present"
+      
