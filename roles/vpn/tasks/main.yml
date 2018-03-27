@@ -1,0 +1,50 @@
+---
+  
+- name: "Get {{user}} uid"
+  shell: "id -u {{user}}"
+  register: uid
+
+- name: "Get {{user}} gid"
+  shell: "id -g {{user}}"
+  register: gid
+
+- name: Stop and remove any existing container
+  docker_container:
+    name: vpn
+    state: absent
+    
+- name: Create vpn directories
+  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+  with_items:
+    - "{{mnt.docker_data}}/vpn"
+
+- name: Setup default vpn docker volume to be merged
+  set_fact:
+    vpn_volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/lib/modules:/lib/modules:ro"
+
+- name: Setup vpn.env file
+  template:
+    src: "vpn.env"
+    dest: "{{mnt.docker_data}}/vpn/vpn.env"
+
+- name: Create and start container
+  docker_container:
+    name: vpn
+    privileged: True
+    image: hwdsl2/ipsec-vpn-server
+    pull: yes
+    published_ports:
+      - "500:500/udp"
+      - "4500:4500/udp"
+    env_file: "{{mnt.docker_data}}/vpn/vpn.env"
+    env:
+      PUID: "{{uid.stdout}}"
+      PGID: "{{gid.stdout}}"
+    networks:
+      - name: cloudbox
+        aliases:
+          - vpn
+    restart_policy: always
+    state: started

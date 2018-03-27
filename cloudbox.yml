@@ -38,5 +38,4 @@
     - { role: telly, tags: ['full','telly'] }
     - { role: gce, tags: ['full','gce'] }
     - { role: traktarr, tags: ['full','traktarr'] }
-
-
+    - { role: vpn, tags: ['full','vpn'] }
