@@ -6,11 +6,6 @@
 - name: "Get {{user}} gid"
   shell: "id -g {{user}}"
   register: gid
-
-- name: Stop and remove any existing plexpy container
-  docker_container:
-    name: plexpy
-    state: absent
     
 - name: Stop and remove any existing container
   docker_container:
@@ -21,14 +16,6 @@
   wait_for:
     path: "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs"
     state: present
-
-- name: Check if plexpy data dir already exists
-  stat: path="{{mnt.docker_data}}/plexpy"
-  register: plexpy_stat
-
-- name: Rename plexpy data dir to tautulli if plexpy data dir already existed
-  command: mv {{mnt.docker_data}}/plexpy {{mnt.docker_data}}/tautulli
-  when: plexpy_stat.stat.exists
   
 - name: Create tautulli directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
