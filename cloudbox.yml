@@ -28,7 +28,6 @@
     - { role: backup, tags: ['backup'] }
     - { role: restore, tags: ['restore'] }
     - { role: nethogs, tags: ['full', 'feeder', 'plex', 'common', 'nethogs'] }
-    - { role: subliminal, tags: ['full', 'plex', 'common', 'subliminal'] }
     - { role: apt-file, tags: ['full', 'common', 'apt-file'] }
     - { role: disable_ipv6, tags: ['full', 'common', 'disable_ipv6'] }
     - { role: znc, tags: ['full', 'common', 'znc'] }

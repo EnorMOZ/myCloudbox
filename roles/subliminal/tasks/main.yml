@@ -1,6 +1,0 @@
-- name: Install subliminal
-  pip: "name={{item}}"
-  with_items:
-    - "https://github.com/Diaoul/subliminal/archive/develop.zip"
-  
-  
