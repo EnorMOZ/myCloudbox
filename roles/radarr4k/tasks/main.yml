@@ -43,7 +43,7 @@
       VIRTUAL_PORT: 7878
       LETSENCRYPT_HOST: "radarr4k.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{radarr_volumes + docker_volumes.radarr|default([])}}"    
+    volumes: "{{radarr4k_volumes + docker_volumes.radarr4k|default([])}}"    
     networks:
       - name: cloudbox
         aliases:
