@@ -17,7 +17,7 @@
   with_items:
     - "{{mnt.docker_data}}/radarr"
     - "{{mnt.local}}/Media/Kids Movies"
-    - "{{mnt.local}}/Media/Music"
+    - "{{mnt.local}}/Media/Movies"
 
 - name: Setup default radarr docker volume to be merged
   set_fact:
