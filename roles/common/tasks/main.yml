@@ -98,7 +98,7 @@
         fi
         export EDITOR="/bin/nano"
 
-- include_tasks: cloudflare.yml
+- import_tasks: cloudflare.yml
   tags: cloudflare 
 
 - name: Check plexdrive mount folder exist
