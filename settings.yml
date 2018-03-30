@@ -73,6 +73,7 @@
       - jackett
       - tautulli
       - radarr
+      - radarr4k
       - sonarr
       - nzbget
   docker_volumes:
@@ -91,6 +92,7 @@
     monitor:
       - tautulli
       - radarr
+      - radarr4k
       - sonarr
       - nzbget
       - telly
