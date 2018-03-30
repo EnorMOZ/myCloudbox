@@ -79,6 +79,8 @@
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
+    radarr4k:
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"  
     nzbget:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
     sonarr:
