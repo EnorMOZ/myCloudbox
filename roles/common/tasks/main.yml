@@ -36,7 +36,7 @@
     - nodejs-legacy
     - npm
     - glances
-    - mlocated
+    - mlocate
     - screen
 
 - name: Install common pip modules
