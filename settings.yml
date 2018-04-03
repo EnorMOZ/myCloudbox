@@ -39,6 +39,7 @@
       - ".unionfs/**"
       - ".unionfs-fuse/**"
       - "**downloads**"
+      - "**IMDB**"
   unionfs_cleaner:
     branch: master
     monitor_dir: "{{mnt.local}}"
@@ -47,9 +48,11 @@
     config_manager: true
     git_autoupdater: true
     upload_manager: true
-    excludes:
+    lsof_excludes:
       - ".partial~"
       - "/downloads/"
+      - "cwd"
+      - "/mnt/local/"
   backup:
     dest: "/home/{{user}}/Backups"
     rsync_dest: rsync://somehost.com/Backups

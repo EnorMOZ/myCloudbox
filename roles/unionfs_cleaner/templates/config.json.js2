@@ -9,7 +9,7 @@
     "local_folder_check_interval": {{unionfs_cleaner.size_check_mins}},
     "local_remote": "{{rclone.remote_dir}}",
     "lsof_excludes": [
-{% for i in unionfs_cleaner.excludes %}
+{% for i in unionfs_cleaner.lsof_excludes %}
         "{{ i }}"{{ ( loop.last ) | ternary('', ',') }}
 {% endfor %}
     ],
