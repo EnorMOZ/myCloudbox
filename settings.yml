@@ -33,6 +33,8 @@
       - "{{mnt.local}}/Media/Kids Movies"
       - "{{mnt.local}}/Media/TV"
       - "{{mnt.local}}/Media/Kids TV"
+      - "{{mnt.local}}/Media/Movies4k"
+      - "{{mnt.local}}/Media/Kids Movies4k"
     excludes:
       - "**partial~"
       - "**_HIDDEN"
@@ -44,7 +46,7 @@
     branch: master
     monitor_dir: "{{mnt.local}}"
     max_local_gigabytes: 500
-    size_check_mins: 5
+    size_check_mins: 3
     config_manager: true
     git_autoupdater: true
     upload_manager: true
