@@ -13,7 +13,7 @@
   - name: Install fuse
     apt: 
       name: fuse
-      state: installed
+      state: present
 
   - name: Import fuse.conf
     copy: 
@@ -24,7 +24,7 @@
   - name: Install unionfs
     apt: 
       name: unionfs-fuse
-      state: installed
+      state: present
 
   - name: Import unionfs.service
     template: 

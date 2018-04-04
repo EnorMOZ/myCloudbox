@@ -33,7 +33,7 @@
 - name: Ensure unzip is installed
   apt:
     name: unzip
-    state: installed
+    state: present
 
 - name: "Check {{backup.dest}} exists"
   stat:
