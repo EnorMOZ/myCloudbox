@@ -33,13 +33,13 @@
     user: "{{plex.user}}"
     password: "{{plex.pass}}"
     force_basic_auth: yes
-  register: plexclaim  
+  register: plexclaim
   when: plex_prefs.stat.exists == False
 
 - name: set new claim token var
   set_fact: >
     plex_claim="{{plexclaim.json.token}}"
-  when: plex_prefs.stat.exists == False  
+  when: plex_prefs.stat.exists == False
 
 - debug: msg="Using plex claim token {{plex_claim}}"
   when: plex_prefs.stat.exists == False
@@ -50,6 +50,17 @@
       - "/etc/localtime:/etc/localtime:ro"
       - "{{mnt.docker_data}}/plex:/config"
       - "{{plex.transcodes}}:/transcode"
+
+- name: Set default hosts
+  set_fact:
+    plex_default_hosts: { "metric.plex.tv": "127.0.0.1", "metrics.plex.tv": "127.0.0.1", "analytics.plex.tv": "127.0.0.1" }
+
+- name: Grab IP for Lazyman
+  set_fact: lazyman_ip="{{ lookup('dig', 'powersports.ml.', '@8.8.8.8', 'qtype=A') }}"
+
+- name: Set custom hosts
+  set_fact:
+    plex_custom_hosts: {  "mf.svc.nhl.com": "{{  (lazyman_ip|ipv4) | ternary(lazyman_ip,'127.0.0.1') }}",  "mlb-ws-mf.media.mlb.com": "{{  (lazyman_ip|ipv4) | ternary(lazyman_ip, '127.0.0.1') }}" }
 
 - name: Create and start container
   docker_container:
@@ -75,7 +86,7 @@
     volumes: "{{plex_volumes + docker_volumes.plex|default([])}}"
     restart_policy: always
     devices: "{{ '/dev/dri:/dev/dri' if plex.hw_transcode == 'True' | default(false) else omit }}"
-    etc_hosts: {'metric.plex.tv': '127.0.0.1', 'metrics.plex.tv': '127.0.0.1', 'analytics.plex.tv': '127.0.0.1'}
+    etc_hosts: "{{plex_default_hosts | combine(plex_custom_hosts|default([])) }}"
     networks:
       - name: cloudbox
         aliases:
