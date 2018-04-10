@@ -1,5 +1,5 @@
 ---
-  
+
 - name: "Get {{user}} uid"
   shell: "id -u {{user}}"
   register: uid
@@ -12,7 +12,7 @@
   docker_container:
     name: vpn
     state: absent
-    
+
 - name: Create vpn directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:

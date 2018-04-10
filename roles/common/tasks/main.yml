@@ -59,20 +59,20 @@
     - "{{mnt.docker_data}}"
     - "{{mnt.docker_data}}/plex"
     - "{{mnt.docker_data}}/plex_autoscan"
-    
-- name: custom updatedb file 
-  template: 
+
+- name: custom updatedb file
+  template:
     src=updatedb.conf
     dest=/etc/updatedb.conf
     owner=root
     group=root
-    mode=0644 
+    mode=0644
 
 - name: Create updatedb file
   shell: "updatedb"
   args:
     creates: /var/lib/mlocate/mlocate.db
-      
+
 - name: Set {{mnt.docker_data}} permissions
   shell: "chmod -R 775 {{mnt.docker_data}}"
   args:
@@ -81,8 +81,8 @@
 - name: Set {{mnt.docker_data}} owner
   shell: "chown -R {{user}}:{{user}} {{mnt.docker_data}}"
   args:
-    warn: false  
-  
+    warn: false
+
 - name: insert custom bashrc stuff
   blockinfile:
     path: "{{ ansible_env.HOME }}/.bashrc"
@@ -96,9 +96,6 @@
         HISTFILE=$HOME/.bash_history
         fi
         export EDITOR="/bin/nano"
-
-- import_tasks: cloudflare.yml
-  tags: cloudflare 
 
 - name: Check plexdrive mount folder exist
   stat:
@@ -114,4 +111,3 @@
     group: "{{user}}"
     recurse: true
   when: plexdrive_mnt.stat.exists == False
-

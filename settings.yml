@@ -3,7 +3,7 @@
   passwd: "{{user_pass}}"
   domain: "{{user_domain}}"
   email: "{{user_email}}"
-  mnt: 
+  mnt:
     local: "/mnt/local"
     unionfs: "/mnt/unionfs"
     docker_data: "/opt"
@@ -69,7 +69,7 @@
       - "{{mnt.docker_data}}"
       - /var/spool/cron
     exclude_paths:
-    pushover_app_token: 
+    pushover_app_token:
     pushover_user_key:
   http_auth:
     enable: True
@@ -85,11 +85,11 @@
     radarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
     radarr4k:
-      - "{{mnt.unionfs}}:{{mnt.unionfs}}"  
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
     nzbget:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
     sonarr:
-      - "{{mnt.unionfs}}:{{mnt.unionfs}}"  
+      - "{{mnt.unionfs}}:{{mnt.unionfs}}"
     plex:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
       - "/tmp:/tmp"
@@ -104,7 +104,7 @@
       - nzbget
       - telly
   znc_port: 62971
-  gce_cron: daily 
+  gce_cron: daily
   telly:
     streams: "6"
     listen: "0.0.0.0:6077"

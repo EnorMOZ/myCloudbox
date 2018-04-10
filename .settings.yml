@@ -3,10 +3,10 @@
 plex_user: PLEXUSER
 plex_pass: PASS
 plex_autoscan_pass: PASS
-user_pass: password123
-user_domain: mydomain.com
-user_email: my@email.com
-cloudflare_token: MYTOKEN
+pass: password123
+domain: mydomain.com
+email: my@email.com
+cloudflare_api_token: MYTOKEN
 telly_m3u_url: http://m3u.com
 telly_epg_url: http://epg.com
 gce_name: my-test-instance1

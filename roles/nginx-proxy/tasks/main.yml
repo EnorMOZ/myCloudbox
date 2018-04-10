@@ -14,7 +14,7 @@
 
 - import_tasks: htauth.yml
   when: http_auth.enable | default(False)
-  
+
 - name: Import proxy.conf
   copy: "src=proxy.conf dest={{mnt.docker_data}}/nginx-proxy/proxy.conf force=yes owner={{user}} group={{user}} mode=0775"
 
@@ -41,7 +41,7 @@
 - name: Create and start container
   docker_container:
     name: nginx-proxy
-    image: "jwilder/nginx-proxy@sha256:76d9ed11c131fadc7546e3b9b085970e13ff45186171b975ad60830f5ca0d689" 
+    image: "jwilder/nginx-proxy@sha256:76d9ed11c131fadc7546e3b9b085970e13ff45186171b975ad60830f5ca0d689"
     pull: yes
     published_ports:
       - "80:80"
