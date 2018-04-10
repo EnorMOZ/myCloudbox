@@ -38,7 +38,7 @@
 
 - name: Retrieve plex docker image
   docker_image:
-    name: "plexinc/pms-docker:{{plex.tag}}"
+    name: "linuxserver/plex"
 
 - name: Check Preferences.xml exists
   stat:
@@ -83,7 +83,7 @@
 - name: Create and start container
   docker_container:
     name: plex
-    image: "plexinc/pms-docker:{{plex.tag}}"
+    image: "linuxserver/plex"
     pull: yes
     published_ports:
       - "127.0.0.1:32400:32400/tcp"
@@ -92,8 +92,8 @@
       - "33400:33400/tcp"
       - "33443:33443/tcp"
     env:
-      PLEX_UID: "{{uid.stdout}}"
-      PLEX_GID: "{{gid.stdout}}"
+      PUID: "{{uid.stdout}}"
+      PGID: "{{gid.stdout}}"
       PLEX_CLAIM: "{{plex_claim| default (omit)}}"
       CHANGE_CONFIG_DIR_OWNERSHIP: false
       ADVERTISE_IP: "http://plex.{{domain}}:80/,https://plex.{{domain}}:443/"
@@ -101,6 +101,7 @@
       VIRTUAL_PORT: 32400
       LETSENCRYPT_HOST: "plex.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
+      VERSION: "{{plex.tag}}"
     volumes: "{{plex_volumes + docker_volumes.plex|default([])}}"
     restart_policy: always
     devices: "{{ '/dev/dri:/dev/dri' if plex.hw_transcode == 'True' | default(false) else omit }}"
