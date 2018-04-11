@@ -37,6 +37,6 @@
   cron:
     name: "unrarall completed dir"
     minute: "*/3"
-    job: "/opt/unrarall/unrarall -v --clean=all /mnt/local/downloads/completed/"
+    job: "{{mnt.docker_data}}/unrarall/unrarall -v --clean=all {{mnt.local}}/downloads/completed/"
     state: "present"
       

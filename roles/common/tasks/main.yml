@@ -37,7 +37,6 @@
     - npm
     - glances
     - screen
-    - tmux
     - python-netaddr
     - apache2-utils
 
@@ -51,48 +50,21 @@
     - ndg-httpsclient
     - dnspython
 
-- name: Install common npm modules
-  npm: "name={{item}} global=yes"
-  with_items:
-    - frontail
-
-- name: Install hostess
-  get_url:
-    url:  https://github.com/cbednarski/hostess/releases/download/v0.3.0/hostess_linux_amd64
-    dest: /usr/local/bin/hostess
-    mode: 0755
-    owner: root
-    group: root
-    force: yes
-    validate_certs: no
-  tags: update-hostess
-
-- name: Install ngrok
-  unarchive:
-    src: https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-    dest: /usr/local/bin
-    copy: no
-    mode: 0775
-    validate_certs: no
-  tags: update-ngrok
-
 - name: Create common directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /mnt/local
-    - /mnt/local/.unionfs-fuse
-    - /mnt/local/Media/TV
-    - /mnt/local/Media/Movies
-    - /opt
+    - "{{mnt.local}}"
+    - "{{mnt.fuse_dir}}"
+    - "{{mnt.docker_data}}"
 
 - name: Check plexdrive mount folder exist
   stat:
-    path: /mnt/plexdrive
+    path: "{{mnt.plexdrive}}"
   register: plexdrive_mnt
 
-- name: Create /mnt/plexdrive
+- name: Create "{{mnt.plexdrive}}"
   file:
-    path: /mnt/plexdrive
+    path: "{{mnt.plexdrive}}"
     state: directory
     mode: 0755
     owner: "{{user}}"
@@ -100,12 +72,12 @@
     recurse: yes
   when: plexdrive_mnt.stat.exists == False
 
-- name: Set /opt permissions
-  shell: "chmod -R 775 /opt"
+- name: Set "{{mnt.docker_data}}" permissions
+  shell: "chmod -R 775 {{mnt.docker_data}}"
   args:
     warn: no
 
-- name: Set /opt owner
-  shell: "chown -R {{user}}:{{user}} /opt"
+- name: Set "{{mnt.docker_data}}" owner
+  shell: "chown -R {{user}}:{{user}} {{mnt.docker_data}}"
   args:
     warn: no
