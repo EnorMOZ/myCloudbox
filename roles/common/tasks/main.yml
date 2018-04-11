@@ -36,8 +36,10 @@
     - nodejs-legacy
     - npm
     - glances
-    - mlocate
     - screen
+    - tmux
+    - python-netaddr
+    - apache2-utils
 
 - name: Install common pip modules
   pip: "name={{item}} state=latest"
@@ -48,66 +50,62 @@
     - ansible-toolbox
     - ndg-httpsclient
     - dnspython
-    - netaddr
+
+- name: Install common npm modules
+  npm: "name={{item}} global=yes"
+  with_items:
+    - frontail
+
+- name: Install hostess
+  get_url:
+    url:  https://github.com/cbednarski/hostess/releases/download/v0.3.0/hostess_linux_amd64
+    dest: /usr/local/bin/hostess
+    mode: 0755
+    owner: root
+    group: root
+    force: yes
+    validate_certs: no
+  tags: update-hostess
+
+- name: Install ngrok
+  unarchive:
+    src: https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+    dest: /usr/local/bin
+    copy: no
+    mode: 0775
+    validate_certs: no
+  tags: update-ngrok
 
 - name: Create common directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.local}}"
-    - "{{mnt.unionfs}}"
-    - "{{mnt.fuse_dir}}"
-    - "{{mnt.docker_data}}"
-    - "{{mnt.docker_data}}/plex"
-    - "{{mnt.docker_data}}/plex_autoscan"
-
-- name: custom updatedb file
-  template:
-    src=updatedb.conf
-    dest=/etc/updatedb.conf
-    owner=root
-    group=root
-    mode=0644
-
-- name: Create updatedb file
-  shell: "updatedb"
-  args:
-    creates: /var/lib/mlocate/mlocate.db
-
-- name: Set {{mnt.docker_data}} permissions
-  shell: "chmod -R 775 {{mnt.docker_data}}"
-  args:
-    warn: false
-
-- name: Set {{mnt.docker_data}} owner
-  shell: "chown -R {{user}}:{{user}} {{mnt.docker_data}}"
-  args:
-    warn: false
-
-- name: insert custom bashrc stuff
-  blockinfile:
-    path: "{{ ansible_env.HOME }}/.bashrc"
-    block: |
-        HISTTIMEFORMAT="%h/%d - %H:%M:%S "
-        shopt -s histappend
-        PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
-        if [ $UID -eq "0" ]; then
-        HISTFILE=/root/.bash_history-$(who am i | awk '{print $1}';exit)
-        else
-        HISTFILE=$HOME/.bash_history
-        fi
-        export EDITOR="/bin/nano"
+    - /mnt/local
+    - /mnt/local/.unionfs-fuse
+    - /mnt/local/Media/TV
+    - /mnt/local/Media/Movies
+    - /opt
 
 - name: Check plexdrive mount folder exist
   stat:
-    path: "{{mnt.plexdrive}}"
+    path: /mnt/plexdrive
   register: plexdrive_mnt
 
-- name: Create "{{mnt.plexdrive}}"
+- name: Create /mnt/plexdrive
   file:
-    path: "{{mnt.plexdrive}}"
+    path: /mnt/plexdrive
     state: directory
     mode: 0755
     owner: "{{user}}"
     group: "{{user}}"
-    recurse: true
+    recurse: yes
   when: plexdrive_mnt.stat.exists == False
+
+- name: Set /opt permissions
+  shell: "chmod -R 775 /opt"
+  args:
+    warn: no
+
+- name: Set /opt owner
+  shell: "chown -R {{user}}:{{user}} /opt"
+  args:
+    warn: no

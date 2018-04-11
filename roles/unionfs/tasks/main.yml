@@ -9,9 +9,9 @@
       state: stopped 
       name: unionfs
     when: unionfs_service.stat.exists
-    
+
   - name: Install fuse
-    apt: 
+    apt:
       name: fuse
       state: present
 
@@ -22,14 +22,14 @@
       force: yes
 
   - name: Install unionfs
-    apt: 
+    apt:
       name: unionfs-fuse
       state: present
 
   - name: Import unionfs.service
-    template: 
+    template:
       src: unionfs.service.js2
-      dest: /etc/systemd/system/unionfs.service 
+      dest: /etc/systemd/system/unionfs.service
       force: yes
     when: unionfs_service.stat.exists == False
 
