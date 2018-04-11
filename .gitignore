@@ -1,5 +1,4 @@
 #Cloudbox Related
-settings.yml
 cloudbox.retry
 backup.lock
 *.log
