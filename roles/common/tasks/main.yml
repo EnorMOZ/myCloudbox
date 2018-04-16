@@ -49,6 +49,12 @@
     - ansible-toolbox
     - ndg-httpsclient
     - dnspython
+    - netaddr
+
+- name: Install common pip modules
+  pip: "name={{item}} state=latest executable=pip3"
+  with_items:
+    - netaddr
 
 - name: Create common directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"

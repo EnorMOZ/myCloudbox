@@ -74,7 +74,6 @@
   http_auth:
     enable: True
     sites:
-      - hydra
       - jackett
       - tautulli
       - radarr
