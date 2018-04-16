@@ -12,7 +12,7 @@
   nzbget:
     downloads: "{{mnt.unionfs}}/downloads/nzbget"
   plex:
-    tag: latest
+    tag: beta
     transcodes: "/dev/shm"
     hw_transcode: "True"
     user: "{{plex_user}}"
