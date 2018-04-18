@@ -1,65 +1,65 @@
 {
-    "DOCKER_NAME": "plex",
-    "PLEX_DATABASE_PATH": "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db",
-    "PLEX_EMPTY_TRASH": true,
-    "PLEX_EMPTY_TRASH_CONTROL_FILES": [
-        "{{mnt.unionfs}}/mounted.bin"
+  "DOCKER_NAME": "plex",
+  "PLEX_ANALYZE_DIRECTORY": true,
+  "PLEX_ANALYZE_FILE": true,
+  "PLEX_ANALYZE_TYPE": "basic",
+  "PLEX_DATABASE_PATH": "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db"
+  "PLEX_EMPTY_TRASH": true,
+  "PLEX_EMPTY_TRASH_CONTROL_FILES": [
+      "{{mnt.unionfs}}/mounted.bin"
+  ],
+  "PLEX_EMPTY_TRASH_MAX_FILES": 100,
+  "PLEX_EMPTY_TRASH_ZERO_DELETED": false,
+  "PLEX_LD_LIBRARY_PATH": "/usr/lib/plexmediaserver",
+  "PLEX_LOCAL_URL": "http://plex.{{domain}}",
+  "PLEX_SCANNER": "/usr/lib/plexmediaserver/Plex\\ Media\\ Scanner",
+  "PLEX_SCAN_PRIORITIES": { {% for i in plex_section.matches %}
+      "{{ i.Location.id }}": [
+          "/{{ i.Location.path | basename }}/"
+ ]{{ ( loop.last ) | ternary('', ',') }} {% endfor %}
+
+  },
+  "PLEX_SECTION_PATH_MAPPINGS": { {% for i in plex_section.matches %}
+      "{{ i.Location.id }}": [
+          "/{{ i.Location.path | basename }}/"
+ ]{{ ( loop.last ) | ternary('', ',') }} {% endfor %}
+
+  },
+  "PLEX_SUPPORT_DIR": "/var/lib/plexmediaserver/Library/Application\\ Support",
+  "PLEX_TOKEN": "",
+  "PLEX_USER": "plex",
+  "PLEX_WAIT_FOR_EXTERNAL_SCANNERS": true,
+  "RCLONE_RC_CACHE_EXPIRE": {
+    "ENABLED": false,
+    "MOUNT_FOLDER": "/mnt/rclone",
+    "RC_URL": "http://localhost:5572"
+  },
+  "RUN_COMMAND_BEFORE_SCAN": "",
+  "SERVER_ALLOW_MANUAL_SCAN": false,
+  "SERVER_FILE_EXIST_PATH_MAPPINGS": {},
+  "SERVER_IGNORE_LIST": [
+    "/.grab/",
+    ".DS_Store",
+    "Thumbs.db"
+  ],
+  "SERVER_IP": "{{plex_autoscan.ip}}",
+  "SERVER_MAX_FILE_CHECKS": 10,
+  "SERVER_PASS": "{{plex_autoscan_pass}}",
+  "SERVER_PATH_MAPPINGS": {},
+  "SERVER_PORT": 3468,
+  "SERVER_SCAN_DELAY": 5,
+  "SERVER_SCAN_PRIORITIES": {
+    "0": [
+      "/Movies/"
     ],
-    "PLEX_EMPTY_TRASH_MAX_FILES": 100,
-    "PLEX_EMPTY_TRASH_ZERO_DELETED": false,
-    "PLEX_LD_LIBRARY_PATH": "/usr/lib/plexmediaserver",
-    "PLEX_LOCAL_URL": "http://plex.{{domain}}",
-    "PLEX_SCANNER": "/usr/lib/plexmediaserver/Plex\\ Media\\ Scanner",
-    "PLEX_SECTION_PATH_MAPPINGS": { {% for i in plex_section.matches %}  
-        "{{ i.Location.id }}": [
-            "/{{ i.Location.path | basename }}/"
- 	 ]{{ ( loop.last ) | ternary('', ',') }} {% endfor %}
-          
-    },
-    "PLEX_SUPPORT_DIR": "/var/lib/plexmediaserver/Library/Application\\ Support",
-    "PLEX_TOKEN": "",
-    "PLEX_USER": "plex",
-    "PLEX_WAIT_FOR_EXTERNAL_SCANNERS": true,
-    "PLEX_ANALYZE_DIRECTORY": true,
-    "PLEX_ANALYZE_TYPE": "basic",
-    "RUN_COMMAND_BEFORE_SCAN": "",    
-    "RCLONE_RC_CACHE_EXPIRE": {
-        "ENABLED": false, 
-        "MOUNT_FOLDER": "/mnt/rclone", 
-        "RC_URL": "http://localhost:5572"
-    },
-    "SERVER_ALLOW_MANUAL_SCAN": false,
-    "SERVER_FILE_EXIST_PATH_MAPPINGS": {},
-    "SERVER_IP": "{{plex_autoscan.ip}}",
-    "SERVER_MAX_FILE_CHECKS": 10,
-    "SERVER_PASS": "{{plex_autoscan_pass}}",
-    "SERVER_PATH_MAPPINGS": {},
-    "SERVER_IGNORE_LIST": [
-        "/.grab/",
-        ".DS_Store",
-        "Thumbs.db"
+    "1": [
+      "/TV/"
     ],
-    "SERVER_USE_SQLITE": true,
-    "SERVER_SCAN_PRIORITIES": {
-        "0": [
-            "/TV/"
-        ], 
-        "1": [
-            "/Movies/"
-        ], 
-        "2": [
-            "/Music/"
-        ]
-    }, 
-    "SERVER_PORT": 3468,
-    "SERVER_SCAN_DELAY": 5,
-    "PLEX_SCAN_PRIORITIES": { {% for i in plex_section.matches %}  
-        "{{ i.Location.id }}": [
-            "/{{ i.Location.path | basename }}/"
- 	 ]{{ ( loop.last ) | ternary('', ',') }} {% endfor %}
-          
-    },
-    "USE_DOCKER": true,
-    "USE_SUDO": false,
-    "RUN_COMMAND_BEFORE_SCAN": ""
+    "2": [
+      "/Music/"
+    ]
+  },
+  "SERVER_USE_SQLITE": true,
+  "USE_DOCKER": true,
+  "USE_SUDO": false
 }
