@@ -33,7 +33,7 @@
 - name: Create and start container
   docker_container:
     name: thelounge
-    image: "thelounge/lounge:latest"
+    image: "enormoz/thelounge:next"
     pull: yes
     published_ports:
       - "127.0.0.1:9000:9000"
