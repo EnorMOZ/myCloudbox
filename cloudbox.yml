@@ -30,7 +30,6 @@
     - { role: nethogs, tags: ['full', 'feeder', 'plex', 'common', 'nethogs'] }
     - { role: apt-file, tags: ['full', 'common', 'apt-file'] }
     - { role: disable_ipv6, tags: ['full', 'common', 'disable_ipv6'] }
-    - { role: znc, tags: ['full', 'common', 'znc'] }
     - { role: unrarall, tags: ['full', 'common', 'unrarall'] }
     - { role: thelounge, tags: ['full','thelounge'] }
     - { role: telly, tags: ['full','telly'] }

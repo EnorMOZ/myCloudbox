@@ -69,6 +69,7 @@
     with_items:
      - "{{playbook_dir}}/settings.yml"
      - "/home/{{user}}/.config/rclone/rclone.conf"
+    ignore_errors: yes
 
   - name: "Check {{backup.dest}}/cloudbox.tar exists"
     stat:
@@ -96,23 +97,15 @@
       - "{{playbook_dir}}/settings.yml"
       - "/home/{{user}}/.settings.yml"
 
-  - name: list running containers
-    shell: "docker ps -q"
-    register: docker_list
+  - name: "Synchronize '/etc/systemd/system' to '{{mnt.docker_data}}/systemd-backup' for inclusion in backup"
+    synchronize:
+      src: "/etc/systemd/system/"
+      dest: "{{mnt.docker_data}}/systemd-backup"
+      mode: push
+      recursive: yes
 
-  - name: "Copy /etc/systemd/system to {{mnt.docker_data}}/systemd for inclusion in backup"
-    copy:
-      src: "/etc/systemd/system/{{item}}"
-      dest: "{{mnt.docker_data}}/systemd/{{item}}"
-      force: yes
-      group: "{{user}}"
-      owner: "{{user}}"
-      mode: 0775
-    with_items:
-      - plexdrive.service
-      - unionfs_cleaner.service
-      - plex_autoscan.service
-      - unionfs.service
+  - name: "Make systemd-backup folder readable/writeable by {{user}}"
+    file: "path={{mnt.docker_data}}/systemd-backup state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
 
   - name: "Pushover Message: Stopped Cloudbox containers."
     pushover:
@@ -134,6 +127,9 @@
       )
     ignore_errors: yes
 
+  - name: list running containers
+    shell: "docker ps -q"
+    register: docker_list
 
   - name: "Stop all previously running containers"
     shell: "docker stop {{docker_list.stdout| replace('\n', ' ')}}"
@@ -151,7 +147,7 @@
     shell: "tar -cf '{{backup.dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
     args:
       warn: false
-      
+
   - name: "Get new {{backup.dest}}/cloudbox.tar stats"
     stat:
       path: "{{backup.dest}}/cloudbox.tar"
@@ -364,7 +360,7 @@
       hour: "{{backup.cron_hour}}"
       job: "PATH='/usr/bin:/bin:/usr/local/bin' {{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup"
       state: "{{backup.cron_state}}"
-      
+
   always:
   - debug: msg="Finished backup"
     when: backup_lock.stat.exists == False
