@@ -9,7 +9,7 @@
 
 - name: Stop and remove any existing container
   docker_container:
-    name: watchtower
+    name: "{{role_name}}"
     state: absent
 
 - name: Setup default watchtower docker volume to be merged
@@ -20,7 +20,7 @@
 
 - name: Create and start container
   docker_container:
-    name: watchtower
+    name: "{{role_name}}"
     image: "v2tec/watchtower"
     command: '{{watchtower.command + watchtower.monitor}}'
     volumes: "{{watchtower_volumes + docker_volumes.watchtower|default([])}}"
@@ -28,5 +28,5 @@
     networks:
       - name: cloudbox
         aliases:
-          - watchtower
+          - "{{role_name}}"
     state: started
