@@ -3,7 +3,7 @@
   include_role:
     name: cloudflare
   vars:
-    subdomain: plexpy
+    subdomain: tautulli
 
 - name: "Get {{user}} uid"
   shell: "id -u {{user}}"
@@ -12,32 +12,32 @@
 - name: "Get {{user}} gid"
   shell: "id -g {{user}}"
   register: gid
-    
+
 - name: Stop and remove any existing container
   docker_container:
-    name: tautulli
+    name: "{{role_name}}"
     state: absent
 
 - name: Wait for Plex Logs folder to be created by Plex
   wait_for:
     path: "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs"
     state: present
-  
+
 - name: Create tautulli directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.docker_data}}/tautulli"
-    
+    - "{{role_dir}}"
+
 - name: Setup default tautulli docker volume to be merged
   set_fact:
     tautulli_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/tautulli:/config"
+      - "{{role_dir}}:/config"
       - "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro"
 
 - name: Create and start container
   docker_container:
-    name: tautulli
+    name: "{{role_name}}"
     image: tautulli/tautulli
     pull: yes
     published_ports:
@@ -55,5 +55,5 @@
     networks:
       - name: cloudbox
         aliases:
-          - tautulli
+          - "{{role_name}}"
     state: started
