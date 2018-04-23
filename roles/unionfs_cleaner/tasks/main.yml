@@ -11,46 +11,46 @@
 - name: Create unionfs_cleaner directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
   with_items:
-    - "{{mnt.docker_data}}/unionfs_cleaner"
-    
-- name: Clone unionfs_cleaner
+    - "{{role_dir}}"
+
+- name: Clone "{{role_name}}"
   git:
     repo: https://github.com/l3uddz/unionfs_cleaner/
-    dest: "{{mnt.docker_data}}/unionfs_cleaner"
+    dest: "{{role_dir}}"
     version: "{{unionfs_cleaner.branch}}"
     force: yes
-    
+
 - name: Install pip requirements
   pip:
-    requirements: "{{mnt.docker_data}}/unionfs_cleaner/requirements.txt"
+    requirements: "{{role_dir}}/requirements.txt"
     executable: pip3
 
 - name: Check config exists
   stat:
-    path: "{{mnt.docker_data}}/unionfs_cleaner/config.json"
+    path: "{{role_dir}}/config.json"
   register: unionfs_cleaner_config
 
 - name: Import default config
   template:
     src: config.json.js2
-    dest: "{{mnt.docker_data}}/unionfs_cleaner/config.json"
+    dest: "{{role_dir}}/config.json"
     force: yes
   when: unionfs_cleaner_config.stat.exists == False
 
 - name: Set cleaner.py as executable
   file:
-    path: "{{mnt.docker_data}}/unionfs_cleaner/cleaner.py"
+    path: "{{role_dir}}/cleaner.py"
     mode: a+x
 
 - name: Set directory permissions
-  file: "path={{mnt.docker_data}}/unionfs_cleaner state=directory owner={{user}} group={{user}} recurse=yes"
+  file: "path={{role_dir}} state=directory owner={{user}} group={{user}} recurse=yes"
 
 - name: Import unionfs_cleaner service
   template:
     src: unionfs_cleaner.service.js2
-    dest: /etc/systemd/system/unionfs_cleaner.service 
+    dest: /etc/systemd/system/"{{role_name}}".service
     force: yes
   when: unionfs_cleaner_service.stat.exists == False
 
-- name: Start unionfs_cleaner service
-  systemd: state=started name=unionfs_cleaner daemon_reload=yes enabled=yes
+- name: Start "{{role_name}}" service
+  systemd: state=started name="{{role_name}}" daemon_reload=yes enabled=yes
