@@ -9,6 +9,7 @@
     docker_data: "/opt"
     fuse_dir: "/mnt/local/.unionfs-fuse"
     plexdrive: "/mnt/plexdrive"
+  role_dir: "{{mnt.docker_data}}/{{role_name}}"
   nzbget:
     downloads: "{{mnt.unionfs}}/downloads/nzbget"
   plex:
