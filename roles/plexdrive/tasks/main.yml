@@ -11,12 +11,12 @@
   - name: Create plexdrive directories
     file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
     with_items:
-      - "{{mnt.docker_data}}/plexdrive"
+      - "{{role_dir}}"
 
   - name: Install plexdrive
     get_url:
       url:  https://github.com/dweidenfeld/plexdrive/releases/download/5.0.0/plexdrive-linux-amd64
-      dest: "{{mnt.docker_data}}/plexdrive/plexdrive"
+      dest: "{{role_dir}}/plexdrive"
       mode: 0755
       owner: "{{user}}"
       group: "{{user}}"
@@ -35,7 +35,7 @@
 
   - name: Check config exists
     stat:
-      path: "{{mnt.docker_data}}/plexdrive/config.json"
+      path: "{{role_dir}}/config.json"
     register: plexdrive_config
 
   - name: Start plexdrive service
