@@ -16,12 +16,12 @@
 - name: Create plex directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.docker_data}}/plex"
+    - "{{role_dir}}"
     - "{{plex.transcodes}}"
 
 - name: Stop and remove any existing container
   docker_container:
-    name: plex
+    name: "{{role_name}}"
     state: absent
 
 - name: Retrieve plex docker image
@@ -30,7 +30,7 @@
 
 - name: Check Preferences.xml exists
   stat:
-    path: "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Preferences.xml"
+    path: "{{role_dir}}/Library/Application Support/Plex Media Server/Preferences.xml"
   register: plex_prefs
 
 - name: Get plex server claim id
@@ -54,7 +54,7 @@
   set_fact:
     plex_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/plex:/config"
+      - "{{role_dir}}:/config"
       - "{{plex.transcodes}}:/transcode"
 
 - name: Grab IP for Lazyman
@@ -78,7 +78,7 @@
 
 - name: Create and start container
   docker_container:
-    name: plex
+    name: "{{role_name}}"
     image: "plexinc/pms-docker:{{plex.tag}}"
     pull: yes
     published_ports:
@@ -104,7 +104,7 @@
     networks:
       - name: cloudbox
         aliases:
-          - plex
+          - "{{role_name}}"
     state: started
 
 # we need this here because sometimes after a restore, docker will set this transcodes folder to root, dont ask why, but it does...
@@ -122,19 +122,19 @@
 
 - name: Check WebTools exists
   stat:
-    path: "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Plug-ins/WebTools.bundle"
+    path: "{{role_dir}}/Library/Application Support/Plex Media Server/Plug-ins/WebTools.bundle"
   register: webtools_bundle
 
 - name: Wait for Plug-ins folder to be created by Plex
   wait_for:
-    path: "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Plug-ins"
+    path: "{{role_dir}}/Library/Application Support/Plex Media Server/Plug-ins"
     state: present
   when: webtools_bundle.stat.exists == False
 
 - name: Install WebTools
   unarchive:
     src: https://github.com/ukdtom/WebTools.bundle/releases/download/3.0.0/WebTools.bundle.zip
-    dest: "{{mnt.docker_data}}/plex/Library/Application Support/Plex Media Server/Plug-ins"
+    dest: "{{role_dir}}/Library/Application Support/Plex Media Server/Plug-ins"
     copy: no
     owner: "{{user}}"
     group: "{{user}}"
@@ -144,7 +144,7 @@
 
 - name: Create plex_autoscan Logs folder
   file:
-    path: "{{mnt.docker_data}}/plex/Library/Logs/Plex Media Server"
+    path: "{{role_dir}}/Library/Logs/Plex Media Server"
     state: directory
     mode: 0775
     owner: "{{user}}"
