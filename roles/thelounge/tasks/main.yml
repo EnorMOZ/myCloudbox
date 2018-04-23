@@ -16,23 +16,23 @@
 
 - name: Stop and remove any existing container
   docker_container:
-    name: thelounge
+    name: "{{role_name}}"
     state: absent
 
 - name: Create thelounge directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.docker_data}}/thelounge"
+    - "{{role_dir}}"
 
 - name: Setup default thelounge docker volume to be merged
   set_fact:
     thelounge_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/thelounge:/home/lounge/data"
+      - "{{role_dir}}:/home/lounge/data"
 
 - name: Create and start container
   docker_container:
-    name: thelounge
+    name: "{{role_name}}"
     image: "enormoz/thelounge:next"
     pull: yes
     published_ports:
@@ -51,6 +51,6 @@
     networks:
       - name: cloudbox
         aliases:
-          - thelounge
+          - "{{role_name}}"
     restart_policy: always
     state: started
