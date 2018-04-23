@@ -22,12 +22,12 @@
 - name: Ensure rclone folders exists
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"
   with_items:
-    - "{{mnt.docker_data}}/rclone"
+    - "{{role_dir}}"
     - "/home/{{user}}/.config/rclone"
 
 - name: Symlink config
   file:
-    src: "{{mnt.docker_data}}/rclone/rclone.conf"
+    src: "{{role_dir}}/rclone.conf"
     dest: "/home/{{user}}/.config/rclone/rclone.conf"
     owner: "{{user}}"
     group: "{{user}}"
@@ -42,7 +42,7 @@
 - name: Restore rclone.conf as part of restore process
   copy:
     src: "{{playbook_dir}}/rclone.conf"
-    dest: "{{mnt.docker_data}}/rclone/rclone.conf"
+    dest: "{{role_dir}}/rclone.conf"
     mode: 0775
     owner: "{{user}}"
     group: "{{user}}"
