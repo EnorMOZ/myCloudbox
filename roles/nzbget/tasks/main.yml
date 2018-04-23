@@ -16,11 +16,11 @@
 - name: Create nzbget directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.docker_data}}/nzbget"
+    - "{{rold_dir}}"
 
 - name: Stop and remove any existing container
   docker_container:
-    name: nzbget
+    name: "{{role_name}}"
     state: absent
 
 - name: Create nzbget download directory
@@ -40,18 +40,18 @@
 
 - name: Check nzbget.conf exists
   stat:
-    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
+    path: "{{role_dir}}/nzbget.conf"
   register: nzbget_conf
 
 - name: Setup default nzbget docker volume to be merged
   set_fact:
     nzbget_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/nzbget:/config"
+      - "{{role_dir}}:/config"
 
 - name: Create and start container
   docker_container:
-    name: nzbget
+    name: "{{role_name}}"
     image: hotio/suitarr
     pull: yes
     published_ports:
@@ -71,12 +71,12 @@
     networks:
       - name: cloudbox
         aliases:
-          - nzbget
+          - "{{role_name}}"
     state: started
 
 - name: Wait for nzbget.conf to be created
   wait_for:
-    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
+    path: "{{role_dir}}/nzbget.conf"
     state: present
   when: nzbget_conf.stat.exists == False
 
@@ -87,14 +87,14 @@
 
 - name: Stop container to customize nzbget.conf
   docker_container:
-    name: nzbget
+    name: "{{role_name}}"
     image: hotio/suitarr
     state: stopped
   when: nzbget_conf.stat.exists == False
 
 - name: Change downloads directory
   lineinfile:
-    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
+    path: "{{role_dir}}/nzbget.conf"
     regexp: '^MainDir\s?='
     line: 'MainDir={{nzbget.downloads}}'
     state: present
@@ -102,7 +102,7 @@
 
 - name: Rename Movies category
   lineinfile:
-    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
+    path: "{{role_dir}}/nzbget.conf"
     regexp: '^Category1.Name\s?='
     line: 'Category1.Name=radarr'
     state: present
@@ -110,7 +110,7 @@
 
 - name: Rename TV category
   lineinfile:
-    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
+    path: "{{role_dir}}/nzbget.conf"
     regexp: '^Category2.Name\s?='
     line: 'Category2.Name=sonarr'
     state: present
@@ -118,7 +118,7 @@
 
 - name: Remove default Username
   lineinfile:
-    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
+    path: "{{role_dir}}/nzbget.conf"
     regexp: '^ControlUsername\s?='
     line: 'ControlUsername='
     state: present
@@ -126,7 +126,7 @@
 
 - name: Remove default Password
   lineinfile:
-    path: "{{mnt.docker_data}}/nzbget/nzbget.conf"
+    path: "{{role_dir}}/nzbget.conf"
     regexp: '^ControlPassword=\s?='
     line: 'ControlPassword='
     state: present
@@ -134,7 +134,7 @@
 
 - name: Start container to apply changes
   docker_container:
-    name: nzbget
+    name: "{{role_name}}"
     image: hotio/suitarr
     state: started
   when: nzbget_conf.stat.exists == False
