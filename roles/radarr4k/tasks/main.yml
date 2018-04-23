@@ -15,25 +15,23 @@
 
 - name: Stop and remove any existing container
   docker_container:
-    name: radarr4k
+    name: "{{role_name}}"
     state: absent
 
 - name: Create radarr4k directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.docker_data}}/radarr4k"
-    - "{{mnt.local}}/Media/Kids Movies4k"
-    - "{{mnt.local}}/Media/Movies4k"
-    
+    - "{{role_dir}}"
+
 - name: Setup default radarr docker volume to be merged
   set_fact:
     radarr4k_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/radarr4k:/config"
-      
+      - "{{role_dir}}:/config"
+
 - name: Create and start container
   docker_container:
-    name: radarr4k
+    name: "{{role_name}}"
     image: hotio/suitarr
     pull: yes
     published_ports:
@@ -49,10 +47,10 @@
       VIRTUAL_PORT: 7878
       LETSENCRYPT_HOST: "radarr4k.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
-    volumes: "{{radarr4k_volumes + docker_volumes.radarr4k|default([])}}"    
+    volumes: "{{radarr4k_volumes + docker_volumes.radarr4k|default([])}}"
     networks:
       - name: cloudbox
         aliases:
-          - radarr4k
+          - "{{role_name}}"
     restart_policy: always
     state: started
