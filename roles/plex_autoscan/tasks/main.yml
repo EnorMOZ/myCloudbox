@@ -11,18 +11,18 @@
 - name: Create plex_autoscan directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
   with_items:
-    - "{{mnt.docker_data}}/plex_autoscan"
+    - "{{role_dir}}"
 
 - name: Clone plex_autoscan
   git:
     repo: https://github.com/l3uddz/plex_autoscan/
-    dest: "{{mnt.docker_data}}/plex_autoscan"
+    dest: "{{role_dir}}"
     version: "{{plex_autoscan.version}}"
     force: yes
-    
+
 - name: Install pip requirements
   pip:
-    requirements: "{{mnt.docker_data}}/plex_autoscan/requirements.txt"
+    requirements: "{{role_dir}}/requirements.txt"
     executable: pip
 
 - import_tasks: ../cloudbox/roles/common/tasks/plexauth.yml
@@ -30,24 +30,24 @@
 
 - import_tasks: ../cloudbox/roles/common/tasks/plexsections.yml
   tags: plexsections
-  
+
 - name: Setup default config
   template:
     src: config.json.js2
-    dest: "{{mnt.docker_data}}/plex_autoscan/config/config.json"
+    dest: "{{role_dir}}/config/config.json"
 
 - name: Set scan.py as executable
   file:
-    path: "{{mnt.docker_data}}/plex_autoscan/scan.py"
+    path: "{{role_dir}}/scan.py"
     mode: a+x
 
 - name: Set directory permissions
-  file: "path={{mnt.docker_data}}/plex_autoscan state=directory owner={{user}} group={{user}} recurse=yes"
+  file: "path={{role_dir}} state=directory owner={{user}} group={{user}} recurse=yes"
 
 - name: Import plex_autoscan service
   template:
     src: plex_autoscan.service.js2
-    dest: /etc/systemd/system/plex_autoscan.service 
+    dest: /etc/systemd/system/plex_autoscan.service
     force: yes
   when: plex_autoscan_service.stat.exists == False
 
