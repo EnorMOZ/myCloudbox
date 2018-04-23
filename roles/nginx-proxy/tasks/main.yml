@@ -10,17 +10,17 @@
 - name: Create nginx-proxy directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
   with_items:
-    - "{{mnt.docker_data}}/nginx-proxy"
+    - "{{role_dir}}"
 
 - import_tasks: htauth.yml
   when: http_auth.enable | default(False)
 
 - name: Import proxy.conf
-  copy: "src=proxy.conf dest={{mnt.docker_data}}/nginx-proxy/proxy.conf force=yes owner={{user}} group={{user}} mode=0775"
+  copy: "src=proxy.conf dest={{role_dir}}/proxy.conf force=yes owner={{user}} group={{user}} mode=0775"
 
 - name: Stop and remove any existing container
   docker_container:
-    name: nginx-proxy
+    name: "{{role_name}}"
     state: absent
 
 - name: Stop and remove any existing letsencrypt container
@@ -32,15 +32,15 @@
   set_fact:
     nginx_proxy_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/nginx-proxy:/etc/nginx/certs:ro"
+      - "{{role_dir}}:/etc/nginx/certs:ro"
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "{{mnt.docker_data}}/nginx-proxy/htpasswd:/etc/nginx/htpasswd"
+      - "{{role_dir}}/htpasswd:/etc/nginx/htpasswd"
       - "/etc/nginx/vhost.d"
       - "/usr/share/nginx/html"
 
 - name: Create and start container
   docker_container:
-    name: nginx-proxy
+    name: "{{role_name}}"
     image: "jwilder/nginx-proxy@sha256:76d9ed11c131fadc7546e3b9b085970e13ff45186171b975ad60830f5ca0d689"
     pull: yes
     published_ports:
@@ -52,7 +52,7 @@
     networks:
       - name: cloudbox
         aliases:
-          - nginx-proxy
+          - "{{role_name}}"
     restart_policy: always
     state: started
 
@@ -60,7 +60,7 @@
   set_fact:
     letsencrypt_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/nginx-proxy:/etc/nginx/certs:rw"
+      - "{{role_dir}}:/etc/nginx/certs:rw"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
 - name: Create and start letsencrypt container
