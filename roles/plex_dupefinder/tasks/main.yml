@@ -2,47 +2,47 @@
 - name: Create plex_dupefinder directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
   with_items:
-    - "{{mnt.docker_data}}/plex_dupefinder"
-    
+    - "{{role_dir}}"
+
 - name: Clone plex_dupefinder
   git:
     repo: https://github.com/l3uddz/plex_dupefinder/
-    dest: "{{mnt.docker_data}}/plex_dupefinder"
+    dest: "{{role_dir}}"
     version: master
     force: yes
-    
+
 - name: Install pip requirements
   pip:
-    requirements: "{{mnt.docker_data}}/plex_dupefinder/requirements.txt"
+    requirements: "{{role_dir}}/requirements.txt"
     executable: pip3
 
 - name: Check config exists
   stat:
-    path: "{{mnt.docker_data}}/plex_dupefinder/config.json"
+    path: "{{role_dir}}/config.json"
   register: plex_dupefinder_config
 
 - name: Import default config
   template:
     src: config.json.js2
-    dest: "{{mnt.docker_data}}/plex_dupefinder/config.json"
+    dest: "{{role_dir}}/config.json"
     force: yes
   when: plex_dupefinder_config.stat.exists == False
 
 - name: Set plexdupes.py as executable
   file:
-    path: "{{mnt.docker_data}}/plex_dupefinder/plexdupes.py"
+    path: "{{role_dir}}/plexdupes.py"
     mode: a+x
 
 - name: Set directory permissions
-  file: 
-    path: "{{mnt.docker_data}}/plex_dupefinder"
+  file:
+    path: "{{role_dir}}"
     state: directory
-    owner: "{{user}}" 
-    group: "{{user}}" 
+    owner: "{{user}}"
+    group: "{{user}}"
     recurse: yes
 
 - name: "Create /usr/local/bin symlink"
   file:
-    src: "{{mnt.docker_data}}/plex_dupefinder/plexdupes.py"
+    src: "{{role_dir}}/plexdupes.py"
     dest: "/usr/local/bin/plexdupes"
     state: link
