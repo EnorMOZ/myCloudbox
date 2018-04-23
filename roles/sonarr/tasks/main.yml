@@ -15,25 +15,23 @@
 
 - name: Stop and remove any existing container
   docker_container:
-    name: sonarr
+    name: "{{role_name}}"
     state: absent
 
 - name: Create sonarr directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.docker_data}}/sonarr"
-    - "{{mnt.local}}/Media/TV"
-    - "{{mnt.local}}/Media/Kids TV"
-    
+    - "{{role_dir}}"
+
 - name: Setup default sonarr docker volume to be merged
   set_fact:
     sonarr_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/sonarr:/config"
+      - "{{role_dir}}:/config"
 
 - name: Create and start container
   docker_container:
-    name: sonarr
+    name: "{{role_name}}"
     image: "hotio/suitarr"
     pull: yes
     published_ports:
@@ -53,6 +51,6 @@
     networks:
       - name: cloudbox
         aliases:
-          - sonarr
+          - "{{role_name}}"
     restart_policy: always
     state: started
