@@ -12,7 +12,7 @@
 
 - name: Stop and remove any existing container
   docker_container:
-    name: {{role_name}}
+    name: "{{role_name}}"
     state: absent
 
 - name: Create plex_patrol directories
@@ -34,7 +34,7 @@
 
 - name: Create and start container
   docker_container:
-    name: {{role_name}}
+    name: "{{role_name}}"
     image: "cloudb0x/plex_patrol:latest"
     pull: yes
     user: "{{uid.stdout}}:{{gid.stdout}}"
@@ -44,6 +44,6 @@
     networks:
       - name: cloudbox
         aliases:
-          - {{role_name}}
+          - "{{role_name}}"
     restart_policy: always
     state: started
