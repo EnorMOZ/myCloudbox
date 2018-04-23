@@ -1,9 +1,4 @@
 ---
-- name: "Setting CloudFlare DNS Record"
-  include_role:
-    name: cloudflare
-  vars:
-    subdomain: ombi
 
 - name: "Get {{user}} uid"
   shell: "id -u {{user}}"
@@ -15,23 +10,23 @@
 
 - name: Stop and remove any existing container
   docker_container:
-    name: telly
+    name: "{{role_name}}"
     state: absent
 
 - name: Create telly directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{mnt.docker_data}}/telly"
+    - "{{role_dir}}"
 
 - name: Setup default telly docker volume to be merged
   set_fact:
     telly_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{mnt.docker_data}}/telly:{{mnt.docker_data}}/telly"
+      - "{{role_dir}}:{{role_dir}}"
 
 - name: Create and start container
   docker_container:
-    name: telly
+    name: "{{role_name}}"
     image: "tombowditch/telly"
     pull: yes
     volumes: "{{telly_volumes + docker_volumes.telly|default([])}}"
@@ -44,6 +39,6 @@
     networks:
       - name: cloudbox
         aliases:
-          - telly
+          - "{{role_name}}"
     restart_policy: always
     state: started
