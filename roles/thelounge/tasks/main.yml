@@ -28,12 +28,12 @@
   set_fact:
     thelounge_volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{role_dir}}:/home/lounge/data"
+      - "{{role_dir}}:/var/opt/thelounge"
 
 - name: Create and start container
   docker_container:
     name: "{{role_name}}"
-    image: "enormoz/thelounge:next"
+    image: "thelounge/thelounge:3.0.0-pre.5-alpine"
     pull: yes
     published_ports:
       - "127.0.0.1:9000:9000"
