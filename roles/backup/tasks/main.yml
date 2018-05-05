@@ -144,7 +144,7 @@
       - 'plexdrive'
 
   - name: "Archiving {{mnt.docker_data}} to {{backup.dest}}/cloudbox.tar"
-    shell: "tar -cf '{{backup.dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
+    shell: "tar --exclude='./plex/Library/Application Support/Plex Media Server/Cache/PhotoTranscoder' --ignore-failed-read -cf '{{backup.dest}}/cloudbox.tar' -C {{mnt.docker_data}} ."
     args:
       warn: false
 
