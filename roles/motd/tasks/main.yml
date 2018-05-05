@@ -1,4 +1,8 @@
 ---
+
+- import_tasks: ../cloudbox/roles/common/tasks/plexauth.yml
+  tags: plexauth
+
 - name: Install required packages
   apt: "name={{item}} state=present"
   with_items:
