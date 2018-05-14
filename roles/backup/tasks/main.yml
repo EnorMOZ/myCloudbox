@@ -1,5 +1,10 @@
 ---
 - block:
+  - name: Create log directory
+    file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
+    with_items:
+      - /home/{{user}}/logs
+
   - name: "Check if backup.lock is present"
     stat:
       path: "{{playbook_dir}}/backup.lock"
@@ -103,6 +108,7 @@
       dest: "{{mnt.docker_data}}/systemd-backup"
       mode: push
       recursive: yes
+    ignore_errors: yes
 
   - name: "Make systemd-backup folder readable/writeable by {{user}}"
     file: "path={{mnt.docker_data}}/systemd-backup state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
@@ -358,7 +364,9 @@
       name: "Backup Cloudbox"
       minute: "{{backup.cron_minute}}"
       hour: "{{backup.cron_hour}}"
-      job: "PATH='/usr/bin:/bin:/usr/local/bin' {{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup"
+      job: "PATH='/usr/bin:/bin:/usr/local/bin' {{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup >> /home/{{user}}/cloudbox_backup 2>&1"
+      special_time: "{{backup.cron_time}}"
+
       state: "{{backup.cron_state}}"
 
   always:

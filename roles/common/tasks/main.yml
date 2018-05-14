@@ -90,7 +90,7 @@
   when: plexdrive_mnt.stat.exists == False
 
 - name: Set "{{mnt.docker_data}}" permissions
-  shell: "chmod -R 775 {{mnt.docker_data}}"
+  shell: "chmod -R ugo+X {{mnt.docker_data}}"
   args:
     warn: no
 

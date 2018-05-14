@@ -13,7 +13,7 @@
   with_items:
     - "{{role_dir}}"
 
-- name: Clone "{{role_name}}"
+- name: Clone unionfs_cleaner
   git:
     repo: https://github.com/l3uddz/unionfs_cleaner/
     dest: "{{role_dir}}"
