@@ -13,7 +13,7 @@
   nzbget:
     downloads: "{{mnt.unionfs}}/downloads/nzbget"
   plex:
-    tag: beta
+    tag: public
     transcodes: "/dev/shm"
     hw_transcode: "True"
     user: "{{plex_user}}"
@@ -23,10 +23,10 @@
     version: dev
   rclone:
     version: latest
-    bwlimit: "69M"
+    bwlimit: "15M"
     checkers: 10
     transfers: 20
-    chunk_size: 8M
+    chunk_size: 64M
     local_dir: "{{mnt.local}}"
     remote_dir: "agdrive:"
     rm_empty_dirs:
