@@ -365,7 +365,6 @@
       minute: "{{backup.cron_minute}}"
       hour: "{{backup.cron_hour}}"
       job: "PATH='/usr/bin:/bin:/usr/local/bin' {{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup >> /home/{{user}}/logs/cloudbox_backup-{{ '`' }}date +\\%Y-\\%m-\\%d_\\%H-\\%M-\\%S{{ '`' }}.log 2>&1"
-      special_time: "{{backup.cron_time}}"
       state: "{{backup.cron_state}}"
 
   always:
