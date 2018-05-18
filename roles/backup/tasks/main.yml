@@ -267,7 +267,7 @@
      - "cloudbox.tar"
 
   - name: "Upload backup with rclone to \"{{backup.rclone_dest}}\""
-    command: "rclone copy '{{backup.dest}}' '{{backup.rclone_dest}}' --stats=30s -v --transfers=2 --drive-chunk-size=64M --log-file='/home/{{user}}/backup_rclone.log'"
+    command: "rclone copy '{{backup.dest}}' '{{backup.rclone_dest}}' --stats=30s -v --transfers=2 --drive-chunk-size=64M --log-file='/home/{{user}}/logs/cloudbox_backup_rclone-{{lookup('pipe','date +%Y-%m-%d_%H-%M-%S')}}.log'"
     become: yes
     become_user: "{{user}}"
     when: backup.use_rclone
@@ -364,9 +364,8 @@
       name: "Backup Cloudbox"
       minute: "{{backup.cron_minute}}"
       hour: "{{backup.cron_hour}}"
-      job: "PATH='/usr/bin:/bin:/usr/local/bin' {{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup >> /home/{{user}}/cloudbox_backup 2>&1"
+      job: "PATH='/usr/bin:/bin:/usr/local/bin' {{playbook_binary.stdout}} {{playbook_dir}}/cloudbox.yml --tags backup >> /home/{{user}}/logs/cloudbox_backup-{{ '`' }}date +\\%Y-\\%m-\\%d_\\%H-\\%M-\\%S{{ '`' }}.log 2>&1"
       special_time: "{{backup.cron_time}}"
-
       state: "{{backup.cron_state}}"
 
   always:

@@ -123,10 +123,14 @@
   when: backup.keep_local_copy == False
 
 - name: Set {{mnt.docker_data}} permissions
-  shell: "chmod -R 775 {{mnt.docker_data}}"
+  shell: "chmod -R ugo+X {{mnt.docker_data}}"
+  args:
+    warn: no
 
 - name: Set {{mnt.docker_data}} owner
   shell: "chown -R {{user}}:{{user}} {{mnt.docker_data}}"
+  args:
+    warn: no
 
 - debug:
     msg: Finished unarchiving the contents of cloudbox.tar to {{mnt.docker_data}}/, you should now be ready to perform an installation (i.e. Full, Plex, or Feeder)!
