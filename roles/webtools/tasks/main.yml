@@ -10,11 +10,11 @@
 ---
 - name: Check for previously installed WebTools
   stat:
-    path: "{{role_dir}}/Library/Application Support/Plex Media Server/Plug-ins/WebTools.bundle"
+    path: "/opt/plex/Library/Application Support/Plex Media Server/Plug-ins/WebTools.bundle"
   register: webtools_bundle
 
 - name: Check version of previously installed WebTools
-  shell: cat '{{role_dir}}/Library/Application Support/Plex Media Server/Plug-ins/WebTools.bundle/VERSION' |  head -n 1 | awk '{ print }'
+  shell: cat '/opt/plex/Library/Application Support/Plex Media Server/Plug-ins/WebTools.bundle/VERSION' |  head -n 1 | awk '{ print }'
   register: webtools_installed_version
   ignore_errors: yes
   when: webtools_bundle.stat.exists
@@ -52,7 +52,7 @@
 - name: Install WebTools
   unarchive:
     src: "{{ webtools_download_url.stdout }}"
-    dest: "{{role_dir}}/Library/Application Support/Plex Media Server/Plug-ins"
+    dest: "/opt/plex/Library/Application Support/Plex Media Server/Plug-ins"
     copy: no
     owner: "{{ user }}"
     group: "{{ user }}"
