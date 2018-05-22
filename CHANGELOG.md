@@ -30,7 +30,48 @@ Changelog Format:
 # Changelog
 ## [Unreleased]
 
+## [1.1.3] - 2018-05-21
+
+### **Notes**:
+This version requires **Ansible 2.5.1** (2.3.1.0 will give  syntax errors; 2.5.0 has a bug with a certain math function that backup uses; 2.5.2-2.5.3 will complain when both docker-py and docker are installed).
+
+To install Ansible 2.5.1:
+```bash
+curl -s https://cloudbox.rocks/install_dependencies.sh | sudo -H sh -s 2.5.1
+```
+  or
+```bash
+wget -qO- https://cloudbox.rocks/install_dependencies.sh | sudo -H sh -s 2.5.1
+```
+
+To checkout this version of Cloudbox:
+```
+cd ~/cloudbox
+git reset --hard COMMITID
+```
+
+You can also download the source zip file and extract it into the cloudbox folder.
+
+### Added
+
+### Changed
+- AppVeyor: Will now install the default Ansible version in the Dependencies Installer Script.
+- Common: Install/Update to latest ctop version.
+- Common: Install/Update to latest hostess version.
+- Plex: Will auto-update to the latest WebTools version.
+- Webtools: Moved into a separate role.
+
+### Removed
+
+### Fixed
+- Cloudflare: Task name shows correct IP address, now.
+- Docker: Added docker-py back; set installed Ansible ver to 2.5.2 until issues with 2.5.3 are fixed.
+
 ## [1.1.2] - 2018-05-19
+
+### **Notes**:
+Use v1.1.3 or v1.1.1, instead.
+
 ### Added
 
 ### Changed
@@ -38,12 +79,31 @@ Changelog Format:
 - Cloudbox: Added headers to all roles and scripts.
 
 ### Removed
-- docker-py: Ansible finds a conflict with having both docker-py and docker.
+- Docker: Removed docker-py. Ansible finds a conflict with both docker-py and docker installed.
 
 ### Fixed
 - Ansible: Fixed misc warning messages.
 
 ## [1.1.1] - 2018-05-19
+
+### **Notes**:
+This version, and the versions below, are compatible with **Ansible 2.3.1.0**,  and possibly up to 2.4.0.
+
+To install Ansible 2.3.1.0:
+```bash
+curl -s https://cloudbox.rocks/install_dependencies.sh | sudo -H sh -s 2.3.1
+```
+  or
+```bash
+wget -qO- https://cloudbox.rocks/install_dependencies.sh | sudo -H sh -s 2.3.1
+```
+
+To checkout this version of Cloudbox:
+```
+cd ~/cloudbox
+git reset --hard 58964a8
+```
+
 ### Added
 - [Plex Patrol](https://github.com/l3uddz/plex_patrol).
 - [Cloudbox MOTD](https://github.com/Cloudbox/cloudbox_motd): Cloudbox-enhanced MOTD.
@@ -305,6 +365,7 @@ Changelog Format:
 
 
 [Unreleased]: https://github.com/Cloudbox/Cloudbox/compare/HEAD...develop
+[1.1.3]: https://github.com/Cloudbox/Cloudbox/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/Cloudbox/Cloudbox/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/Cloudbox/Cloudbox/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/Cloudbox/Cloudbox/compare/v1.0.2...v1.1.0

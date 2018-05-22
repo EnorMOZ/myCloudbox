@@ -73,6 +73,13 @@
     - yq
   ignore_errors: yes
 
+- name: Install common pip modules
+  pip: "name={{item}} state=latest"
+  with_items:
+    - docker-py
+  tags: always
+  ignore_errors: yes
+
 - name: Create common directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
