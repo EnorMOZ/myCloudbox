@@ -81,6 +81,7 @@
       - radarr4k
       - sonarr
       - nzbget
+      - netdata
   docker_volumes:
     radarr:
       - "{{mnt.unionfs}}:{{mnt.unionfs}}"
