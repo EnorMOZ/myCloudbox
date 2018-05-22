@@ -39,3 +39,4 @@
     - { role: plex_dupefinder, tags: ['full','plex_dupefinder'] }
     - { role: radarr4k, tags: ['full','radarr4k'] }
     - { role: plex_patrol, tags: ['plex_patrol'] }
+    - { role: netdata, tags: ['netdata'] }
