@@ -6,7 +6,7 @@
     - "/home/seed/.settings.yml"
   roles:
     - { role: sanity_check }
-    - { role: kernel, tags: ['kernel'] }
+    - { role: kernel, tags: ['kernel'], when: [ 'ansible_distribution_version == 16.04' ] }
     - { role: pre_install, tags: ['full', 'feeder', 'plex'] }
     - { role: system, tags: ['full', 'feeder', 'plex', 'system'] }
     - { role: motd, tags: ['full', 'feeder', 'plex', 'motd'] }
