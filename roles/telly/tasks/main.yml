@@ -1,8 +1,5 @@
 ---
-<<<<<<< HEAD
 
-=======
->>>>>>> ea92cb190fb112d3bb810651a927edcec837ddcc
 - name: "Get {{user}} uid"
   shell: "id -u {{user}}"
   register: uid
@@ -11,11 +8,7 @@
   shell: "id -g {{user}}"
   register: gid
 
-<<<<<<< HEAD
-- name: Stop and remove any existing container
-  docker_container:
-    name: "{{role_name}}"
-=======
+
 - name: "Assert that all Telly related settings are filled in."
   assert:
     that:
@@ -25,14 +18,12 @@
 
 - name: Stop and remove any existing container
   docker_container:
-    name: telly
->>>>>>> ea92cb190fb112d3bb810651a927edcec837ddcc
+    name: "{{role_name}}"
     state: absent
 
 - name: Create telly directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-<<<<<<< HEAD
     - "{{role_dir}}"
 
 - name: Setup default telly docker volume to be merged
@@ -51,33 +42,11 @@
       PLAYLIST: "{{ telly_m3u_url }}"
       STREAMS: "{{telly.streams}}"
       LISTEN: "{{telly.listen}}"
-=======
-    - "/opt/telly"
-
-- name: Create and start container
-  docker_container:
-    name: telly
-    image: "tombowditch/telly"
-    pull: yes
-    volumes:
-    - "/etc/localtime:/etc/localtime:ro"
-    - "/opt/telly:/opt/telly"
-    env:
-      PLAYLIST: "{{telly.playlist}}"
-      STREAMS: "{{telly.streams}}"
-      LISTEN: "0.0.0.0:6077"
->>>>>>> ea92cb190fb112d3bb810651a927edcec837ddcc
       PUID: "{{uid.stdout}}"
       PGID: "{{gid.stdout}}"
     networks:
       - name: cloudbox
         aliases:
-<<<<<<< HEAD
           - "{{role_name}}"
     restart_policy: always
     state: started
-=======
-          - telly
-    restart_policy: always
-    state: started
->>>>>>> ea92cb190fb112d3bb810651a927edcec837ddcc

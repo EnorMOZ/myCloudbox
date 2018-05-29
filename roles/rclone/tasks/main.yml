@@ -18,23 +18,10 @@
       (rclone.version | trim == '')
       )
 
-<<<<<<< HEAD
-- name: "Install rclone version: latest"
-  apt:
-    deb: https://downloads.rclone.org/rclone-current-linux-amd64.deb
-  when:  rclone.version == 'latest'
-
 - name: "Install rclone version: {{rclone.version}}"
   apt:
     deb: https://downloads.rclone.org/v{{rclone.version}}/rclone-v{{rclone.version}}-linux-amd64.deb
   when:  rclone.version != 'latest'
-=======
-- name: Create rclone directories
-  file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=yes"
-  with_items:
-    - "/home/{{user}}/.config"
-    - "/home/{{user}}/.config/rclone"
->>>>>>> ea92cb190fb112d3bb810651a927edcec837ddcc
 
 - name: Ensure rclone folders exists
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}} recurse=true"

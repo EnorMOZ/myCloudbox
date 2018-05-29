@@ -17,37 +17,20 @@
   systemd: state=stopped name=plexdrive
   when: plexdrive_service.stat.exists
 
-<<<<<<< HEAD
-  - name: Create plexdrive directories
-    file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
-    with_items:
-      - "{{role_dir}}"
-
-  - name: Install plexdrive
-    get_url:
-      url:  https://github.com/dweidenfeld/plexdrive/releases/download/5.0.0/plexdrive-linux-amd64
-      dest: "{{role_dir}}/plexdrive"
-      mode: 0755
-      owner: "{{user}}"
-      group: "{{user}}"
-      force: yes
-      validate_certs: no
-=======
 - name: Create plexdrive directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - /opt/plexdrive
+    - "{{role_dir}}"
 
 - name: Install plexdrive
   get_url:
     url:  https://github.com/dweidenfeld/plexdrive/releases/download/5.0.0/plexdrive-linux-amd64
-    dest: /opt/plexdrive/plexdrive
+    dest: "{{role_dir}}/plexdrive"
     mode: 0755
     owner: "{{user}}"
     group: "{{user}}"
     force: yes
     validate_certs: no
->>>>>>> ea92cb190fb112d3bb810651a927edcec837ddcc
 
 - name: Import plexdrive.service
   template:
@@ -59,17 +42,10 @@
 - name: Systemd daemon-reload
   systemd: state=stopped name=plexdrive daemon_reload=yes enabled=no
 
-<<<<<<< HEAD
-  - name: Check config exists
-    stat:
-      path: "{{role_dir}}/config.json"
-    register: plexdrive_config
-=======
 - name: Check config exists
   stat:
-    path: "/opt/plexdrive/config.json"
+    path: "{{role_dir}}/config.json"
   register: plexdrive_config
->>>>>>> ea92cb190fb112d3bb810651a927edcec837ddcc
 
 - name: Start plexdrive service
   systemd: state=started name=plexdrive enabled=yes
