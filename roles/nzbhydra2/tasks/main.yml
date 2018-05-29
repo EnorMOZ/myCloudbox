@@ -1,13 +1,20 @@
 #########################################################################
-# Title:         Cloudbox: Plex Patrol Role                             #
-# Author(s):     L3uddz                                                 #
+# Title:         Cloudbox: NZBHydra2 Role                               #
+# Author(s):     Desimaniac                                             #
 # URL:           https://github.com/Cloudbox/Cloudbox                   #
+# Docker Image:  hotio/suitarr                                          #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.rocks          #
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
 ---
+- name: "Setting CloudFlare DNS Record"
+  include_role:
+    name: cloudflare
+  vars:
+    subdomain: nzbhydra2
+
 - name: "Get {{user}} uid"
   shell: "id -u {{user}}"
   register: uid
@@ -16,43 +23,39 @@
   shell: "id -g {{user}}"
   register: gid
 
-- import_tasks: ../cloudbox/roles/common/tasks/plexauth.yml
-  tags: plexauth
-
 - name: Stop and remove any existing container
   docker_container:
-    name: "{{role_name}}"
+    name: nzbhydra2
     state: absent
 
-- name: Create plex_patrol directories
+- name: Create nzbhydra2 directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
-    - "{{role_dir}}"
-
-- name: Check config exists
-  stat:
-    path: "{{role_dir}}/settings.ini"
-  register: plex_patrol_config
-
-- name: Import default config
-  template:
-    src: settings.ini
-    dest: "{{role_dir}}/settings.ini"
-    force: yes
-  when: plex_patrol_config.stat.exists == False
+    - /opt/nzbhydra2
 
 - name: Create and start container
   docker_container:
-    name: "{{role_name}}"
-    image: "cloudb0x/plex_patrol:latest"
+    name: nzbhydra2
+    image: hotio/suitarr
     pull: yes
-    user: "{{uid.stdout}}:{{gid.stdout}}"
+    published_ports:
+      - "127.0.0.1:5076:5076"
+    env:
+      APP: "nzbhydra2"
+      VERSION: "unstable"
+      BACKUP: "no"
+      PUID: "{{uid.stdout}}"
+      PGID: "{{gid.stdout}}"
+      VIRTUAL_HOST: "nzbhydra2.{{domain}}"
+      VIRTUAL_PORT: 5076
+      LETSENCRYPT_HOST: "nzbhydra2.{{domain}}"
+      LETSENCRYPT_EMAIL: "{{email}}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "{{role_dir}}:/config"
+      - "/opt/nzbhydra2:/config"
+    restart_policy: always
     networks:
       - name: cloudbox
         aliases:
-          - "{{role_name}}"
-    restart_policy: always
+          - nzbhydra2
     state: started

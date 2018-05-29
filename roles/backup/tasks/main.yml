@@ -1,6 +1,6 @@
 #########################################################################
 # Title:         Cloudbox: Backup Role                                  #
-# Author(s):     l3uddz, desimaniac, rxwatcher1                         #
+# Author(s):     L3uddz, Desimaniac, RXWatcher1                         #
 # URL:           https://github.com/Cloudbox/Cloudbox                   #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.rocks          #
@@ -83,6 +83,7 @@
       force: yes
     with_items:
      - "{{playbook_dir}}/settings.yml"
+     - "{{playbook_dir}}/adv_settings.yml"
      - "/home/{{user}}/.config/rclone/rclone.conf"
     ignore_errors: yes
 
@@ -252,6 +253,7 @@
       force: yes
     with_items:
      - "settings.yml"
+     - "adv_settings.yml"
      - "rclone.conf"
      - "cloudbox.tar"
 
@@ -273,6 +275,7 @@
     when: backup.use_rclone
     with_items:
      - "settings.yml"
+     - "adv_settings.yml"
      - "rclone.conf"
      - "cloudbox.tar"
 

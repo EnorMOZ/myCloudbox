@@ -1,8 +1,7 @@
 #########################################################################
-# Title:         Cloudbox: ZNC Role                                     #
-# Author(s):     l3uddz, horjulf                                        #
+# Title:         Cloudbox: VPN Role                                     #
+# Author(s):     EnorMOZ                                        #
 # URL:           https://github.com/Cloudbox/Cloudbox                   #
-# Docker Image:  horjulf/docker-znc                                     #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.rocks          #
 #########################################################################

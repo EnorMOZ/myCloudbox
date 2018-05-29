@@ -1,6 +1,6 @@
 #########################################################################
 # Title:         Cloudbox: Common Role                                  #
-# Author(s):     l3uddz, desimaniac                                     #
+# Author(s):     L3uddz, Desimaniac                                     #
 # URL:           https://github.com/Cloudbox/Cloudbox                   #
 # --                                                                    #
 #         Part of the Cloudbox project: https://cloudbox.rocks          #
@@ -48,6 +48,7 @@
     - screen
     - apache2-utils
     - jq
+    - lib32z1
   ignore_errors: yes
 
 - name: Check to see if unrar installed
@@ -86,6 +87,12 @@
     - "{{mnt.local}}"
     - "{{mnt.fuse_dir}}"
     - "{{mnt.docker_data}}"
+
+- name: Install iperf3
+  import_role:
+    name: iperf3
+  tags: update-iperf3
+  ignore_errors: yes
 
 - name: Check plexdrive mount folder exist
   stat:

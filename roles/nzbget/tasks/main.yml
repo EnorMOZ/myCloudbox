@@ -1,6 +1,6 @@
 #########################################################################
 # Title:         Cloudbox: NZBGet Role                                  #
-# Author(s):     l3uddz                                                 #
+# Author(s):     L3uddz                                                 #
 # URL:           https://github.com/Cloudbox/Cloudbox                   #
 # Docker Image:  hotio/suitarr                                          #
 # --                                                                    #
@@ -26,7 +26,11 @@
 - name: Create nzbget directories
   file: "path={{item}} state=directory mode=0775 owner={{user}} group={{user}}"
   with_items:
+<<<<<<< HEAD
     - "{{rold_dir}}"
+=======
+    - /opt/nzbget
+>>>>>>> ea92cb190fb112d3bb810651a927edcec837ddcc
 
 - name: Stop and remove any existing container
   docker_container:
@@ -76,7 +80,17 @@
       VIRTUAL_PORT: 6789
       LETSENCRYPT_HOST: "nzbget.{{domain}}"
       LETSENCRYPT_EMAIL: "{{email}}"
+<<<<<<< HEAD
     volumes: "{{nzbget_volumes + docker_volumes.nzbget|default([])}}"
+=======
+      LC_ALL: "C"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/opt/nzbget:/config"
+      - "{{nzbget.downloads}}:/downloads/nzbget"
+      - "/mnt:/mnt"
+      - "/opt/scripts/nzb:/scripts"
+>>>>>>> ea92cb190fb112d3bb810651a927edcec837ddcc
     restart_policy: always
     networks:
       - name: cloudbox
